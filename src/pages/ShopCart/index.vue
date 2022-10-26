@@ -114,7 +114,7 @@ export default {
   methods: {
     //发送购物车请求
     getShopData() {
-      this.$store.dispatch('getCartList');
+      this.$store.dispatch('getUserShopCartInfo');
     },
     //单选
     async updateCheck(shopInfo, event) {
@@ -158,7 +158,7 @@ export default {
           break;
       }
       try {
-        await this.$store.dispatch('getChangeCartNum', {
+        await this.$store.dispatch('changeShopCartNum', {
           skuId: shopInfo.skuId,
           skuNum: disNum,
         });
@@ -172,7 +172,7 @@ export default {
     //发送删除购物车商品请求
     async deleteGoods(shopInfo) {
       try {
-        await this.$store.dispatch('deleteShopCart', shopInfo.skuId);
+        await this.$store.dispatch('deleteGoods', shopInfo.skuId);
         this.getShopData();
       } catch (error) {
         alert(error.message);

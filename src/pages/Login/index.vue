@@ -46,12 +46,13 @@
                         regex:
                           /^1(3\d|4[5-9]|5[0-35-9]|6[567]|7[0-8]|8\d|9[0-35-9])\d{8}$/,
                       }"
-                      :data-vv-scope="'login' + password"
-                      :class="{ invalid: errors.has('loginPhone') }"
+                      data-vv-scope="login"
+                      :class="{ invalid: errors.has('login.loginPhone') }"
                     />
+                    <!--  -->
                     <!-- 校验错误提示 -->
                     <i class="error-msg hint">
-                      {{ errors.first('loginPhone') }}
+                      {{ errors.first('login.loginPhone') }}
                     </i>
                   </div>
                   <div class="input-text">
@@ -64,12 +65,12 @@
                         regex:
                           /^(?=.*\d)(?=.*[A-Za-z])(?=.*[!@$%^*?~])[\u4E00-\u9FA5A-Za-z0-9!@$%^*?~]{8,16}$/,
                       }"
-                      :data-vv-scope="'login' + password"
-                      :class="{ invalid: errors.has('loginPassword') }"
+                      data-vv-scope="login"
+                      :class="{ invalid: errors.has('login.loginPassword') }"
                     />
                     <!-- 校验错误提示 -->
                     <i class="error-msg hint error-text">
-                      {{ errors.first('loginPassword') }}
+                      {{ errors.first('login.loginPassword') }}
                     </i>
                   </div>
                   <div class="setting">
@@ -104,12 +105,12 @@
                         regex:
                           /^1(3\d|4[5-9]|5[0-35-9]|6[567]|7[0-8]|8\d|9[0-35-9])\d{8}$/,
                       }"
-                      :data-vv-scope="'register' + phone"
-                      :class="{ invalid: errors.has('phone') }"
+                      data-vv-scope="register"
+                      :class="{ invalid: errors.has('register.phone') }"
                     />
                     <!-- 校验错误提示 -->
                     <i class="error-msg hint">
-                      {{ errors.first('phone') }}
+                      {{ errors.first('register.phone') }}
                     </i>
                   </div>
                   <div class="text-btn">
@@ -131,12 +132,12 @@
                         regex:
                           /^(?=.*\d)(?=.*[A-Za-z])(?=.*[!@$%^*?~])[\u4E00-\u9FA5A-Za-z0-9!@$%^*?~]{8,16}$/,
                       }"
-                      :data-vv-scope="'register' + password"
-                      :class="{ invalid: errors.has('password') }"
+                      data-vv-scope="register"
+                      :class="{ invalid: errors.has('register.password') }"
                     />
                     <!-- 校验错误提示 -->
                     <i class="error-msg hint error-text">
-                      {{ errors.first('password') }}
+                      {{ errors.first('register.password') }}
                     </i>
                   </div>
                   <div class="input-text">
@@ -148,12 +149,12 @@
                         required: true,
                         regex: /^[0-9]{4}$/,
                       }"
-                      :data-vv-scope="'register' + code"
-                      :class="{ invalid: errors.has('code') }"
+                      data-vv-scope="register"
+                      :class="{ invalid: errors.has('register.code') }"
                     />
                     <!-- 校验错误提示 -->
                     <i class="error-msg hint">
-                      {{ errors.first('code') }}
+                      {{ errors.first('register.code') }}
                     </i>
                   </div>
                   <div class="setting">
@@ -191,6 +192,7 @@ export default {
       loginPassword: '',
       phone: '',
       password: '',
+      newPhone: '',
     };
   },
   methods: {
@@ -206,7 +208,7 @@ export default {
       const { phone, password, code } = this;
       //以上校验通过以后才能发送请求
       //采用了部分表单校验  以register开头的都会进行校验
-      const success = await this.$validator.validate('register' + '.*');
+      const success = await this.$validator.validateAll('register');
       if (success) {
         try {
           await this.$store.dispatch('getUserRegister', {
@@ -263,7 +265,7 @@ export default {
     //获取用户登录
     async getLogin() {
       const { loginPhone, loginPassword } = this;
-      const success = await this.$validator.validate('login' + '.*');
+      const success = await this.$validator.validateAll('login');
       if (success) {
         try {
           await this.$store.dispatch('getUserLogin', {

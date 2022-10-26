@@ -51,3 +51,13 @@ export const reqBannerImg = () =>
 ////////////商品详情页面操作/////////
 export const reqDetailInfo = (skuId) =>
   requests({ url: `/pms/product/detail/${skuId}`, method: 'get' });
+////////购物车页面操作/////////
+//更改购物车某产品数量
+export const reqChangeShopCartNum = (data) =>
+  requests({ url: '/api/oms/cart/add', method: 'post', data });
+//获取用户购物车信息
+export const reqUserShopCart = () =>
+  requests({ url: '/api/oms/cart/cartList', method: 'get' });
+//移除购物车某商品
+export const reqDeleteGoods = (skuId) =>
+  requests({ url: `/api/oms/cart/remove/${skuId}`, method: 'delete' });
