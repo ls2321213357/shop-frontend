@@ -5,7 +5,7 @@ export default [
     component: () => import('@/pages/SkillDetail'),
   },
   {
-    path: '/search/:?keyword',
+    path: '/search/:keyword?',
     component: () => import('@/pages/Search'),
     name: 'search',
     meta: {
@@ -14,7 +14,7 @@ export default [
     },
   },
   {
-    path: '/detail/:?skuid',
+    path: '/detail/:skuid?',
     name: 'detail',
     component: () => import('@/pages/Detail'),
   },

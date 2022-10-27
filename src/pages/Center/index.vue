@@ -13,7 +13,7 @@
               <h3>{{ personInfo.username }}</h3>
               <el-popover placement="right" width="120px" trigger="click">
                 <el-upload
-                  action="http://172.20.10.4:9090/api/user/infos/update/avatar"
+                  action="http://xifmhg.natappfree.cc/api/user/infos/update/avatar"
                   :show-file-list="false"
                   :on-success="handleAvatarSuccess"
                   :before-upload="beforeAvatarUpload"

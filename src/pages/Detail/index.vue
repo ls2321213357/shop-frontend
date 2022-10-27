@@ -5,29 +5,28 @@
     <section class="con">
       <!-- 导航路径区域 -->
       <div class="conPoin">
-        <span>手机、数码、通讯</span>
-        <span>手机</span>
-        <span>Apple苹果</span>
-        <span>iphone 6S系类</span>
+        <span v-for="item in goodsDetail.categories" :key="item.id">
+          {{ item.name }}
+        </span>
       </div>
       <!-- 主要内容区域 -->
       <div class="mainCon">
         <!-- 左侧放大镜区域 -->
         <div class="previewWrap">
           <!--放大镜效果-->
-          <Zoom :skuPicList="skuPicList" />
+          <!-- <Zoom :skuPicList="skuPicList" /> -->
 
           <!-- 小图列表 -->
-          <ImageList :skuPicList="skuPicList" />
+          <!-- <ImageList :skuPicList="skuPicList" /> -->
         </div>
         <!-- 右侧选择区域布局 -->
         <div class="InfoWrap">
           <div class="goodsDetail">
             <h3 class="InfoName">
-              Apple iPhone 6s（A1700）64G玫瑰金色 移动通信电信4G手机
+              {{ goodsDetail.skuList[0].title }}
             </h3>
             <p class="news">
-              推荐选择下方[移动优惠购],手机套餐齐搞定,不用换号,每月还有花费返
+              {{ goodsDetail.spu.subTitle }}
             </p>
             <div class="priceArea">
               <div class="priceArea1">
@@ -36,7 +35,7 @@
                 </div>
                 <div class="price">
                   <i>¥</i>
-                  <em>5299</em>
+                  <em>{{ goodsDetail.skuList[0].price }}</em>
                   <span>降价通知</span>
                 </div>
                 <div class="remark">
@@ -76,35 +75,35 @@
             <div class="chooseArea">
               <div class="choosed"></div>
               <dl>
-                <dt class="title">选择颜色</dt>
-                <dd changepirce="0" class="active">金色</dd>
-                <dd changepirce="40">银色</dd>
-                <dd changepirce="90">黑色</dd>
-              </dl>
-              <dl>
-                <dt class="title">内存容量</dt>
-                <dd changepirce="0" class="active">16G</dd>
-                <dd changepirce="300">64G</dd>
-                <dd changepirce="900">128G</dd>
-                <dd changepirce="1300">256G</dd>
-              </dl>
-              <dl>
-                <dt class="title">选择版本</dt>
-                <dd changepirce="0" class="active">公开版</dd>
-                <dd changepirce="-1000">移动版</dd>
-              </dl>
-              <dl>
-                <dt class="title">购买方式</dt>
-                <dd changepirce="0" class="active">官方标配</dd>
-                <dd changepirce="-240">优惠移动版</dd>
-                <dd changepirce="-390">电信优惠版</dd>
+                <dt class="title">规格</dt>
+                <dd
+                  changepirce="0"
+                  class="active"
+                  v-for="(items, index) in productSkuSpecification"
+                  :key="index"
+                  :class="subIndex[index] == index ? 'active' : ''"
+                  @click="selectItem(items, $event, index)"
+                >
+                  {{ items }}
+                </dd>
               </dl>
             </div>
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt" />
-                <a href="javascript:" class="plus">+</a>
-                <a href="javascript:" class="mins">-</a>
+                <input
+                  autocomplete="off"
+                  class="itxt"
+                  v-model="goodsnum"
+                  @change="changenum"
+                />
+                <a href="javascript:" class="plus" @click="goodsnum++">+</a>
+                <a
+                  href="javascript:"
+                  class="mins"
+                  @click="goodsnum <= 1 ? 1 : goodsnum--"
+                >
+                  -
+                </a>
               </div>
               <div class="add">
                 <el-button type="text">加入购物车</el-button>
@@ -118,16 +117,35 @@
 </template>
 
 <script>
-import { mapState,mapGetters } from 'vuex';
-import ImageList from './ImageList/ImageList';
-import Zoom from './Zoom/Zoom';
+import { mapState, mapGetters } from 'vuex';
+// import ImageList from './ImageList/ImageList';
+// import Zoom from './Zoom/Zoom';
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: 'Detail',
+  data() {
+    return {
+      goodsnum: 1,
+      flag: 0, //把当前的index动态绑定给this.flag
+      selectArr: [], // 存放被选中的值
+      subIndex: [], // 是否选中 因为不确定是多规格还是但规格，所以这里定义数组来判断
+    };
+  },
   components: {
-    ImageList,
-    Zoom,
+    //ImageList,
+    // Zoom,
+  },
+  methods: {
+    //手动输入商品数量
+    changenum(event) {
+      const value = event.target.value * 1;
+      if (isNaN(value) || value < 1) {
+        this.goodsnum = 1;
+      } else {
+        this.goodsnum = value;
+      }
+    },
   },
   mounted() {
     this.$store.dispatch('getGoodsDetail', this.$route.params.skuid);
@@ -137,7 +155,15 @@ export default {
       goodsDetail: (state) => state.detail.goodsDetail,
     }),
     ...mapGetters(['skuPicList']),
+    productSkuSpecification() {
+      return (
+        Object.values(
+          JSON.parse(this.goodsDetail.spu.productSpecification),
+        )[0] || []
+      );
+    },
   },
+
   // open() {
   //   this.$alert('<strong>这是 <i>HTML</i> 片段</strong>', {
   //     dangerouslyUseHTMLString: true,

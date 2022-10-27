@@ -1,5 +1,5 @@
 <template>
-  <div class="swiper-container" ref="cur">
+  <div class="swiper-container" ref="cur" v-if="skuPicList">
     <div class="swiper-wrapper">
       <div
         class="swiper-slide"

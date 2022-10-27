@@ -1,5 +1,5 @@
 <template>
-  <div class="login-container">
+  <div class="login-container" :class="{ mask: isSlide }">
     <!-- 登录 -->
     <div class="login-wrap">
       <!-- 左部分 -->
@@ -114,11 +114,7 @@
                     </i>
                   </div>
                   <div class="text-btn">
-                    <el-button
-                      :plain="true"
-                      type="button"
-                      @click="getCode(phone)"
-                    >
+                    <el-button :plain="true" type="button" @click="getCode">
                       获取验证码
                     </el-button>
                   </div>
@@ -175,6 +171,20 @@
         </div>
       </div>
     </div>
+    <!-- 滑动验证 -->
+    <div v-if="isSlide" class="slide">
+      <slide-verify
+        :l="42"
+        :r="10"
+        :w="310"
+        :h="155"
+        slider-text="向右滑动"
+        @success="onSuccess(phone)"
+        @fail="onFail"
+        @refresh="onRefresh"
+      ></slide-verify>
+      <div class="text">{{ msg }}</div>
+    </div>
   </div>
 </template>
 
@@ -186,19 +196,64 @@ export default {
   name: 'Login',
   data() {
     return {
-      isShow: true,
-      code: '',
-      loginPhone: '',
-      loginPassword: '',
-      phone: '',
-      password: '',
-      newPhone: '',
+      msg: '', //滑动验证的内容
+      isShow: true, //登录与注册的切换
+      code: '', //验证码
+      loginPhone: '', //登录手机号
+      loginPassword: '', //登陆密码
+      phone: '', //注册手机号
+      password: '', //注册密码
+      isSlide: false,
     };
   },
   methods: {
+    //滑动窗口部分
+    //成功后的回调
+    onSuccess(times) {
+      const { phone } = this;
+      this.msg = '验证成功,用时' + (times / 1000).toFixed(1) + '秒';
+      //表单验证
+      phone && this.$store.dispatch('getUserCode', phone);
+      setTimeout(() => {
+        //成功提示框
+        if (this.reqCode == 200) {
+          Message({
+            type: 'success',
+            message: this.errorMsg,
+          });
+        } //警告提示框
+        else if (this.reqCode == 500) {
+          Message({
+            type: 'warning',
+            message: this.errorMsg,
+          });
+        } else {
+          Message({
+            type: 'error',
+            message: this.errorMsg,
+          });
+        }
+        this.msg = '';
+        this.isSlide = false;
+      }, 1500);
+    },
+    //失败后的回调
+    onFail() {
+      Message({
+        type: 'warning',
+        message: '验证失败,请重试',
+      });
+      this.msg = '';
+    },
+    //刷新后的回调
+    onRefresh() {
+      this.msg = '';
+    },
+
     //切换用户登录和注册
     goLogin() {
       this.isShow = true;
+      this.isSlide = false;
     },
     goRegister() {
       this.isShow = false;
@@ -240,27 +295,8 @@ export default {
       }
     },
     //获取验证码
-    async getCode(phone) {
-      phone && (await this.$store.dispatch('getUserCode', phone));
-      this.code = this.phoneCode;
-      //成功提示框
-      if (this.reqCode == 200) {
-        Message({
-          type: 'success',
-          message: this.errorMsg,
-        });
-      } //警告提示框
-      else if (this.reqCode == 500) {
-        Message({
-          type: 'warning',
-          message: this.errorMsg,
-        });
-      } else {
-        Message({
-          type: 'error',
-          message: this.errorMsg,
-        });
-      }
+    async getCode() {
+      this.isSlide = true;
     },
     //获取用户登录
     async getLogin() {
@@ -319,9 +355,34 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.mask {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 999;
+  background: rgba(0, 0, 0, 0.3);
+}
 .login-container {
-  height: 820px;
+  height: 850px;
   overflow: hidden hidden;
+  position: relative;
+
+  .slide {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    background-color: #fff;
+    transform: translate(-50%, -50%);
+    .text {
+      height: 30px;
+      font-size: 16px;
+      text-align: center;
+      line-height: 30px;
+    }
+  }
   a,
   p {
     cursor: pointer;

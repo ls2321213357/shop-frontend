@@ -1,5 +1,5 @@
 <template>
-  <div class="spec-preview">
+  <div class="spec-preview"  v-if="skuPicList" >
     <img :src="imgObj.picUrl" />
     <div class="event" @mousemove="getMask"></div>
     <div class="big">

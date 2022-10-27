@@ -8,12 +8,23 @@ import router from '@/router';
 import './assets/css/swiper.min.css';
 //引入表单验证
 import '@/plugins/vee-validate';
+//引入图片懒加载
+import VueLazyload from 'vue-lazyload';
+//引入懒加载图片
+const loadimg = require('@/assets/images/test.jpg');
+//使用图片懒加载
+Vue.use(VueLazyload, {
+  loading: loadimg,
+});
 //引入mock配置模块
 import './mock/mockServer';
 //引入公共样式
 import '@/assets/css/public.css';
 import '@/assets/css/base.css';
 import '@/assets/css/normalize.css';
+//引入图片滑动验证
+import SlideVerify from 'vue-monoplasty-slide-verify';
+Vue.use(SlideVerify);
 //引入全局组件
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';

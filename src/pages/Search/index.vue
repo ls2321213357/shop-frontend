@@ -57,7 +57,7 @@
                 <div class="list-wrap">
                   <div class="p-img">
                     <a>
-                      <img :src="detail.defaultPicUrl" />
+                      <img v-lazy="detail.defaultPicUrl" />
                     </a>
                   </div>
                   <div class="price">
