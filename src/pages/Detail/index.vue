@@ -4,8 +4,8 @@
     <!-- 主要内容区域 -->
     <section class="con">
       <!-- 导航路径区域 -->
-      <div class="conPoin">
-        <span v-for="item in goodsDetail.categories" :key="item.id">
+      <div class="conPoin" @click="$router.push('/home')">
+        <span v-for="item in categories" :key="item.id">
           {{ item.name }}
         </span>
       </div>
@@ -14,10 +14,9 @@
         <!-- 左侧放大镜区域 -->
         <div class="previewWrap">
           <!--放大镜效果-->
-          <!-- <Zoom :skuPicList="skuPicList" /> -->
-
+          <Zoom :skuPicList="skuPicList" />
           <!-- 小图列表 -->
-          <!-- <ImageList :skuPicList="skuPicList" /> -->
+          <ImageList :skuPicList="skuPicList" />
         </div>
         <!-- 右侧选择区域布局 -->
         <div class="InfoWrap">
@@ -39,8 +38,8 @@
                   <span>降价通知</span>
                 </div>
                 <div class="remark">
-                  <i>累计评价</i>
-                  <em>65545</em>
+                  <i>累计购买</i>
+                  <em>{{ goodsDetail.spu.sale }}</em>
                 </div>
               </div>
               <div class="priceArea2">
@@ -61,7 +60,7 @@
                   支&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;持
                 </div>
                 <div class="fixWidth">
-                  以旧换新，闲置手机回收 4G套餐超值抢 礼品购
+                  以旧换新，闲置物品回收 各种套餐超值抢 礼品购
                 </div>
               </div>
               <div class="supportArea">
@@ -78,11 +77,10 @@
                 <dt class="title">规格</dt>
                 <dd
                   changepirce="0"
-                  class="active"
                   v-for="(items, index) in productSkuSpecification"
                   :key="index"
-                  :class="subIndex[index] == index ? 'active' : ''"
-                  @click="selectItem(items, $event, index)"
+                  :class="{ active: index == flag }"
+                  @click="selectItem(items, index)"
                 >
                   {{ items }}
                 </dd>
@@ -118,8 +116,8 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex';
-// import ImageList from './ImageList/ImageList';
-// import Zoom from './Zoom/Zoom';
+import ImageList from './ImageList/ImageList';
+import Zoom from './Zoom/Zoom';
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
@@ -128,13 +126,11 @@ export default {
     return {
       goodsnum: 1,
       flag: 0, //把当前的index动态绑定给this.flag
-      selectArr: [], // 存放被选中的值
-      subIndex: [], // 是否选中 因为不确定是多规格还是但规格，所以这里定义数组来判断
     };
   },
   components: {
-    //ImageList,
-    // Zoom,
+    ImageList,
+    Zoom,
   },
   methods: {
     //手动输入商品数量
@@ -146,15 +142,19 @@ export default {
         this.goodsnum = value;
       }
     },
+    //选择商品规格
+    selectItem(item, index) {
+      this.flag = index;
+    },
   },
-  mounted() {
+  created() {
     this.$store.dispatch('getGoodsDetail', this.$route.params.skuid);
   },
   computed: {
     ...mapState({
-      goodsDetail: (state) => state.detail.goodsDetail,
+      goodsDetail: (state) => state.detail.goodsDetail || {},
     }),
-    ...mapGetters(['skuPicList']),
+    ...mapGetters(['skuPicList', 'categories']),
     productSkuSpecification() {
       return (
         Object.values(
@@ -178,11 +178,13 @@ export default {
 
 <style lang="less" scoped>
 .detail {
+  cursor: pointer;
   .con {
     width: 1200px;
     margin: 15px auto 0;
 
     .conPoin {
+      width: 200px;
       padding: 9px 15px 9px 0;
 
       & > span + span:before {
@@ -204,32 +206,37 @@ export default {
 
       .InfoWrap {
         width: 700px;
+        height: 455px;
         float: right;
 
         .InfoName {
-          font-size: 14px;
+          font-size: 18px;
           line-height: 21px;
           margin-top: 15px;
+          text-align: left;
         }
 
         .news {
+          font-size: 14px;
           color: #e12228;
-          margin-top: 15px;
+          margin-top: 20px;
         }
 
         .priceArea {
           background: #fee9eb;
           padding: 7px;
           margin: 13px 0;
-
+          height: 170px;
           .priceArea1 {
             overflow: hidden;
             line-height: 28px;
-            margin-top: 10px;
+            margin-top: 20px;
 
             .title {
+              font-weight: 700;
+              font-size: 16px;
               float: left;
-              margin-right: 15px;
+              margin-right: 35px;
             }
 
             .price {
@@ -246,21 +253,23 @@ export default {
               }
 
               span {
-                font-size: 12px;
+                font-size: 14px;
               }
             }
-
             .remark {
               float: right;
+              margin-right: 95px;
             }
           }
 
           .priceArea2 {
             overflow: hidden;
             line-height: 28px;
-            margin-top: 10px;
+            margin-top: 25px;
 
             .title {
+              font-size: 16px;
+              font-weight: 700;
               margin-right: 15px;
               float: left;
             }
@@ -276,6 +285,7 @@ export default {
               }
 
               .t-gray {
+                font-size: 14px;
                 color: #999;
               }
             }
@@ -329,11 +339,10 @@ export default {
                 border-right: 1px solid #bbb;
                 border-bottom: 1px solid #bbb;
                 border-left: 1px solid #eee;
-
-                &.active {
-                  color: green;
-                  border: 1px solid green;
-                }
+              }
+              .active {
+                color: green;
+                border: 1px solid green;
               }
             }
           }

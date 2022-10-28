@@ -342,6 +342,7 @@ export default {
       errorMsg: (state) => state.userInfo.errorMsg,
       reqCode: (state) => state.userInfo.reqCode,
     }),
+    //让error变成动态的
     getErrorMsg: {
       get() {
         return this.errorMsg;

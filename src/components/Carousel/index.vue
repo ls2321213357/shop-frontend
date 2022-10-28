@@ -36,7 +36,19 @@ export default {
               el: '.swiper-pagination',
               clickable: true,
             },
-            autoplay:true,
+            autoplay: {
+              disableOnInteraction: false, // 用户操作swiper之后，是否禁止autoplay
+              delay: 3000, // 自动切换的时间间隔（单位ms）
+            },
+            notNextTick: true,
+            direction: 'horizontal',
+            initialSlide: 1, // 这里是重点。。
+            onSlideChangeEnd: (swiper) => {
+              console.log(swiper.realIndex);
+            },
+            onTap: (swiper) => {
+              console.log(swiper.realIndex);
+            },
             // 如果需要前进后退按钮
             navigation: {
               nextEl: '.swiper-button-next',

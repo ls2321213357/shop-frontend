@@ -1,5 +1,5 @@
 <template>
-  <div class="spec-preview"  v-if="skuPicList" >
+  <div class="spec-preview" v-if="skuPicList">
     <img :src="imgObj.picUrl" />
     <div class="event" @mousemove="getMask"></div>
     <div class="big">
@@ -10,7 +10,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: 'Zoom',
@@ -21,7 +20,6 @@ export default {
   },
   props: ['skuPicList'],
   computed: {
-    ...mapGetters(['skuPicList']),
     imgObj() {
       return this.skuPicList[this.currenIndex] || {};
     },
@@ -40,8 +38,8 @@ export default {
       mask.style.top = top + 'px';
       //大图部分
       let bigImg = this.$refs.bigImg;
-      bigImg.style.left = -left / 2 + 'px';
-      bigImg.style.top = -top / 2 + 'px';
+      bigImg.style.left = -left * 2 + 'px';
+      bigImg.style.top = -top * 2 + 'px';
     },
   },
   mounted() {
@@ -100,6 +98,7 @@ export default {
       width: 200%;
       max-width: 200%;
       height: 200%;
+      max-height: 200%;
       position: absolute;
       left: 0;
       top: 0;

@@ -144,7 +144,7 @@ export default {
     height: 502px;
     position: absolute;
     transition: opacity 0.5s;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(255, 255, 255, 0.7);
     z-index: 999;
 
     .all-sort-list2 {
@@ -162,14 +162,15 @@ export default {
           position: relative;
           a {
             display: block;
-            color: #fff;
+            color: #333;
             font-size: 15px;
             line-height: 41px;
+            font-weight: 700;
           }
           i {
             position: absolute;
-            top: 0px;
-            right: 0px;
+            top: 3px;
+            left: 0px;
             img {
               width: 35px;
               height: 35px;
@@ -212,7 +213,7 @@ export default {
         }
       }
       .cur {
-        background-color: skyblue;
+        background-color: rgba(135, 206, 235, 0.5);
       }
     }
   }

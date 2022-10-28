@@ -5,6 +5,7 @@ import home from './home';
 import center from './center';
 import search from './search';
 import detail from './detail';
+import address from './address';
 Vue.use(Vuex);
 export default new Vuex.Store({
   modules: {
@@ -13,5 +14,6 @@ export default new Vuex.Store({
     center,
     search,
     detail,
+    address,
   },
 });

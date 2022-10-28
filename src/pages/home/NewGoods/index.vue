@@ -57,6 +57,7 @@ export default {
       background-color: #f0f9f4;
       transition: 0.5s;
       position: relative;
+      font-weight: 700;
       top: 0;
       &:hover {
         box-shadow: 0 3px 8px rgba(66, 53, 53, 0.2);

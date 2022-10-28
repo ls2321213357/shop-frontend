@@ -20,7 +20,10 @@ const actions = {
 };
 const getters = {
   skuPicList(state) {
-    return state.goodsDetail.skuList[0].skuPicList;
+    return state.goodsDetail.skuList[0].skuPicList || [];
+  },
+  categories(state) {
+    return state.goodsDetail.categories || [];
   },
 };
 export default {

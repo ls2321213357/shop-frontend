@@ -134,7 +134,7 @@ export default {
         //页码
         pageNo: '1',
         //页长
-        pageSize: '2',
+        pageSize: '4',
         //平台售卖属性操作带的参数
         productAttributeIds: [],
         //二级分类id

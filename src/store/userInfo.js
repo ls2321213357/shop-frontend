@@ -1,8 +1,4 @@
-import {
-  reqUserRegister,
-  reqUserCode,
-  reqUserLogin,
-} from '../api';
+import { reqUserRegister, reqUserCode, reqUserLogin } from '../api';
 //引入token操作
 import {
   setAssToken,
@@ -10,11 +6,9 @@ import {
   setUserId,
   getRefToken,
   getAssToken,
-
 } from '@/util/token';
 
 const state = {
-  code: '', //验证码
   errorMsg: '', //返回的信息
   reqCode: '', //状态码
   refToken: getRefToken(), //长时间token
@@ -22,12 +16,9 @@ const state = {
 };
 
 const mutations = {
-  //验证码部分
-  GETUSERCODE(state, code) {
-    state.code = code;
-  },
   //错误信息
   GETCODEMSG(state, errorMsg) {
+    state.errorMsg = '';
     state.errorMsg = errorMsg;
   },
   // 状态码
@@ -43,23 +34,22 @@ const actions = {
     let result = await reqUserRegister(params);
     if (result.code == 200) {
       commit('GETREQCODE', result.code);
-      commit('GETCODEMSG', result.msg);
+      commit('GETCODEMSG', result.data);
       return 'ok';
     } else {
       commit('GETREQCODE', result.code);
-      commit('GETCODEMSG', result.msg);
+      commit('GETCODEMSG', result.data);
     }
   },
   //获取验证码
   async getUserCode({ commit }, phone) {
     let result = await reqUserCode(phone);
     if (result.code == 200) {
-      commit('GETUSERCODE', result.data.code);
       commit('GETREQCODE', result.code);
-      commit('GETCODEMSG', result.msg);
+      commit('GETCODEMSG', result.data);
     } else {
       commit('GETREQCODE', result.code);
-      commit('GETCODEMSG', result.msg);
+      commit('GETCODEMSG', result.data);
     }
   },
   //用户登录
@@ -77,7 +67,6 @@ const actions = {
       commit('GETCODEMSG', result.msg);
     }
   },
-
 };
 
 export default {
