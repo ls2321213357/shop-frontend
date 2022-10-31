@@ -284,7 +284,6 @@ export default {
         });
       }
       try {
-        this.$router.push('/center');
         this.isEditEmail = true;
         this.isEditPhone = true;
         this.isEditname = true;

@@ -15,7 +15,6 @@ const mutations = {
   // 状态码
   GETREQCODE(state, reqCode) {
     state.reqCode = reqCode;
-    state.reqCode = '';
   },
 };
 const actions = {

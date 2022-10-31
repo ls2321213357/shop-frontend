@@ -1,9 +1,16 @@
-import { reqUserInfo, reqBannerImg, reqUserLogout, reqDetailNav } from '@/api';
+import {
+  reqUserInfo,
+  reqBannerImg,
+  reqUserLogout,
+  reqDetailNav,
+} from '@/api';
 import { removeRToken, removeAToken, removeUserId } from '@/util/token';
 const state = {
   userInfo: {},
   bannerList: [],
   detailNavList: {},
+
+  userCode: '', //记录用户登录的状态码
 };
 const mutations = {
   //获取个人信息
@@ -15,16 +22,23 @@ const mutations = {
     state.bannerList = bannerList;
   },
   //退出登录操作
-  CLEARUSERINFO(state) {
+  CLEARUSERINFO(state, userCode) {
+    state.userCode = userCode;
     state.userInfo = {};
     removeRToken();
     removeAToken();
     removeUserId();
   },
+  // 状态码
+  GETREQCODE(state, userCode) {
+    state.userCode = '';
+    state.userCode = userCode;
+  },
   //获取商品分类标签
   GETDETAILNAV(state, detailNavList) {
     state.detailNavList = detailNavList;
   },
+ 
 };
 const actions = {
   //发送用户id和token获取用户信息
@@ -40,7 +54,7 @@ const actions = {
   async userLogout({ commit }) {
     let result = await reqUserLogout();
     if (result.code == 200) {
-      commit('CLEARUSERINFO');
+      commit('CLEARUSERINFO', result.code);
       return 'ok';
     } else {
       return Promise.reject(new Error('退出登录失败'));
@@ -62,6 +76,7 @@ const actions = {
       commit('GETDETAILNAV', result.data);
     }
   },
+
 };
 export default {
   state,

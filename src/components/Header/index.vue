@@ -43,7 +43,7 @@
           </li>
           <li>
             <router-link to="/shopcart" class="xtx_search_cart sprites">
-              <i>{{ this.userInfo.cartNum }}</i>
+              <i>{{ shopCartNum }}</i>
             </router-link>
           </li>
           <li @click="logout"><a href="javascript:;">退出登录</a></li>
@@ -54,6 +54,7 @@
 </template>
 
 <script>
+import { Message } from 'element-ui';
 import { mapState } from 'vuex';
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
@@ -66,19 +67,35 @@ export default {
   computed: {
     ...mapState({
       userInfo: (state) => state.home.userInfo,
+      shopCartNum: (state) => state.shopCart.shopCartNum,
+      userCode: (state) => state.home.userCode,
     }),
   },
   mounted() {
-    //获取用户购物车头像等信息
+    //获取用户头像等信息
     this.$store.dispatch('getUserInfo');
+    //获取用户购物车信息
+    this.$store.dispatch('getUserShopCartNum');
   },
   methods: {
     changeUserShow() {
       this.isUserShow = !this.isUserShow;
     },
+    //退出登录
     async logout() {
       try {
         await this.$store.dispatch('userLogout');
+        if (this.userCode == 200) {
+          Message({
+            type: 'success',
+            message: '退出登录成功~',
+          });
+        } else {
+          Message({
+            type: 'error',
+            message: '退出登录失败',
+          });
+        }
         this.$router.push('/login');
       } catch (error) {
         alert(error.message);

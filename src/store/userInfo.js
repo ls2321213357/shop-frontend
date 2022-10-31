@@ -18,12 +18,10 @@ const state = {
 const mutations = {
   //错误信息
   GETCODEMSG(state, errorMsg) {
-    state.errorMsg = '';
     state.errorMsg = errorMsg;
   },
   // 状态码
   GETREQCODE(state, reqCode) {
-    state.reqCode = '';
     state.reqCode = reqCode;
   },
 };
@@ -34,11 +32,11 @@ const actions = {
     let result = await reqUserRegister(params);
     if (result.code == 200) {
       commit('GETREQCODE', result.code);
-      commit('GETCODEMSG', result.data);
+      commit('GETCODEMSG', result.msg);
       return 'ok';
     } else {
       commit('GETREQCODE', result.code);
-      commit('GETCODEMSG', result.data);
+      commit('GETCODEMSG', result.msg);
     }
   },
   //获取验证码

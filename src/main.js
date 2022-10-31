@@ -45,6 +45,7 @@ import {
   Dialog,
   Tooltip,
   Pagination,
+  Checkbox,
 } from 'element-ui';
 //使用elementUI
 Vue.use(Card);
@@ -58,6 +59,7 @@ Vue.use(Upload);
 Vue.use(Dialog);
 Vue.use(Tooltip);
 Vue.use(Pagination);
+Vue.use(Checkbox);
 //使用全局组件
 Vue.component(Header.name, Header);
 Vue.component(Footer.name, Footer);

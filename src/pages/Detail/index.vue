@@ -91,20 +91,22 @@
                 <input
                   autocomplete="off"
                   class="itxt"
-                  v-model="goodsnum"
+                  v-model="num"
                   @change="changenum"
                 />
-                <a href="javascript:" class="plus" @click="goodsnum++">+</a>
+                <a href="javascript:" class="plus" @click="num++">+</a>
                 <a
                   href="javascript:"
                   class="mins"
-                  @click="goodsnum <= 1 ? 1 : goodsnum--"
+                  @click="num <= 1 ? 1 : num--"
                 >
                   -
                 </a>
               </div>
               <div class="add">
-                <el-button type="text">加入购物车</el-button>
+                <el-button type="text" @click="addShopCart">
+                  加入购物车
+                </el-button>
               </div>
             </div>
           </div>
@@ -124,8 +126,8 @@ export default {
   name: 'Detail',
   data() {
     return {
-      goodsnum: 1,
-      flag: 0, //把当前的index动态绑定给this.flag
+      flag: 99, //把当前的index动态绑定给this.flag
+      num: 1,
     };
   },
   components: {
@@ -137,18 +139,34 @@ export default {
     changenum(event) {
       const value = event.target.value * 1;
       if (isNaN(value) || value < 1) {
-        this.goodsnum = 1;
+        this.num = 1;
       } else {
-        this.goodsnum = value;
+        this.num = value;
       }
     },
     //选择商品规格
     selectItem(item, index) {
       this.flag = index;
+      this.rule = item;
+    },
+    //加入商品到购物车
+    addShopCart() {
+      this.$store.dispatch('changeShopCartNum', {
+        count: this.num,
+        specification: this.rule,
+        skuID: this.$route.params.skuid,
+      });
+      try {
+        console.log('添加成功');
+        // this.$router.push('/shopcart');
+      } catch (error) {
+        console.log(error.message);
+      }
     },
   },
   created() {
     this.$store.dispatch('getGoodsDetail', this.$route.params.skuid);
+    this.flag = 99;
   },
   computed: {
     ...mapState({

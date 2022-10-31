@@ -17,6 +17,10 @@ export default [
     path: '/detail/:skuid?',
     name: 'detail',
     component: () => import('@/pages/Detail'),
+    meta: {
+      isShowHeader: true,
+      isShowFooter: true,
+    },
   },
   {
     path: '/center',

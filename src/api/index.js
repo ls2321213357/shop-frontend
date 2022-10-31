@@ -49,19 +49,26 @@ export const reqBannerImg = () =>
   mockRequest({ url: '/banner', method: 'get' });
 
 ////////////商品详情页面操作/////////
+//获取商品详细信息
 export const reqDetailInfo = (skuId) =>
   requests({ url: `/pms/product/detail/${skuId}`, method: 'get' });
+//添加商品到购物车
+export const reqAddGoodsShopCart = (data) =>
+  requests({ url: '/oms/cart/add', method: 'post', data });
 
-////////购物车页面操作/////////
-//更改购物车某产品数量
-export const reqChangeShopCartNum = (data) =>
-  requests({ url: '/api/oms/cart/add', method: 'post', data });
+/////////////购物车页面操作/////////////
+//获取购物车某产品数量
+export const reqUserShopCartNum = () =>
+  requests({ url: '/oms/cart/list/count', method: 'get' });
 //获取用户购物车信息
 export const reqUserShopCart = () =>
-  requests({ url: '/api/oms/cart/cartList', method: 'get' });
+  requests({ url: '/oms/cart/list', method: 'get' });
 //移除购物车某商品
-export const reqDeleteGoods = (skuId) =>
-  requests({ url: `/api/oms/cart/remove/${skuId}`, method: 'delete' });
+export const reqDeleteGoods = (data) =>
+  requests({ url: '/oms/cart/remove', method: 'delete', data });
+//修改购物车中商品勾选状态
+export const reqChangeShopCheck = (data) =>
+  requests({ url: '/oms/cart/product/status', method: 'put', data });
 
 /////////////我的地址部分操作/////////
 //查看收货地址

@@ -179,7 +179,7 @@
         :w="310"
         :h="155"
         slider-text="向右滑动"
-        @success="onSuccess(phone)"
+        @success="onSuccess"
         @fail="onFail"
         @refresh="onRefresh"
       ></slide-verify>
@@ -338,7 +338,6 @@ export default {
   },
   computed: {
     ...mapState({
-      phoneCode: (state) => state.userInfo.code,
       errorMsg: (state) => state.userInfo.errorMsg,
       reqCode: (state) => state.userInfo.reqCode,
     }),
