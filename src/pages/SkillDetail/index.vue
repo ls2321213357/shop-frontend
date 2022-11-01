@@ -22,9 +22,9 @@
           <!-- 左侧放大镜区域 -->
           <div class="previewWrap">
             <!--放大镜效果-->
-            <!-- <Zoom :skuPicList="skuPicList" /> -->
+            <Zoom :skuPicList="skuPicList" />
             <!-- 小图列表 -->
-            <!-- <ImageList :skuPicList="skuPicList" /> -->
+            <ImageList :skuPicList="skuPicList" />
           </div>
           <!-- 右侧选择区域布局 -->
           <div class="InfoWrap">
@@ -143,16 +143,16 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.btn {
-  margin-top: 20px;
-  margin-left: 50px;
-}
 .detail {
+  cursor: pointer;
   .con {
     width: 1200px;
     margin: 15px auto 0;
 
     .conPoin {
+      width: 200px;
+      padding: 9px 15px 9px 0;
+
       & > span + span:before {
         content: '/\00a0';
         padding: 0 5px;
@@ -172,32 +172,37 @@ export default {
 
       .InfoWrap {
         width: 700px;
+        height: 455px;
         float: right;
 
         .InfoName {
-          font-size: 14px;
+          font-size: 18px;
           line-height: 21px;
           margin-top: 15px;
+          text-align: left;
         }
 
         .news {
+          font-size: 14px;
           color: #e12228;
-          margin-top: 15px;
+          margin-top: 20px;
         }
 
         .priceArea {
           background: #fee9eb;
           padding: 7px;
           margin: 13px 0;
-
+          height: 170px;
           .priceArea1 {
             overflow: hidden;
             line-height: 28px;
-            margin-top: 10px;
+            margin-top: 20px;
 
             .title {
+              font-weight: 700;
+              font-size: 16px;
               float: left;
-              margin-right: 15px;
+              margin-right: 35px;
             }
 
             .price {
@@ -214,21 +219,23 @@ export default {
               }
 
               span {
-                font-size: 12px;
+                font-size: 14px;
               }
             }
-
             .remark {
               float: right;
+              margin-right: 95px;
             }
           }
 
           .priceArea2 {
             overflow: hidden;
             line-height: 28px;
-            margin-top: 10px;
+            margin-top: 25px;
 
             .title {
+              font-size: 16px;
+              font-weight: 700;
               margin-right: 15px;
               float: left;
             }
@@ -244,6 +251,7 @@ export default {
               }
 
               .t-gray {
+                font-size: 14px;
                 color: #999;
               }
             }
@@ -297,11 +305,10 @@ export default {
                 border-right: 1px solid #bbb;
                 border-bottom: 1px solid #bbb;
                 border-left: 1px solid #eee;
-
-                &.active {
-                  color: green;
-                  border: 1px solid green;
-                }
+              }
+              .active {
+                color: green;
+                border: 1px solid green;
               }
             }
           }
@@ -346,6 +353,7 @@ export default {
                 right: -8px;
               }
             }
+
             .add {
               float: left;
               button {

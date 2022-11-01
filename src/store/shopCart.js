@@ -36,8 +36,8 @@ const actions = {
     let result = await reqAddGoodsShopCart(numInfo);
     if (result.code == 200) {
       return 'ok';
-    } else {
-      alert(Promise.reject(new Error('更改购物车数量失败')));
+    } else if (result.code == 1005) {
+      alert('请输入正确的数量喔');
     }
   },
   //获取用户购物车

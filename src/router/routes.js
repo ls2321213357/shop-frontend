@@ -1,6 +1,13 @@
 //采用了路由懒加载
 export default [
   {
+    path: '/order',
+    component: () => import('@/pages/Order'),
+    meta: {
+      isShowHeader: true,
+    },
+  },
+  {
     path: '/skilldetail',
     component: () => import('@/pages/SkillDetail'),
   },

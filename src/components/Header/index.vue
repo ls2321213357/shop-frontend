@@ -6,19 +6,32 @@
         <li>
           <router-link to="/login" v-show="!userInfo.username">
             请登录
+            <i class="el-icon-s-custom"></i>
           </router-link>
         </li>
         <li>
-          <a href="javascript:;">我的订单</a>
+          <router-link to="/order">
+            我的订单
+            <i class="el-icon-s-order"></i>
+          </router-link>
         </li>
         <li>
-          <router-link to="/shopcart" href="javascript:;">购物车</router-link>
+          <router-link to="/shopcart">
+            购物车
+            <i class="el-icon-shopping-cart-1"></i>
+          </router-link>
         </li>
         <li>
-          <a href="javascript:;">帮助中心</a>
+          <a>
+            帮助中心
+            <i class="el-icon-s-custom"></i>
+          </a>
         </li>
         <li>
-          <a href="javascript:;">在线客服</a>
+          <a href="javascript:;">
+            在线客服
+            <i class="el-icon-phone"></i>
+          </a>
         </li>
         <li>
           <a href="javascript:;">

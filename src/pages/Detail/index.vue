@@ -1,8 +1,11 @@
 <template>
   <div class="detail">
-    <!-- 商品分类导航 -->
     <!-- 主要内容区域 -->
     <section class="con">
+      <el-button type="primary" @click="goHome">
+        <i class="el-icon-arrow-left"></i>
+        去商城逛逛啦
+      </el-button>
       <!-- 导航路径区域 -->
       <div class="conPoin" @click="$router.push('/home')">
         <span v-for="item in categories" :key="item.id">
@@ -107,6 +110,7 @@
                 <el-button type="text" @click="addShopCart">
                   加入购物车
                 </el-button>
+                <i class="icon-gouwuche"></i>
               </div>
             </div>
           </div>
@@ -135,6 +139,9 @@ export default {
     Zoom,
   },
   methods: {
+    goHome() {
+      this.$router.push('/');
+    },
     //手动输入商品数量
     changenum(event) {
       const value = event.target.value * 1;
@@ -149,16 +156,56 @@ export default {
       this.flag = index;
       this.rule = item;
     },
+    open() {
+      const url = require('./detailShop.png');
+      this.$alert(
+        `<img style="width:150px;height:170px;" src="${url}"}/>`,
+        '加入购物车成功',
+        {
+          center: true, //文字居中
+          dangerouslyUseHTMLString: true,
+          confirmButtonText: '去购物车结算',
+          cancelButtonText: '继续去逛逛',
+          showCancelButton: true,
+          showConfirmButton: true,
+        },
+      )
+        .then(() => {
+          this.$router.push('/shopcart');
+        })
+        .catch(() => {
+          this.$router.push('/');
+        });
+    },
     //加入商品到购物车
     addShopCart() {
-      this.$store.dispatch('changeShopCartNum', {
+      this.$store.dispatch('getAddGoodsShopCart', {
         count: this.num,
         specification: this.rule,
         skuID: this.$route.params.skuid,
       });
       try {
-        console.log('添加成功');
-        // this.$router.push('/shopcart');
+        // this.open();
+        this.open();
+        let goodRule = {
+          count: this.num,
+          specification: this.rule,
+          selected: 1,
+        };
+        if (localStorage.getItem('cartList')) {
+          let shopCart = localStorage.getItem('cartList');
+          localStorage.setItem(
+            'cartList',
+            shopCart +
+              '@' +
+              JSON.stringify(Object.assign(this.goodsDetail, goodRule)),
+          );
+        } else {
+          localStorage.setItem(
+            'cartList',
+            JSON.stringify(Object.assign(this.goodsDetail, goodRule)),
+          );
+        }
       } catch (error) {
         console.log(error.message);
       }
@@ -181,20 +228,10 @@ export default {
       );
     },
   },
-
-  // open() {
-  //   this.$alert('<strong>这是 <i>HTML</i> 片段</strong>', {
-  //     dangerouslyUseHTMLString: true,
-  //     confirmButtonText: '去购物车结算',
-  //     cancelButtonText: '继续浏览',
-  //   }).then(() => {
-  //     this.$router.push('/shopcart');
-  //   });
-  // },
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .detail {
   cursor: pointer;
   .con {

@@ -13,7 +13,7 @@
               <h3>{{ personInfo.username }}</h3>
               <el-popover placement="right" width="120px" trigger="click">
                 <el-upload
-                  action="http://xifmhg.natappfree.cc/api/user/infos/update/avatar"
+                  action="http://43.143.204.40:9090/api/user/infos/update/avatar"
                   :show-file-list="false"
                   :on-success="handleAvatarSuccess"
                   :before-upload="beforeAvatarUpload"
@@ -94,7 +94,7 @@
         <el-main>
           <el-button type="primary" @click="goHome">
             <i class="el-icon-arrow-left"></i>
-            回到商城页面
+            去商城逛逛啦
           </el-button>
           <el-card class="box-card">
             <div slot="header" class="clearfix">
