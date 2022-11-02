@@ -248,8 +248,8 @@ export default {
     }
   },
   methods: {
+    //把时间日期转成时间戳
     getTimestamp(time) {
-      //把时间日期转成时间戳
       return new Date(time).getTime() / 1000;
     },
     //进行数组排序
@@ -305,12 +305,13 @@ export default {
       try {
         await this.$store.dispatch('getChangeAllshopCheck', isChecked);
         setTimeout(() => {
+          this.getShopData();
+          this.$router.go(0);
           Message({
             type: 'success',
             message: event.target.checked ? '全选成功' : '取消全选成功',
           });
-          this.getShopData();
-        }, 1500);
+        }, 1000);
       } catch (error) {
         Message({
           type: 'erro',
@@ -346,7 +347,13 @@ export default {
           skuID: shopInfo.skuID,
           specification: shopInfo.productSkuSpecification,
         });
-        await this.getShopData();
+        setTimeout(() => {
+          Message({
+            type: 'success',
+            message: '修改成功',
+          });
+          this.getShopData();
+        }, 1500);
       } catch (error) {
         alert('服务器繁忙~~');
       }
@@ -367,7 +374,8 @@ export default {
           }
           this.getShopData();
           this.getShopNum();
-        }, 800);
+          this.$router.go(0);
+        }, 1000);
       } catch (error) {
         Message({
           type: 'error',
@@ -384,9 +392,10 @@ export default {
             type: 'success',
             message: '删除成功',
           });
-        }, 1000);
-        this.getShopData();
-        this.getShopNum();
+          this.getShopNum();
+          this.getShopData();
+          this.$router.go(0);
+        }, 1500);
       } catch (error) {
         Message({
           type: 'error',
@@ -480,11 +489,9 @@ export default {
     //总价格
     totalPrice() {
       let sum = 0;
-      this.sortShopCart.forEach((item) => {
+      this.shopCartInfo.forEach((item) => {
         if (item.selected == 1) {
-          sum += item.count * item.price;
-        } else {
-          sum = 0;
+          sum += item.count * Number(item.price);
         }
       });
       return sum;
@@ -492,7 +499,7 @@ export default {
     //判断全选按钮是否复选
     checkedAll() {
       //every遍历数组中的每一项
-      return this.sortShopCart.every((item) => item.selected == 1);
+      return this.shopCartInfo.every((item) => item.selected == 1);
     },
     //选中了几个商品
     selectedShop() {

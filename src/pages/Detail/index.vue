@@ -178,14 +178,13 @@ export default {
         });
     },
     //加入商品到购物车
-    addShopCart() {
-      this.$store.dispatch('getAddGoodsShopCart', {
-        count: this.num,
-        specification: this.rule,
-        skuID: this.$route.params.skuid,
-      });
+    async addShopCart() {
       try {
-        // this.open();
+        await this.$store.dispatch('getAddGoodsShopCart', {
+          count: this.num,
+          specification: this.rule,
+          skuID: this.$route.params.skuid,
+        });
         this.open();
         let goodRule = {
           count: this.num,

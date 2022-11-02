@@ -53,7 +53,6 @@ const actions = {
   },
   //移除购物车某商品
   async reqDeleteGoods({ commit }, goodsInfo) {
-    console.log(goodsInfo);
     let result = await reqDeleteGoods(goodsInfo);
     if (result.code == 200) {
       commit('CHANGEREQCODE', result.code);
@@ -104,6 +103,7 @@ const actions = {
       });
       promiseAll.push(promise);
     });
+    console.log(promiseAll);
     return Promise.all(promiseAll);
   },
   //获取用户购物车商品数量
