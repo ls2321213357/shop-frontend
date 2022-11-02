@@ -19,7 +19,7 @@
         <div class="cart-body">
           <ul
             class="cart-list"
-            v-for="(shopInfo, index) in shopCartInfo"
+            v-for="(shopInfo, index) in sortShopCart"
             :key="index"
           >
             <li class="cart-list-con1">
@@ -35,6 +35,7 @@
               <div class="item-msg">
                 {{ shopInfo.title }}
               </div>
+              <span>{{ shopInfo.create }}</span>
             </li>
             <li class="cart-list-con4">
               <span class="price">{{ shopInfo.price }}</span>
@@ -214,7 +215,6 @@ export default {
   data() {
     return {
       isLogin: getRefToken() ? true : false,
-      shopDateInfo: [],
     };
   },
   created() {
@@ -248,6 +248,19 @@ export default {
     }
   },
   methods: {
+    getTimestamp(time) {
+      //把时间日期转成时间戳
+      return new Date(time).getTime() / 1000;
+    },
+    //进行数组排序
+    sortByKey(array, key) {
+      //(数组、排序的列)
+      return array.sort(function (a, b) {
+        var x = a[key];
+        var y = b[key];
+        return x < y ? -1 : x > y ? 1 : 0;
+      });
+    },
     goHome() {
       this.$router.push('/');
     },
@@ -262,51 +275,48 @@ export default {
     //单选
     async updateCheck(shopInfo, event) {
       let isChecked = event.target.checked ? '1' : '2';
-      await this.$store.dispatch('getChangeShopCheck', {
-        selected: isChecked,
-        skuId: shopInfo.skuID,
-        specification: shopInfo.productSkuSpecification,
-      });
-      setTimeout(() => {
-        if (this.reqCode == 200) {
-          Message({
-            type: 'success',
-            message: this.reqMsg || '服务器繁忙',
-          });
-        } else {
-          Message({
-            type: 'error',
-            message: this.reqMsg || '服务器繁忙',
-          });
-        }
-        this.getShopData();
-      }, 800);
+      try {
+        await this.$store.dispatch('getChangeShopCheck', {
+          selected: isChecked,
+          skuId: shopInfo.skuID,
+          specification: shopInfo.productSkuSpecification,
+        });
+        setTimeout(() => {
+          if (this.reqCode == 200) {
+            Message({
+              type: 'success',
+              message: this.reqMsg || '服务器繁忙',
+            });
+          } else {
+            Message({
+              type: 'error',
+              message: this.reqMsg || '服务器繁忙',
+            });
+          }
+          this.getShopData();
+        }, 800);
+      } catch (error) {
+        console.log(error.message);
+      }
     },
     //全选
-    selectAll(event) {
+    async selectAll(event) {
       let isChecked = event.target.checked ? '1' : '2';
-      this.shopCartInfo.forEach((item) => {
-        // this.updateCheck(item, event);
-        this.$store.dispatch('getChangeShopCheck', {
-          selected: isChecked,
-          skuId: item.skuID,
-          specification: item.productSkuSpecification,
-        });
-      });
-      setTimeout(() => {
-        if (this.reqCode == 200) {
+      try {
+        await this.$store.dispatch('getChangeAllshopCheck', isChecked);
+        setTimeout(() => {
           Message({
             type: 'success',
-            message: this.reqMsg || '服务器繁忙',
+            message: event.target.checked ? '全选成功' : '取消全选成功',
           });
-        } else {
-          Message({
-            type: 'error',
-            message: this.reqMsg || '服务器繁忙',
-          });
-        }
-        this.getShopData();
-      }, 1000);
+          this.getShopData();
+        }, 1500);
+      } catch (error) {
+        Message({
+          type: 'erro',
+          message: '服务器繁忙,请重试',
+        });
+      }
     },
     //type为了区分这三个元素(点击的是哪个)
     //disNum是记录变化量  +(1)  -(-1)  input中的是变化量
@@ -336,49 +346,51 @@ export default {
           skuID: shopInfo.skuID,
           specification: shopInfo.productSkuSpecification,
         });
-        this.getShopData();
+        await this.getShopData();
       } catch (error) {
         alert('服务器繁忙~~');
       }
     }, 500),
     //发送删除购物车商品请求
-    deleteGoods(shopInfo) {
-      this.$store.dispatch('reqDeleteGoods', {
-        skuID: shopInfo.skuID,
-        specification: shopInfo.productSkuSpecification,
-      });
-      setTimeout(() => {
-        if (this.reqCode == 200) {
-          Message({
-            type: 'success',
-            message: this.reqMsg || '服务器繁忙',
-          });
-        } else {
-          Message({
-            type: 'error',
-            message: this.reqMsg || '服务器繁忙',
-          });
-        }
-        this.getShopData();
-        this.getShopNum();
-      }, 800);
+    async deleteGoods(shopInfo) {
+      try {
+        await this.$store.dispatch('reqDeleteGoods', {
+          skuID: shopInfo.skuID,
+          specification: shopInfo.productSkuSpecification,
+        });
+        setTimeout(() => {
+          if (this.reqCode == 200) {
+            Message({
+              type: 'success',
+              message: this.reqMsg,
+            });
+          }
+          this.getShopData();
+          this.getShopNum();
+        }, 800);
+      } catch (error) {
+        Message({
+          type: 'error',
+          message: error.message || '删除失败',
+        });
+      }
     },
     //删除全部勾选的产品
-    deleteAllGoods() {
-      this.$store.dispatch('deleteAllShopCart');
+    async deleteAllGoods() {
       try {
+        await this.$store.dispatch('deleteAllShopCart');
         setTimeout(() => {
           Message({
             type: 'success',
             message: '删除成功',
           });
-          this.getShopData();
-          this.getShopNum();
         }, 1000);
+        this.getShopData();
+        this.getShopNum();
       } catch (error) {
         Message({
           type: 'error',
-          message: error.message,
+          message: error.message || '删除失败',
         });
       }
     },
@@ -453,10 +465,22 @@ export default {
       reqCode: (state) => state.shopCart.reqCode,
       reqMsg: (state) => state.shopCart.reqMsg,
     }),
+    //把时间转换成时间戳
+    shopCart() {
+      this.shopCartInfo.forEach((item) => {
+        let timer = this.getTimestamp(item.createdTime);
+        item.create = timer;
+      });
+      return this.shopCartInfo;
+    },
+    //返回利用时间戳排序后的新数组
+    sortShopCart: function () {
+      return this.sortByKey(this.shopCart, 'create');
+    },
     //总价格
     totalPrice() {
       let sum = 0;
-      this.shopCartInfo.forEach((item) => {
+      this.sortShopCart.forEach((item) => {
         if (item.selected == 1) {
           sum += item.count * item.price;
         } else {
@@ -468,12 +492,12 @@ export default {
     //判断全选按钮是否复选
     checkedAll() {
       //every遍历数组中的每一项
-      return this.shopCartInfo.every((item) => item.selected == 1);
+      return this.sortShopCart.every((item) => item.selected == 1);
     },
     //选中了几个商品
     selectedShop() {
       let selectCount = 0;
-      this.shopCartInfo.forEach((item) => {
+      this.sortShopCart.forEach((item) => {
         item.selected == 1 ? (selectCount += 1) : (selectCount += 0);
       });
       return selectCount;
@@ -501,6 +525,11 @@ export default {
     checkedAllGoods() {
       //every遍历数组中的每一项
       return this.shopDateInfo.every((item) => item.selected == 1);
+    },
+  },
+  watch: {
+    shopCartInfo() {
+      Object.assign(this.shopCartInfo, this.sortShopCart);
     },
   },
 };

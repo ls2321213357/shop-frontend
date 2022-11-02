@@ -23,7 +23,7 @@ const actions = {
     if (result.code) {
       commit('GETDETAILLIST', result.data);
     } else {
-      alert(Promise.reject(new Error('获取商品列表失败')));
+      return Promise.reject(new Error('获取商品列表失败'));
     }
   },
   //获取商品信息列表
@@ -37,7 +37,7 @@ const actions = {
       alert(result.msg);
       router.push('/');
     } else {
-      console.log(Promise.reject(new Error('获取商品列表失败')));
+      return Promise.reject(new Error('获取商品列表失败'));
     }
   },
 };

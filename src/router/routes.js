@@ -10,6 +10,10 @@ export default [
   {
     path: '/skilldetail',
     component: () => import('@/pages/SkillDetail'),
+    meta: {
+      isShowHeader: true,
+      isShowFooter: true,
+    },
   },
   {
     path: '/search/:keyword?',
@@ -48,6 +52,7 @@ export default [
   {
     path: '/home',
     component: () => import('@/pages/home'),
+    name:'home',
     meta: {
       isShowFooter: true, //用来控制是否显示footer组件
       isShowHeader: true, //用来控制是否显示Header组件

@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <Header v-if="$route.meta.isShowHeader"></Header>
-    <router-view></router-view>
+    <keep-alive include="detail">
+      <router-view></router-view>
+    </keep-alive>
     <Footer v-if="$route.meta.isShowFooter"></Footer>
   </div>
 </template>
@@ -18,6 +20,4 @@ export default {
 };
 </script>
 
-<style>
-
-</style>
+<style></style>

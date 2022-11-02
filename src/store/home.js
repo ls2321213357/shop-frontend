@@ -1,15 +1,9 @@
-import {
-  reqUserInfo,
-  reqBannerImg,
-  reqUserLogout,
-  reqDetailNav,
-} from '@/api';
+import { reqUserInfo, reqBannerImg, reqUserLogout, reqDetailNav } from '@/api';
 import { removeRToken, removeAToken, removeUserId } from '@/util/token';
 const state = {
   userInfo: {},
   bannerList: [],
   detailNavList: {},
-
   userCode: '', //记录用户登录的状态码
 };
 const mutations = {
@@ -38,7 +32,6 @@ const mutations = {
   GETDETAILNAV(state, detailNavList) {
     state.detailNavList = detailNavList;
   },
- 
 };
 const actions = {
   //发送用户id和token获取用户信息
@@ -48,6 +41,8 @@ const actions = {
       commit('GETUSERINFO', result.data);
     } else if (result.code == 1026) {
       dispatch('getUserInfo');
+    } else {
+      return Promise.reject(new Error('获取用户信息失败'));
     }
   },
   //退出登录操作
@@ -74,9 +69,10 @@ const actions = {
     let result = await reqDetailNav();
     if (result.code == 200) {
       commit('GETDETAILNAV', result.data);
+    } else {
+      return Promise.reject(new Error('获取用户信息失败'));
     }
   },
-
 };
 export default {
   state,

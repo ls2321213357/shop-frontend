@@ -23,6 +23,8 @@ const actions = {
     let result = await reqAddGoodsShopCart(goodsInfo);
     if (result.code == 200) {
       return 'ok';
+    } else {
+      return Promise.reject(new Error('加入购物车失败'));
     }
   },
 };

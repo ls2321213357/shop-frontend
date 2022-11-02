@@ -38,6 +38,8 @@ const actions = {
       return 'ok';
     } else if (result.code == 1005) {
       alert('请输入正确的数量喔');
+    } else {
+      return Promise.reject(new Error('更改失败'));
     }
   },
   //获取用户购物车
@@ -46,7 +48,7 @@ const actions = {
     if (result.code == 200) {
       commit('GETUSERSHOPCARTINFO', result.data);
     } else {
-      console.log(Promise.reject(new Error('获取购物车信息失败')));
+      return Promise.reject(new Error('获取购物车信息失败'));
     }
   },
   //移除购物车某商品
@@ -60,7 +62,7 @@ const actions = {
     } else {
       commit('CHANGEREQCODE', result.code);
       commit('CHANGEREQMSG', result.data);
-      console.log(Promise.reject(new Error('删除失败')));
+      return Promise.reject(new Error('删除失败'));
     }
   },
   //删除所有勾选的商品
@@ -88,8 +90,21 @@ const actions = {
     } else {
       commit('CHANGEREQCODE', result.code);
       commit('CHANGEREQMSG', result.data);
-      console.log(Promise.reject(new Error('修改状态失败')));
+      return Promise.reject(new Error('修改状态失败'));
     }
+  },
+  //全选功能
+  async getChangeAllshopCheck({ dispatch, getters }, isChecked) {
+    let promiseAll = [];
+    await getters.shopCartInfo.forEach((item) => {
+      let promise = dispatch('getChangeShopCheck', {
+        selected: isChecked,
+        skuId: item.skuID,
+        specification: item.productSkuSpecification,
+      });
+      promiseAll.push(promise);
+    });
+    return Promise.all(promiseAll);
   },
   //获取用户购物车商品数量
   async getUserShopCartNum({ commit }) {
@@ -97,7 +112,7 @@ const actions = {
     if (result.code == 200) {
       commit('GETUSERSHOPCARTNUM', result.data);
     } else {
-      console.log(Promise.reject(new Error('获取购物车数量失败')));
+      return Promise.reject(new Error('获取购物车数量失败'));
     }
   },
 };

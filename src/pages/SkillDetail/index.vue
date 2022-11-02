@@ -22,9 +22,9 @@
           <!-- 左侧放大镜区域 -->
           <div class="previewWrap">
             <!--放大镜效果-->
-            <Zoom :skuPicList="skuPicList" />
+            <!-- <Zoom :skuPicList="skuPicList" /> -->
             <!-- 小图列表 -->
-            <ImageList :skuPicList="skuPicList" />
+            <!-- <ImageList :skuPicList="skuPicList" /> -->
           </div>
           <!-- 右侧选择区域布局 -->
           <div class="InfoWrap">
@@ -120,6 +120,9 @@
   </div>
 </template>
 <script>
+import { mapState, mapGetters } from 'vuex';
+import ImageList from './ImageList/ImageList';
+import Zoom from './Zoom/Zoom';
 import Spike from './Spike/index.vue';
 import moment from 'moment';
 export default {
@@ -127,17 +130,86 @@ export default {
   name: 'index',
   components: {
     Spike,
+    ImageList,
+    Zoom,
   },
   data() {
     return {
       endTime: moment(new Date(Date.now() + 10 * 1000)),
       startTime: moment(new Date(Date.now())),
+      flag: 99, //把当前的index动态绑定给this.flag
+      num: 1,
     };
   },
   methods: {
     //前往主页
     goHome() {
       this.$router.push('/');
+    },
+    //手动输入商品数量
+    changenum(event) {
+      const value = event.target.value * 1;
+      if (isNaN(value) || value < 1) {
+        this.num = 1;
+      } else {
+        this.num = value;
+      }
+    },
+    //选择商品规格
+    selectItem(item, index) {
+      this.flag = index;
+      this.rule = item;
+    },
+    open() {
+      const url = require('./detailShop.png');
+      this.$alert(
+        `<img style="width:150px;height:170px;" src="${url}"}/>`,
+        '加入购物车成功',
+        {
+          center: true, //文字居中
+          dangerouslyUseHTMLString: true,
+          confirmButtonText: '去购物车结算',
+          cancelButtonText: '继续去逛逛',
+          showCancelButton: true,
+          showConfirmButton: true,
+        },
+      )
+        .then(() => {
+          this.$router.push('/shopcart');
+        })
+        .catch(() => {
+          this.$router.push('/');
+        });
+    },
+    //加入商品到购物车
+    addShopCart() {
+      this.$store.dispatch('getAddGoodsShopCart', {
+        count: this.num,
+        specification: this.rule,
+        skuID: this.$route.params.skuid,
+      });
+      try {
+        this.open();
+      } catch (error) {
+        console.log(error.message);
+      }
+    },
+  },
+  created() {
+    this.$store.dispatch('getGoodsDetail', this.$route.params.skuid);
+    this.flag = 99;
+  },
+  computed: {
+    ...mapState({
+      goodsDetail: (state) => state.detail.goodsDetail || {},
+    }),
+    ...mapGetters(['skuPicList', 'categories']),
+    productSkuSpecification() {
+      return (
+        Object.values(
+          JSON.parse(this.goodsDetail.spu.productSpecification),
+        )[0] || []
+      );
     },
   },
 };

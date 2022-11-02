@@ -41,30 +41,33 @@ export default {
 };
 </script>
 
-<style>
+<style lang="less" scoped>
 .xtx_goods_popular {
   padding-bottom: 42px;
-}
-
-.xtx_goods_popular .xtx_panel_goods_1 a {
-  transition: 0.5s;
-}
-
-.xtx_goods_popular .xtx_panel_goods_1 a:hover {
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
-  transform: translate(0, -3px);
-}
-
-.xtx_goods_popular .xtx_panel_goods_1 .title {
-  display: inline-block;
-  width: 100%;
-  line-height: 1;
-  margin: 20px 0 16px;
-  font-size: 22px;
-}
-
-.xtx_goods_popular .xtx_panel_goods_1 .alt {
-  font-size: 18px;
-  color: #999;
+  .xtx_panel_goods_1 {
+    a {
+      margin-right: 10px;
+      background-color: #f0f9f4;
+      transition: 0.5s;
+      position: relative;
+      font-weight: 700;
+      top: 0;
+      &:hover {
+        box-shadow: 0 3px 8px rgba(66, 53, 53, 0.2);
+        top: -3px;
+      }
+    }
+    .title {
+      display: inline-block;
+      width: 100%;
+      line-height: 1;
+      margin: 20px 0 16px;
+      font-size: 22px;
+    }
+    .alt {
+      font-size: 18px;
+      color: #999;
+    }
+  }
 }
 </style>
