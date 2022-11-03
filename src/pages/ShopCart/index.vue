@@ -347,13 +347,13 @@ export default {
           skuID: shopInfo.skuID,
           specification: shopInfo.productSkuSpecification,
         });
+        Message({
+          type: 'success',
+          message: '修改成功',
+        });
         setTimeout(() => {
-          Message({
-            type: 'success',
-            message: '修改成功',
-          });
           this.getShopData();
-        }, 1500);
+        }, 1000);
       } catch (error) {
         alert('服务器繁忙~~');
       }
@@ -387,15 +387,15 @@ export default {
     async deleteAllGoods() {
       try {
         await this.$store.dispatch('deleteAllShopCart');
+        Message({
+          type: 'success',
+          message: '删除成功',
+        });
         setTimeout(() => {
-          Message({
-            type: 'success',
-            message: '删除成功',
-          });
           this.getShopNum();
           this.getShopData();
           this.$router.go(0);
-        }, 1500);
+        }, 1000);
       } catch (error) {
         Message({
           type: 'error',

@@ -49,7 +49,7 @@
           :src="userInfo.avatar"
           @click="changeUserShow"
         />
-        <img v-else src="@/assets/images/header.png" alt="" />
+        <img v-else src="@/assets/images/header.png" @click="goLogin" />
         <ul v-show="isUserShow">
           <li>
             <router-link href="javascript:;" to="/center">个人中心</router-link>
@@ -91,6 +91,9 @@ export default {
     this.$store.dispatch('getUserShopCartNum');
   },
   methods: {
+    goLogin() {
+      this.$router.push('/login');
+    },
     changeUserShow() {
       this.isUserShow = !this.isUserShow;
     },
