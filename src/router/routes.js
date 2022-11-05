@@ -1,6 +1,20 @@
 //采用了路由懒加载
 export default [
   {
+    path: '/trade',
+    component: () => import('@/pages/Trade'),
+    meta: {
+      isShowHeader: true,
+    },
+  },
+  {
+    path: '/pay',
+    component: () => import('@/pages/Pay'),
+    meta: {
+      isShowHeader: true,
+    },
+  },
+  {
     path: '/order',
     component: () => import('@/pages/Order'),
     meta: {
@@ -12,7 +26,6 @@ export default [
     component: () => import('@/pages/SkillDetail'),
     meta: {
       isShowHeader: true,
-      isShowFooter: true,
     },
   },
   {
@@ -52,7 +65,7 @@ export default [
   {
     path: '/home',
     component: () => import('@/pages/home'),
-    name:'home',
+    name: 'home',
     meta: {
       isShowFooter: true, //用来控制是否显示footer组件
       isShowHeader: true, //用来控制是否显示Header组件

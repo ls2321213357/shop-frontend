@@ -11,7 +11,7 @@ import '@/plugins/vee-validate';
 //引入图片懒加载
 import VueLazyload from 'vue-lazyload';
 //引入懒加载图片
-const loadimg = require('@/assets/images/test.jpg');
+const loadimg = require('@/assets/images/th.gif');
 //使用图片懒加载
 Vue.use(VueLazyload, {
   loading: loadimg,
@@ -46,6 +46,7 @@ import {
   Tooltip,
   Pagination,
   Checkbox,
+  Cascader,
 } from 'element-ui';
 //使用elementUI
 Vue.use(Card);
@@ -60,11 +61,13 @@ Vue.use(Dialog);
 Vue.use(Tooltip);
 Vue.use(Pagination);
 Vue.use(Checkbox);
+Vue.use(Cascader);
 //使用全局组件
 Vue.component(Header.name, Header);
 Vue.component(Footer.name, Footer);
 Vue.component(Carousel.name, Carousel);
 Vue.component(TypeNav.name, TypeNav);
+Vue.component(Cascader.name, Cascader);
 Vue.config.productionTip = false;
 //element遮罩层
 Vue.prototype.$msgbox = MessageBox;

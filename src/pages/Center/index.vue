@@ -265,31 +265,31 @@ export default {
           ? this.newUsername
           : this.personInfo.username, //用户名
       };
-      this.$store.dispatch('getNewUser', reqInfo);
-      if (this.reqCode == 200) {
-        Message({
-          type: 'success',
-          message: '更新成功',
-        });
-      } //警告提示框
-      else if (this.reqCode == 500) {
-        Message({
-          type: 'warning',
-          message: '服务器繁忙请重试',
-        });
-      } else {
-        Message({
-          type: 'error',
-          message: '更新失败',
-        });
-      }
       try {
+        this.$store.dispatch('getNewUser', reqInfo);
         this.isEditEmail = true;
         this.isEditPhone = true;
         this.isEditname = true;
       } catch (error) {
-        console.log(error.mesage);
+        Message({
+          type: 'error',
+          message: '服务器繁忙更新失败',
+        });
       }
+      setTimeout(() => {
+        if (this.reqCode == 200) {
+          Message({
+            type: 'success',
+            message: '更新成功',
+          });
+        } //警告提示框
+        else if (this.reqCode == 500) {
+          Message({
+            type: 'warning',
+            message: '服务器繁忙请重试',
+          });
+        }
+      }, 1000);
     },
     //回到主页
     goHome() {

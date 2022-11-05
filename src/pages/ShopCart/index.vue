@@ -89,7 +89,7 @@
             <i class="summoney">{{ totalPrice }}</i>
           </div>
           <div class="sumbtn">
-            <a class="sum-btn">结算</a>
+            <a class="sum-btn" @click="goTrade">结算</a>
           </div>
         </div>
       </div>
@@ -210,11 +210,13 @@ import { Message } from 'element-ui';
 import { mapState } from 'vuex';
 //引用节流操作
 import throttle from 'lodash/throttle';
+
 export default {
   name: 'ShopCart',
   data() {
     return {
       isLogin: getRefToken() ? true : false,
+      shopDateInfo: [],
     };
   },
   created() {
@@ -227,6 +229,7 @@ export default {
       shopGoodsInfo.forEach((item) => {
         shopDate.push(JSON.parse(item));
       });
+      this.shopDateInfo = shopDate;
       this.shopDateInfo = shopDate;
     }
   },
@@ -248,6 +251,22 @@ export default {
     }
   },
   methods: {
+    //提交订单
+    goTrade() {
+      let orderDate = [];
+      this.shopCartInfo.forEach((item) => {
+        if (item.selected == 1) {
+          let orderInfo = {
+            skuID: item.skuID.toString(),
+            count: item.count,
+            specification: item.productSkuSpecification,
+          };
+          orderDate.push(orderInfo);
+        }
+      });
+      localStorage.setItem('orderDate', JSON.stringify(orderDate));
+      this.$router.push('/trade');
+    },
     //把时间日期转成时间戳
     getTimestamp(time) {
       return new Date(time).getTime() / 1000;
@@ -304,13 +323,13 @@ export default {
       let isChecked = event.target.checked ? '1' : '2';
       try {
         await this.$store.dispatch('getChangeAllshopCheck', isChecked);
+        Message({
+          type: 'success',
+          message: event.target.checked ? '全选成功' : '取消全选成功',
+        });
         setTimeout(() => {
           this.getShopData();
           this.$router.go(0);
-          Message({
-            type: 'success',
-            message: event.target.checked ? '全选成功' : '取消全选成功',
-          });
         }, 1000);
       } catch (error) {
         Message({
@@ -365,23 +384,23 @@ export default {
           skuID: shopInfo.skuID,
           specification: shopInfo.productSkuSpecification,
         });
-        setTimeout(() => {
-          if (this.reqCode == 200) {
-            Message({
-              type: 'success',
-              message: this.reqMsg,
-            });
-          }
-          this.getShopData();
-          this.getShopNum();
-          this.$router.go(0);
-        }, 1000);
+        if (this.reqCode == 200) {
+          Message({
+            type: 'success',
+            message: this.reqMsg,
+          });
+        }
       } catch (error) {
         Message({
           type: 'error',
           message: error.message || '删除失败',
         });
       }
+      setTimeout(() => {
+        this.getShopData();
+        this.getShopNum();
+        this.$router.go(0);
+      }, 1000);
     },
     //删除全部勾选的产品
     async deleteAllGoods() {
@@ -430,11 +449,19 @@ export default {
     },
     //删除购物车商品
     deleteShopGoods(index) {
+      Message({
+        type: 'success',
+        message: '删除成功',
+      });
       this.shopDateInfo.splice(index, 1);
       this.reqLocalStorage();
     },
     //删除全选商品
     deleteAllShop() {
+      Message({
+        type: 'success',
+        message: '删除成功',
+      });
       let shopSum = 0;
       this.shopDateInfo.forEach((item) => {
         item.selected == 1 ? (shopSum += 1) : (shopSum += 0);
@@ -463,6 +490,10 @@ export default {
           }
           break;
       }
+      Message({
+        type: 'success',
+        message: '修改成功',
+      });
       this.shopDateInfo[index].count += disNum;
       this.reqLocalStorage();
     }, 500),
@@ -547,6 +578,7 @@ export default {
   cursor: pointer;
   width: 1200px;
   margin: 0 auto;
+
   h4 {
     margin: 9px 0;
     font-size: 14px;
@@ -607,6 +639,7 @@ export default {
 
         .cart-list-con2 {
           width: 35%;
+
           img {
             width: 82px;
             height: 82px;
@@ -620,12 +653,14 @@ export default {
             line-height: 18px;
           }
         }
+
         .cart-list-con4 {
           width: 10%;
         }
 
         .cart-list-con5 {
           width: 17%;
+
           .mins {
             border: 1px solid #ddd;
             border-right: 0;
@@ -666,6 +701,7 @@ export default {
 
         .cart-list-con7 {
           width: 13%;
+
           a {
             color: #666;
           }

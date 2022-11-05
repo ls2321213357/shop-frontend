@@ -37,7 +37,7 @@
                 <div class="text-img"></div>
                 <form>
                   <div class="input-text">
-                    <input
+                    <el-input
                       placeholder="请输入手机号"
                       name="loginPhone"
                       v-model="loginPhone"
@@ -49,17 +49,17 @@
                       data-vv-scope="login"
                       :class="{ invalid: errors.has('login.loginPhone') }"
                     />
-                    <!--  -->
                     <!-- 校验错误提示 -->
                     <i class="error-msg hint">
                       {{ errors.first('login.loginPhone') }}
                     </i>
                   </div>
                   <div class="input-text">
-                    <input
+                    <el-input
                       placeholder="请输入密码"
                       name="loginPassword"
                       v-model="loginPassword"
+                      show-password
                       v-validate="{
                         required: true,
                         regex:
@@ -383,10 +383,6 @@ export default {
       line-height: 30px;
     }
   }
-  a,
-  p {
-    cursor: pointer;
-  }
   .login-wrap {
     height: 100%;
     display: flex;
@@ -522,6 +518,7 @@ export default {
             line-height: 18px;
             text-align: center;
             .input-text {
+              width: 350px;
               margin-bottom: 30px;
               position: relative;
               .error-text {

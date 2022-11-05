@@ -2,7 +2,7 @@
   <div class="swiper-container" ref="cur">
     <div class="swiper-wrapper">
       <div class="swiper-slide" v-for="img in list" :key="img.id">
-        <img :src="img.imgUrl" />
+        <img :src="img.imgUrl"/>
       </div>
     </div>
     <!-- 如果需要分页器 -->
@@ -15,6 +15,7 @@
 
 <script>
 import Swiper from 'swiper';
+
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: 'Carousel',
@@ -29,7 +30,7 @@ export default {
         //nextTick:在下次DOM更新 循环结束之后 执行延迟回调 在修改数据之后 立即使用这个方法 获取更新后的DOM
         this.$nextTick(() => {
           // eslint-disable-next-line no-unused-vars
-          var mySwiper = new Swiper(this.$refs.cur, {
+          const mySwiper = new Swiper(this.$refs.cur, {
             loop: true, // 循环模式选项
             // 如果需要分页器
             pagination: {
@@ -49,8 +50,8 @@ export default {
             onTap: (swiper) => {
               console.log(swiper.realIndex);
             },
-            // 如果需要前进后退按钮
-            navigation: {
+            //如果需要前进后退按钮
+            avigation: {
               nextEl: '.swiper-button-next',
               prevEl: '.swiper-button-prev',
             },
@@ -67,6 +68,7 @@ export default {
     .swiper-slide {
       margin: 0px;
       padding: 0px;
+
       img {
         width: 100%;
         height: 100%;

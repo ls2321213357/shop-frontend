@@ -73,27 +73,28 @@ export const reqChangeShopCheck = (data) =>
 /////////////我的地址部分操作/////////
 //查看收货地址
 export const reqUserAddress = () =>
-  requests({ url: 'api/ums/receiverAddress/list', method: 'get' });
-//添加修改收货地址
+  requests({ url: '/ums/receiveraddress/list', method: 'get' });
+//添加收货地址
 export const reqChangeAddress = (data) =>
-  requests({ url: 'api/ums/receiverAddress/add', method: 'post', data });
+  requests({ url: '/user/receiveraddress/add', method: 'post', data });
 //修改收货地址
 export const reqUpdateAddress = (data) =>
-  requests({ url: 'api/ums/receiverAddress/update', method: 'post', data });
+  requests({ url: '/user/receiverAddress/update', method: 'post', data });
 //删除收货地址
 export const reqDeleteAddress = (data) =>
-  requests({ url: 'api/ums/receiverAddress/remove', method: 'post', data });
+  requests({ url: '/user/receiverAddress/remove', method: 'post', data });
 //设置默认收货地址
 export const reqDefaultAddress = (data) =>
-  requests({ url: 'api/ums/receiverAddress/default', method: 'post', data });
+  requests({ url: '/user/receiverAddress/default', method: 'post', data });
 //省市区列表
-export const reqPcdListAddress = () =>
-  requests({ url: 'api/ums/receiverAddress/pcdList', method: 'get' });
+export const reqGoodsAddress = () =>
+  requests({ url: '/user/receiveraddress/list', method: 'get' });
 
 //////////////订单部分////////////////////
 //订单预支付信息
-export const reqOrderList = (skuid) =>
-  requests({ url: `api/oms/order/prepayment/${skuid}`, method: 'get' });
+export const reqOrderList = (data) =>
+  requests({ url: '/oms/order/presubmit', method: 'post', data });
+
 //查新订单详情
 export const reqOrderInfo = (orderNo) =>
-  requests({ url: `pi/oms/order/detail/${orderNo}`, method: 'get' });
+  requests({ url: `/oms/order/detail/${orderNo}`, method: 'get' });

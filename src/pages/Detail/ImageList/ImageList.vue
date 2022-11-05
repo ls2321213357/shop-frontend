@@ -1,5 +1,5 @@
 <template>
-  <div class="swiper-container" ref="cur" v-if="skuPicList">
+  <div class="swiper-container" ref="cur">
     <div class="swiper-wrapper">
       <div
         class="swiper-slide"
@@ -37,7 +37,7 @@ export default {
       handler() {
         this.$nextTick(() => {
           // eslint-disable-next-line no-unused-vars
-          var mySwiper = new Swiper(this.$refs.cur, {
+          const mySwiper = new Swiper(this.$refs.cur, {
             navigation: {
               nextEl: '.swiper-button-next',
               prevEl: '.swiper-button-prev',

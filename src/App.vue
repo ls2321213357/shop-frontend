@@ -20,4 +20,34 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="less">
+#app {
+  cursor: pointer;
+}
+.el-scrollbar__wrap {
+  height: 200px;
+}
+.dialog {
+  height: 350px;
+  position: relative;
+  .el-dialog__footer {
+    position: absolute;
+    bottom: 0px;
+    left: 190px;
+  }
+  .detailInfo {
+    .el-input {
+      width: 300px;
+      position: absolute;
+      bottom: 80px;
+      left: 30px;
+    }
+  }
+  .el-cascader {
+    position: absolute;
+    top: 175px;
+    left: 30px;
+    width: 300px;
+  }
+}
+</style>

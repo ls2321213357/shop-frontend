@@ -4,7 +4,7 @@
     <section class="con">
       <el-button type="primary" @click="goHome">
         <i class="el-icon-arrow-left"></i>
-        去商城逛逛啦
+        继续去逛逛啦
       </el-button>
       <!-- 导航路径区域 -->
       <div class="conPoin" @click="$router.push('/home')">
@@ -179,12 +179,7 @@ export default {
     },
     //加入商品到购物车
     async addShopCart() {
-      try {
-        await this.$store.dispatch('getAddGoodsShopCart', {
-          count: this.num,
-          specification: this.rule,
-          skuID: this.$route.params.skuid,
-        });
+      if (!localStorage.getItem('assToken')) {
         this.open();
         let goodRule = {
           count: this.num,
@@ -205,8 +200,17 @@ export default {
             JSON.stringify(Object.assign(this.goodsDetail, goodRule)),
           );
         }
-      } catch (error) {
-        console.log(error.message);
+      } else {
+        try {
+          await this.$store.dispatch('getAddGoodsShopCart', {
+            count: this.num,
+            specification: this.rule,
+            skuID: this.$route.params.skuid,
+          });
+          this.open();
+        } catch (error) {
+          console.log(error.message);
+        }
       }
     },
   },

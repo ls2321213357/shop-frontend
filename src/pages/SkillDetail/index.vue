@@ -90,17 +90,6 @@
                   <dd changepirce="900">128G</dd>
                   <dd changepirce="1300">256G</dd>
                 </dl>
-                <dl>
-                  <dt class="title">选择版本</dt>
-                  <dd changepirce="0" class="active">公开版</dd>
-                  <dd changepirce="-1000">移动版</dd>
-                </dl>
-                <dl>
-                  <dt class="title">购买方式</dt>
-                  <dd changepirce="0" class="active">官方标配</dd>
-                  <dd changepirce="-240">优惠移动版</dd>
-                  <dd changepirce="-390">电信优惠版</dd>
-                </dl>
               </div>
               <div class="cartWrap">
                 <div class="controls">
@@ -121,17 +110,17 @@
 </template>
 <script>
 import { mapState, mapGetters } from 'vuex';
-import ImageList from './ImageList/ImageList';
-import Zoom from './Zoom/Zoom';
-import Spike from './Spike/index.vue';
+// import ImageList from './ImageList/ImageList';
+// import Zoom from './Zoom/Zoom';
+import Spike from './Spike';
 import moment from 'moment';
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: 'index',
   components: {
     Spike,
-    ImageList,
-    Zoom,
+    // ImageList,
+    // Zoom,
   },
   data() {
     return {
@@ -384,7 +373,6 @@ export default {
               }
             }
           }
-
           .cartWrap {
             .controls {
               width: 48px;
