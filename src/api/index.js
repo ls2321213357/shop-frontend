@@ -73,19 +73,19 @@ export const reqChangeShopCheck = (data) =>
 /////////////我的地址部分操作/////////
 //查看收货地址
 export const reqUserAddress = () =>
-  requests({ url: '/ums/receiveraddress/list', method: 'get' });
+  requests({ url: '/user/receiveraddress/my', method: 'get' });
 //添加收货地址
 export const reqChangeAddress = (data) =>
   requests({ url: '/user/receiveraddress/add', method: 'post', data });
 //修改收货地址
 export const reqUpdateAddress = (data) =>
-  requests({ url: '/user/receiverAddress/update', method: 'post', data });
+  requests({ url: '/user/receiveraddress/update', method: 'put', data });
 //删除收货地址
-export const reqDeleteAddress = (data) =>
-  requests({ url: '/user/receiverAddress/remove', method: 'post', data });
+export const reqDeleteAddress = (id) =>
+  requests({ url: `/user/receiveraddress/delete/${id}`, method: 'delete' });
 //设置默认收货地址
 export const reqDefaultAddress = (data) =>
-  requests({ url: '/user/receiverAddress/default', method: 'post', data });
+  requests({ url: '/user/receiveraddress/default', method: 'post', data });
 //省市区列表
 export const reqGoodsAddress = () =>
   requests({ url: '/user/receiveraddress/list', method: 'get' });

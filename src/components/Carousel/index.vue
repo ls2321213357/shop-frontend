@@ -2,7 +2,7 @@
   <div class="swiper-container" ref="cur">
     <div class="swiper-wrapper">
       <div class="swiper-slide" v-for="img in list" :key="img.id">
-        <img :src="img.imgUrl"/>
+        <img :src="img.imgUrl" />
       </div>
     </div>
     <!-- 如果需要分页器 -->
@@ -51,7 +51,7 @@ export default {
               console.log(swiper.realIndex);
             },
             //如果需要前进后退按钮
-            avigation: {
+            navigation: {
               nextEl: '.swiper-button-next',
               prevEl: '.swiper-button-prev',
             },

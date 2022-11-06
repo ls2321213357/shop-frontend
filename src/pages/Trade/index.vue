@@ -19,6 +19,7 @@
           center
           :modal="true"
           custom-class="dialog"
+          :show-close="false"
         >
           <br />
           <el-cascader
@@ -52,21 +53,12 @@
           </div>
 
           <span slot="footer" class="dialog-footer">
-            <el-button @click="centerDialogVisible = false">取 消</el-button>
+            <el-button @click="cancelSubmit">取 消</el-button>
             <el-button type="primary" @click="handlerSubmitUserAddress">
               确 定
             </el-button>
           </span>
         </el-dialog>
-      </div>
-      <div class="address clearFix">
-        <span class="username selected">张三</span>
-        <p>
-          <span class="s1">北京市昌平区宏福科技园综合楼6层</span>
-          <span class="s2">15010658793</span>
-          <span class="s3" @click="changeUserAddress">修改地址</span>
-          <span class="s4" @click="setDefaultAddress">默认地址</span>
-        </p>
         <!-- 修改收货地址 -->
         <el-dialog
           title="请输入新的地址"
@@ -75,6 +67,7 @@
           center
           :modal="true"
           custom-class="dialog"
+          :show-close="false"
         >
           <br />
           <el-cascader
@@ -108,14 +101,55 @@
           </div>
 
           <span slot="footer" class="dialog-footer">
-            <el-button @click="centerDialogVisibleChange = false">
-              取 消
-            </el-button>
+            <el-button @click="cancelSubmitChange">取 消</el-button>
             <el-button type="primary" @click="handlerChangeSubmitUserAddress">
               确 定
             </el-button>
           </span>
         </el-dialog>
+      </div>
+      <div
+        class="address clearFix"
+        v-for="(addInfo, index) in userList"
+        :key="index"
+        @click="changeAdress(addInfo, index)"
+      >
+        <span
+          class="username"
+          :class="{ selected: currentIndex == index ? true : false }"
+        >
+          {{ addInfo.UserName }}
+        </span>
+        <p>
+          <span class="s1">
+            {{ addInfo.province }}
+            {{ addInfo.region }}
+            {{ addInfo.DetailAddress }}
+          </span>
+          <span class="s2">{{ addInfo.PhoneNumber }}</span>
+          <span
+            class="s3"
+            @click="changeUserAddress(addInfo)"
+            v-if="currentIndex == index ? true : false"
+          >
+            修改地址
+          </span>
+          <span
+            class="s4"
+            :class="{ isDefault: addInfo.DefaultStatus == 1 }"
+            v-if="currentIndex == index ? true : false"
+            @click="setDefaultAddress(addInfo)"
+          >
+            默认地址
+          </span>
+          <span
+            class="s5"
+            v-if="currentIndex == index ? true : false"
+            @click="deleteAddress(addInfo)"
+          >
+            删除地址
+          </span>
+        </p>
       </div>
       <div class="line"></div>
       <h5 class="pay">支付方式</h5>
@@ -208,10 +242,14 @@
       </div>
       <div class="receiveInfo">
         寄送至:
-        <span>北京市昌平区宏福科技园综合楼6层</span>
+        <span>
+          {{ userDetailAddress.province }}
+          {{ userDetailAddress.region }}
+          {{ userDetailAddress.DetailAddress }}
+        </span>
         收货人：
-        <span>张三</span>
-        <span>15010658793</span>
+        <span>{{ userDetailAddress.UserName }}</span>
+        <span>{{ userDetailAddress.PhoneNumber }}</span>
       </div>
     </div>
     <div class="sub clearFix">
@@ -228,6 +266,8 @@ export default {
   name: 'Trade',
   data() {
     return {
+      //控制是否显示默认地址和修改地址和删除地址
+      isShow: false,
       //控制新增地址弹窗
       centerDialogVisible: false,
       //控制修改地址弹窗
@@ -238,10 +278,12 @@ export default {
       phone: '',
       //省市区的地址
       addressValue: [],
-      //用户的id
-      id: '',
       //详细地址
       detailAddress: '',
+      //是否是默认地址
+      isDefault: 0,
+      //用户的地址id
+      id: 0,
       //自定义地区数据
       treeProps: {
         value: 'id',
@@ -250,6 +292,8 @@ export default {
       },
       //付款方式
       payWay: true,
+      //判断点击的是哪个地址
+      currentIndex: 99,
     };
   },
   mounted() {
@@ -258,8 +302,33 @@ export default {
     this.$store.dispatch('getTradeListInfo', { cartProductList });
     //获取地址信息
     this.$store.dispatch('getGoodsAddress');
+    //获取用户所有地址
+    this.getUserAllAddress();
   },
   methods: {
+    //获取用户所有地址
+    getUserAllAddress() {
+      this.$store.dispatch('getUserAddressInfo');
+    },
+    //清空输入的数据
+    clearUserInfo() {
+      this.userName = '';
+      this.phone = '';
+      this.addressValue = [];
+      this.detailAddress = '';
+    },
+    //修改窗口点击取消的回调
+    cancelSubmitChange() {
+      this.centerDialogVisibleChange = false;
+      this.clearUserInfo();
+      this.isDefault = 0;
+      this.id = 0;
+    },
+    //新增窗口点击取消的回调
+    cancelSubmit() {
+      this.centerDialogVisible = false;
+      this.clearUserInfo();
+    },
     goHome() {
       this.$router.push('/');
     },
@@ -277,11 +346,10 @@ export default {
           type: 'success',
           message: '添加成功🥰',
         });
-        this.userName = '';
-        this.phone = '';
-        this.addressValue = [];
-        this.detailAddress = '';
+        this.clearUserInfo();
+        this.$router.go(0);
       } catch (error) {
+        this.clearUserInfo();
         Message({
           type: 'error',
           message: '服务器繁忙添加失败😭',
@@ -290,21 +358,51 @@ export default {
       this.centerDialogVisible = false;
     },
     //设置默认收货地址
-    setDefaultAddress() {
-      console.log(111);
+    async setDefaultAddress(addInfo) {
+      try {
+        await this.$store.dispatch('getChangeAddress', {
+          countyID: addInfo.countyID,
+          defaultStatus: 1,
+          detailAddress: addInfo.DetailAddress,
+          id: addInfo.id.toString(),
+          receiverName: addInfo.UserName,
+          receiverPhone: addInfo.PhoneNumber,
+        });
+        Message({
+          type: 'success',
+          message: '设置成功💕',
+        });
+        this.clearUserInfo();
+        this.$router.go(0);
+      } catch (error) {
+        Message({
+          type: 'error',
+          message: '设置失败😶',
+        });
+      }
     },
     //修改收货地址
-    async changeUserAddress() {
+    async changeUserAddress(addInfo) {
       this.centerDialogVisibleChange = true;
+      //收件人姓名
+      this.userName = addInfo.UserName;
+      //收件人手机号
+      this.phone = addInfo.PhoneNumber;
+      //详细地址
+      this.detailAddress = addInfo.DetailAddress;
+      //用户地址id
+      this.id = addInfo.id;
+      //是否为默认地址
+      this.isDefault = addInfo.DefaultStatus;
     },
     //修改收货地址回调
     async handlerChangeSubmitUserAddress() {
       try {
         await this.$store.dispatch('getChangeAddress', {
           countyID: this.addressValue[2],
-          defaultStatus: 2,
-          id: this.id,
+          defaultStatus: this.isDefault,
           detailAddress: this.detailAddress,
+          id: this.id.toString(),
           receiverName: this.userName,
           receiverPhone: this.phone,
         });
@@ -312,17 +410,43 @@ export default {
           type: 'success',
           message: '修改成功😘',
         });
-        this.userName = '';
-        this.phone = '';
-        this.addressValue = [];
-        this.detailAddress = '';
+        this.clearUserInfo();
+        this.isDefault = 0;
+        this.id = 0;
+        this.getUserAllAddress();
+        this.$router.go(0);
       } catch (error) {
+        this.clearUserInfo();
+        this.isDefault = 0;
+        this.id = 0;
+        this.getUserAllAddress();
         Message({
           type: 'error',
           message: '服务器繁忙修改失败😶',
         });
       }
       this.centerDialogVisibleChange = false;
+    },
+    //修改用户的地址
+    changeAdress(addInfo, index) {
+      this.currentIndex = index;
+      this.userAddress = addInfo;
+    },
+    //删除地址
+    async deleteAddress(addInfo) {
+      try {
+        await this.$store.dispatch('getDeleteAddress', addInfo.id);
+        Message({
+          type: 'success',
+          message: '删除成功😉',
+        });
+        this.getUserAllAddress();
+      } catch (error) {
+        Message({
+          type: 'error',
+          message: '删除失败😐',
+        });
+      }
     },
   },
   computed: {
@@ -331,9 +455,16 @@ export default {
       tradeListInfo: (state) => state.trade.tradeListInfo || [],
       //地址选项
       addressList: (state) => state.trade.addressList || [],
+      //用户所有地址
+      userList: (state) => state.trade.userList || [],
     }),
+    //地址列表
     cartProductVOList() {
       return this.tradeListInfo.cartProductVOList || [];
+    },
+    //相信地址信息
+    userDetailAddress() {
+      return this.userList[this.currentIndex] || {};
     },
   },
 };
@@ -421,6 +552,7 @@ export default {
 
         .s1 {
           float: left;
+          width: 280px;
         }
 
         .s2 {
@@ -438,6 +570,31 @@ export default {
           color: #fff;
           margin-top: 3px;
           text-align: center;
+        }
+        .s4 {
+          float: left;
+          width: 56px;
+          height: 24px;
+          line-height: 24px;
+          margin-left: 10px;
+          background-color: #878787;
+          color: #fff;
+          margin-top: 3px;
+          text-align: center;
+        }
+        .s5 {
+          float: left;
+          width: 56px;
+          height: 24px;
+          line-height: 24px;
+          margin-left: 10px;
+          background-color: #878787;
+          color: #fff;
+          margin-top: 3px;
+          text-align: center;
+        }
+        .isDefault {
+          background-color: red;
         }
       }
 
