@@ -47,6 +47,8 @@ import {
   Pagination,
   Checkbox,
   Cascader,
+  Collapse,
+  CollapseItem,
 } from 'element-ui';
 //使用elementUI
 Vue.use(Card);
@@ -62,12 +64,13 @@ Vue.use(Tooltip);
 Vue.use(Pagination);
 Vue.use(Checkbox);
 Vue.use(Cascader);
+Vue.use(Collapse);
+Vue.use(CollapseItem);
 //使用全局组件
 Vue.component(Header.name, Header);
 Vue.component(Footer.name, Footer);
 Vue.component(Carousel.name, Carousel);
 Vue.component(TypeNav.name, TypeNav);
-Vue.component(Cascader.name, Cascader);
 Vue.config.productionTip = false;
 //element遮罩层
 Vue.prototype.$msgbox = MessageBox;

@@ -7,6 +7,7 @@
     <h3 class="title">填写并核对订单信息</h3>
     <div class="content">
       <h5 class="receive">收件人信息</h5>
+      <h5>默认地址</h5>
       <div class="addAddress">
         <el-button type="primary" @click="centerDialogVisible = true">
           新增收货地址
@@ -108,49 +109,53 @@
           </span>
         </el-dialog>
       </div>
-      <div
-        class="address clearFix"
-        v-for="(addInfo, index) in userList"
-        :key="index"
-        @click="changeAdress(addInfo, index)"
-      >
-        <span
-          class="username"
-          :class="{ selected: currentIndex == index ? true : false }"
-        >
-          {{ addInfo.UserName }}
-        </span>
-        <p>
-          <span class="s1">
-            {{ addInfo.province }}
-            {{ addInfo.region }}
-            {{ addInfo.DetailAddress }}
-          </span>
-          <span class="s2">{{ addInfo.PhoneNumber }}</span>
-          <span
-            class="s3"
-            @click="changeUserAddress(addInfo)"
-            v-if="currentIndex == index ? true : false"
+      <el-collapse>
+        <el-collapse-item :title="myAddress">
+          <div
+            class="address clearFix"
+            v-for="(addInfo, index) in userList"
+            :key="index"
+            @click="changeAdress(addInfo, index)"
           >
-            修改地址
-          </span>
-          <span
-            class="s4"
-            :class="{ isDefault: addInfo.DefaultStatus == 1 }"
-            v-if="currentIndex == index ? true : false"
-            @click="setDefaultAddress(addInfo)"
-          >
-            默认地址
-          </span>
-          <span
-            class="s5"
-            v-if="currentIndex == index ? true : false"
-            @click="deleteAddress(addInfo)"
-          >
-            删除地址
-          </span>
-        </p>
-      </div>
+            <span
+              class="username"
+              :class="{ selected: currentIndex == index ? true : false }"
+            >
+              {{ addInfo.UserName }}
+            </span>
+            <p>
+              <span class="s1">
+                {{ addInfo.province }}
+                {{ addInfo.region }}
+                {{ addInfo.DetailAddress }}
+              </span>
+              <span class="s2">{{ addInfo.PhoneNumber }}</span>
+              <span
+                class="s3"
+                @click="changeUserAddress(addInfo)"
+                v-if="currentIndex == index ? true : false"
+              >
+                修改地址
+              </span>
+              <span
+                class="s4"
+                :class="{ isDefault: addInfo.DefaultStatus == 1 }"
+                v-if="currentIndex == index ? true : false"
+                @click="setDefaultAddress(addInfo)"
+              >
+                默认地址
+              </span>
+              <span
+                class="s5"
+                v-if="currentIndex == index ? true : false"
+                @click="deleteAddress(addInfo)"
+              >
+                删除地址
+              </span>
+            </p>
+          </div>
+        </el-collapse-item>
+      </el-collapse>
       <div class="line"></div>
       <h5 class="pay">支付方式</h5>
       <div class="address clearFix">
@@ -244,6 +249,7 @@
         寄送至:
         <span>
           {{ userDetailAddress.province }}
+          {{ userDetailAddress.city }}
           {{ userDetailAddress.region }}
           {{ userDetailAddress.DetailAddress }}
         </span>
@@ -347,7 +353,9 @@ export default {
           message: '添加成功🥰',
         });
         this.clearUserInfo();
-        this.$router.go(0);
+        setTimeout(() => {
+          this.$router.go(0);
+        }, 500);
       } catch (error) {
         this.clearUserInfo();
         Message({
@@ -372,8 +380,9 @@ export default {
           type: 'success',
           message: '设置成功💕',
         });
-        this.clearUserInfo();
-        this.$router.go(0);
+        setTimeout(() => {
+          this.$router.go(0);
+        }, 500);
       } catch (error) {
         Message({
           type: 'error',
@@ -410,16 +419,16 @@ export default {
           type: 'success',
           message: '修改成功😘',
         });
-        this.clearUserInfo();
         this.isDefault = 0;
         this.id = 0;
-        this.getUserAllAddress();
-        this.$router.go(0);
+        this.clearUserInfo();
+        setTimeout(() => {
+          this.$router.go(0);
+        }, 500);
       } catch (error) {
-        this.clearUserInfo();
         this.isDefault = 0;
         this.id = 0;
-        this.getUserAllAddress();
+        this.clearUserInfo();
         Message({
           type: 'error',
           message: '服务器繁忙修改失败😶',
@@ -465,6 +474,24 @@ export default {
     //相信地址信息
     userDetailAddress() {
       return this.userList[this.currentIndex] || {};
+    },
+    //展示的默认地址信息
+    myAddress() {
+      let address = '';
+      this.userList.forEach((item) => {
+        if (item.DefaultStatus == 1) {
+          address =
+            item.UserName +
+            '   ' +
+            item.PhoneNumber +
+            '    ' +
+            item.province +
+            item.city +
+            item.region +
+            item.DetailAddress;
+        }
+      });
+      return address;
     },
   },
 };
