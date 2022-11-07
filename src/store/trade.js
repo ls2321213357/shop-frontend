@@ -31,6 +31,7 @@ const mutations = {
 const actions = {
   //获取订单购物车数据
   async getTradeListInfo({ commit }, data) {
+    console.log(111);
     let result = await reqOrderList(data);
     if (result.code == 200) {
       commit('GETTEADELISTINFO', result.data);
@@ -85,6 +86,16 @@ const actions = {
       return Promise.reject(new Error('删除失败'));
     }
   },
+  //预提交订单
+  // async getSubmitOrder({ commit }, orderInfo) {
+  //   let result = await reqOrderList(orderInfo);
+  //   if (result.code == 200) {
+  //     localStorage.removeItem('orderDate');
+  //     return 'ok';
+  //   } else {
+  //     return Promise.reject(new Error('提交失败'));
+  //   }
+  // },
 };
 export default {
   state,

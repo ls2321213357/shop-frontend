@@ -1,5 +1,5 @@
 <template>
-  <div class="trade-container">
+  <div class="trade-container" v-loading.fullscreen.lock="fullscreenLoading">
     <el-button type="primary" @click="goHome">
       <i class="el-icon-arrow-left"></i>
       去商城逛逛啦
@@ -7,7 +7,10 @@
     <h3 class="title">填写并核对订单信息</h3>
     <div class="content">
       <h5 class="receive">收件人信息</h5>
-      <h5>默认地址</h5>
+      <h3>
+        <i class="el-icon-location-information"></i>
+        默认地址
+      </h3>
       <div class="addAddress">
         <el-button type="primary" @click="centerDialogVisible = true">
           新增收货地址
@@ -259,7 +262,7 @@
       </div>
     </div>
     <div class="sub clearFix">
-      <router-link class="subBtn" to="/pay">提交订单</router-link>
+      <a class="subBtn" @click="submitOrder">提交订单</a>
     </div>
   </div>
 </template>
@@ -278,6 +281,8 @@ export default {
       centerDialogVisible: false,
       //控制修改地址弹窗
       centerDialogVisibleChange: false,
+      //控制全屏加载
+      fullscreenLoading: false,
       //收件人名字
       userName: '',
       //收件人手机号
@@ -368,6 +373,7 @@ export default {
     //设置默认收货地址
     async setDefaultAddress(addInfo) {
       try {
+        this.fullscreenLoading = true;
         await this.$store.dispatch('getChangeAddress', {
           countyID: addInfo.countyID,
           defaultStatus: 1,
@@ -380,8 +386,9 @@ export default {
           type: 'success',
           message: '设置成功💕',
         });
+        this.getUserAllAddress();
         setTimeout(() => {
-          this.$router.go(0);
+          this.fullscreenLoading = false;
         }, 500);
       } catch (error) {
         Message({
@@ -443,17 +450,35 @@ export default {
     },
     //删除地址
     async deleteAddress(addInfo) {
+      this.fullscreenLoading = true;
       try {
         await this.$store.dispatch('getDeleteAddress', addInfo.id);
         Message({
           type: 'success',
           message: '删除成功😉',
         });
+        this.fullscreenLoading = false;
         this.getUserAllAddress();
       } catch (error) {
         Message({
           type: 'error',
           message: '删除失败😐',
+        });
+      }
+    },
+    //预提交订单
+    async submitOrder(orderInfo) {
+      try {
+        this.fullscreenLoading = true;
+        await this.$store.getSubmitOrder(orderInfo);
+        Message({
+          type: 'success',
+          message: '提交成功😘',
+        });
+      } catch (error) {
+        Message({
+          type: 'success',
+          message: '服务器繁忙请稍后👻',
         });
       }
     },
@@ -471,7 +496,7 @@ export default {
     cartProductVOList() {
       return this.tradeListInfo.cartProductVOList || [];
     },
-    //相信地址信息
+    //详细地址信息
     userDetailAddress() {
       return this.userList[this.currentIndex] || {};
     },

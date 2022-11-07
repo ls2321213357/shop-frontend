@@ -7,7 +7,7 @@
           新鲜好物
           <small>新鲜出炉 品质靠谱</small>
         </h3>
-        <a href="javascript:;" class="more">
+        <a class="more" @click="goSearch">
           查看全部
           <i class="sprites"></i>
         </a>
@@ -41,6 +41,14 @@ export default {
         name: 'detail',
         params: {
           skuid,
+        },
+      });
+    },
+    goSearch() {
+      this.$router.push({
+        name: 'search',
+        query: {
+          productCategoryId: 13,
         },
       });
     },

@@ -35,6 +35,8 @@ requests.interceptors.response.use(
         router.push('/login');
       }
       setAssToken(res.data.msg.accessToken);
+    } else if (res.data.code == 400) {
+      router.push('/misspage');
     }
     nProgress.done();
     return res.data;

@@ -1,6 +1,10 @@
 //采用了路由懒加载
 export default [
   {
+    path: '/misspage',
+    component: () => import('@/components/MissPage'),
+  },
+  {
     path: '/trade',
     component: () => import('@/pages/Trade'),
     meta: {

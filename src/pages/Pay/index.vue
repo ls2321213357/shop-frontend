@@ -25,23 +25,13 @@
         <h4>重要说明：</h4>
         <ol>
           <li>
-            尚品汇商城支付平台目前支持
+            优选商城支付平台目前支持
             <span class="zfb">支付宝</span>
             支付方式。
           </li>
           <li>其它支付渠道正在调试中，敬请期待。</li>
           <li>为了保证您的购物支付流程顺利完成，请保存以下支付宝信息。</li>
         </ol>
-        <h4>
-          支付宝账户信息：（很重要，
-          <span class="save">请保存！！！</span>
-          ）
-        </h4>
-        <ul>
-          <li>支付帐号：11111111</li>
-          <li>密码：111111</li>
-          <li>支付密码：111111</li>
-        </ul>
       </div>
       <div class="checkout-steps">
         <div class="step-tit">

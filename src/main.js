@@ -49,6 +49,8 @@ import {
   Cascader,
   Collapse,
   CollapseItem,
+  Empty,
+  Loading,
 } from 'element-ui';
 //使用elementUI
 Vue.use(Card);
@@ -66,6 +68,8 @@ Vue.use(Checkbox);
 Vue.use(Cascader);
 Vue.use(Collapse);
 Vue.use(CollapseItem);
+Vue.use(Empty);
+Vue.use(Loading);
 //使用全局组件
 Vue.component(Header.name, Header);
 Vue.component(Footer.name, Footer);

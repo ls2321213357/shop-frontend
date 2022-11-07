@@ -83,9 +83,6 @@ export const reqUpdateAddress = (data) =>
 //删除收货地址
 export const reqDeleteAddress = (id) =>
   requests({ url: `/user/receiveraddress/delete/${id}`, method: 'delete' });
-//设置默认收货地址
-export const reqDefaultAddress = (data) =>
-  requests({ url: '/user/receiveraddress/default', method: 'post', data });
 //省市区列表
 export const reqGoodsAddress = () =>
   requests({ url: '/user/receiveraddress/list', method: 'get' });
@@ -98,3 +95,4 @@ export const reqOrderList = (data) =>
 //查新订单详情
 export const reqOrderInfo = (orderNo) =>
   requests({ url: `/oms/order/detail/${orderNo}`, method: 'get' });
+//订单点击提交

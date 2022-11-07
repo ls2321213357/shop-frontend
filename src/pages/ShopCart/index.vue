@@ -6,7 +6,12 @@
     </el-button>
     <h4>全部商品</h4>
     <!-- 登录后的操作 -->
-    <div v-if="isLogin">
+    <div
+      v-if="isLogin"
+      v-loading="loading"
+      element-loading-text="拼命加载中.........."
+      element-loading-spinner="el-icon-loading"
+    >
       <div class="cart-main">
         <div class="cart-th">
           <div class="cart-th1">全部</div>
@@ -217,6 +222,7 @@ export default {
     return {
       isLogin: getRefToken() ? true : false,
       shopDateInfo: [],
+      loading: false,
     };
   },
   created() {
@@ -251,7 +257,7 @@ export default {
     }
   },
   methods: {
-    //提交订单
+    //点击结算
     goTrade() {
       let orderDate = [];
       this.shopCartInfo.forEach((item) => {
@@ -295,6 +301,7 @@ export default {
     async updateCheck(shopInfo, event) {
       let isChecked = event.target.checked ? '1' : '2';
       try {
+        this.loading = true;
         await this.$store.dispatch('getChangeShopCheck', {
           selected: isChecked,
           skuId: shopInfo.skuID,
@@ -312,6 +319,7 @@ export default {
               message: this.reqMsg || '服务器繁忙',
             });
           }
+          this.loading = false;
           this.getShopData();
         }, 800);
       } catch (error) {
@@ -322,12 +330,14 @@ export default {
     async selectAll(event) {
       let isChecked = event.target.checked ? '1' : '2';
       try {
+        this.loading = true;
         await this.$store.dispatch('getChangeAllshopCheck', isChecked);
         Message({
           type: 'success',
           message: event.target.checked ? '全选成功' : '取消全选成功',
         });
         setTimeout(() => {
+          this.loading = false;
           this.getShopData();
           this.$router.go(0);
         }, 1000);
@@ -361,6 +371,7 @@ export default {
           break;
       }
       try {
+        this.loading = true;
         await this.$store.dispatch('changeShopCartNum', {
           count: disNum,
           skuID: shopInfo.skuID,
@@ -371,6 +382,7 @@ export default {
           message: '修改成功',
         });
         setTimeout(() => {
+          this.loading = false;
           this.getShopData();
         }, 1000);
       } catch (error) {
@@ -380,6 +392,7 @@ export default {
     //发送删除购物车商品请求
     async deleteGoods(shopInfo) {
       try {
+        this.loading = true;
         await this.$store.dispatch('reqDeleteGoods', {
           skuID: shopInfo.skuID,
           specification: shopInfo.productSkuSpecification,
@@ -397,6 +410,7 @@ export default {
         });
       }
       setTimeout(() => {
+        this.loading = false;
         this.getShopData();
         this.getShopNum();
         this.$router.go(0);
@@ -405,12 +419,14 @@ export default {
     //删除全部勾选的产品
     async deleteAllGoods() {
       try {
+        this.loading = true;
         await this.$store.dispatch('deleteAllShopCart');
         Message({
           type: 'success',
           message: '删除成功',
         });
         setTimeout(() => {
+          this.loading = false;
           this.getShopNum();
           this.getShopData();
           this.$router.go(0);
