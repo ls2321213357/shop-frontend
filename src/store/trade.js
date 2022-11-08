@@ -5,6 +5,7 @@ import {
   reqUpdateAddress,
   reqUserAddress,
   reqDeleteAddress,
+  reqSubmitOrder,
 } from '@/api';
 const state = {
   //订单购物车数据
@@ -31,7 +32,6 @@ const mutations = {
 const actions = {
   //获取订单购物车数据
   async getTradeListInfo({ commit }, data) {
-    console.log(111);
     let result = await reqOrderList(data);
     if (result.code == 200) {
       commit('GETTEADELISTINFO', result.data);
@@ -87,15 +87,17 @@ const actions = {
     }
   },
   //预提交订单
-  // async getSubmitOrder({ commit }, orderInfo) {
-  //   let result = await reqOrderList(orderInfo);
-  //   if (result.code == 200) {
-  //     localStorage.removeItem('orderDate');
-  //     return 'ok';
-  //   } else {
-  //     return Promise.reject(new Error('提交失败'));
-  //   }
-  // },
+  async getSubmitOrder({ commit }, orderInfo) {
+    console.log(111);
+    console.log(orderInfo);
+    let result = await reqSubmitOrder(orderInfo);
+    if (result.code == 200) {
+      localStorage.removeItem('orderDate');
+      return 'ok';
+    } else {
+      return Promise.reject(new Error('提交失败'));
+    }
+  },
 };
 export default {
   state,

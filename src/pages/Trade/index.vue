@@ -467,19 +467,29 @@ export default {
       }
     },
     //预提交订单
-    async submitOrder(orderInfo) {
+    submitOrder() {
+      let cartProductList = JSON.parse(localStorage.getItem('orderDate'));
+      let orderInfo = {
+        cartProductList,
+        orderNumber: this.tradeListInfo.orderNumber,
+        receiverAddress: this.myAddressInfo,
+        receiverName: this.userDetailAddress.UserName,
+        receiverPhone: this.userDetailAddress.PhoneNumber,
+      };
+      this.fullscreenLoading = true;
       try {
-        this.fullscreenLoading = true;
-        await this.$store.getSubmitOrder(orderInfo);
+        this.$store.dispatch('getSubmitOrder', orderInfo);
         Message({
           type: 'success',
           message: '提交成功😘',
         });
+        this.fullscreenLoading = false;
       } catch (error) {
         Message({
           type: 'success',
           message: '服务器繁忙请稍后👻',
         });
+        this.fullscreenLoading = false;
       }
     },
   },
@@ -500,7 +510,7 @@ export default {
     userDetailAddress() {
       return this.userList[this.currentIndex] || {};
     },
-    //展示的默认地址信息
+    //展示默认地址
     myAddress() {
       let address = '';
       this.userList.forEach((item) => {
@@ -514,6 +524,17 @@ export default {
             item.city +
             item.region +
             item.DetailAddress;
+        }
+      });
+      return address;
+    },
+    //提交给后端的地址信息
+    myAddressInfo() {
+      let address = '';
+      this.userList.forEach((item) => {
+        if (item.DefaultStatus == 1) {
+          address =
+            item.province + item.city + item.region + item.DetailAddress;
         }
       });
       return address;

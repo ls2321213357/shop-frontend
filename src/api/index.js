@@ -91,8 +91,9 @@ export const reqGoodsAddress = () =>
 //订单预支付信息
 export const reqOrderList = (data) =>
   requests({ url: '/oms/order/presubmit', method: 'post', data });
-
 //查新订单详情
 export const reqOrderInfo = (orderNo) =>
   requests({ url: `/oms/order/detail/${orderNo}`, method: 'get' });
 //订单点击提交
+export const reqSubmitOrder = (data) =>
+  requests({ url: '/oms/order/submit', method: 'post', data });
