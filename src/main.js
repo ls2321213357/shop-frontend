@@ -79,6 +79,9 @@ Vue.config.productionTip = false;
 //element遮罩层
 Vue.prototype.$msgbox = MessageBox;
 Vue.prototype.$alert = MessageBox.alert;
+//引入时间处理
+import dayjs from 'dayjs';
+Vue.prototype.dayjs = dayjs;
 new Vue({
   render: (h) => h(App),
   beforeCreate() {

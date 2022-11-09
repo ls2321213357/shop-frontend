@@ -5,9 +5,9 @@ import home from './home';
 import center from './center';
 import search from './search';
 import detail from './detail';
-import address from './address';
 import shopCart from './shopCart';
 import trade from './trade';
+import order from './order';
 Vue.use(Vuex);
 export default new Vuex.Store({
   modules: {
@@ -16,8 +16,8 @@ export default new Vuex.Store({
     center,
     search,
     detail,
-    address,
     shopCart,
     trade,
+    order,
   },
 });

@@ -110,7 +110,6 @@
                 <el-button type="text" @click="addShopCart">
                   加入购物车
                 </el-button>
-                <i class="icon-gouwuche"></i>
               </div>
             </div>
           </div>

@@ -97,3 +97,9 @@ export const reqOrderInfo = (orderNo) =>
 //订单点击提交
 export const reqSubmitOrder = (data) =>
   requests({ url: '/oms/order/submit', method: 'post', data });
+//获取用户所有的订单
+export const reqUserOrderList = () =>
+  requests({ url: '/oms/order/all', method: 'get' });
+//获取详细订单列表
+export const reqOrderDetailInfo = (num) =>
+  requests({ url: `/oms/order/one/${num}`, method: 'get' });

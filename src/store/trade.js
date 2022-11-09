@@ -59,7 +59,6 @@ const actions = {
   //修改用户收货地址
   // eslint-disable-next-line no-unused-vars
   async getChangeAddress({ commit }, userChangeInfo) {
-    console.log(userChangeInfo);
     let result = await reqUpdateAddress(userChangeInfo);
     if (result.code == 200) {
       return 'ok';
@@ -72,6 +71,7 @@ const actions = {
     let result = await reqUserAddress();
     if (result.code == 200) {
       commit('GTEUSERADDRESSINFO', result.data);
+      return 'ok';
     } else {
       return Promise.reject(new Error('获取失败'));
     }
@@ -87,13 +87,13 @@ const actions = {
     }
   },
   //预提交订单
-  async getSubmitOrder({ commit }, orderInfo) {
-    console.log(111);
-    console.log(orderInfo);
+  async getSubmitOrder({ dispatch }, orderInfo) {
     let result = await reqSubmitOrder(orderInfo);
     if (result.code == 200) {
       localStorage.removeItem('orderDate');
       return 'ok';
+    } else if (result.code == 1035) {
+      dispatch('getSubmitOrder', orderInfo);
     } else {
       return Promise.reject(new Error('提交失败'));
     }

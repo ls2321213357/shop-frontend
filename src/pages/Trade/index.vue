@@ -318,8 +318,15 @@ export default {
   },
   methods: {
     //获取用户所有地址
-    getUserAllAddress() {
-      this.$store.dispatch('getUserAddressInfo');
+    async getUserAllAddress() {
+      try {
+        this.fullscreenLoading = true;
+        await this.$store.dispatch('getUserAddressInfo');
+        this.fullscreenLoading = false;
+      } catch (error) {
+        this.fullscreenLoading = false;
+        Message({ type: 'warning', message: '服务器繁忙请刷新页面🙈' });
+      }
     },
     //清空输入的数据
     clearUserInfo() {
@@ -414,6 +421,7 @@ export default {
     //修改收货地址回调
     async handlerChangeSubmitUserAddress() {
       try {
+        this.fullscreenLoading = true;
         await this.$store.dispatch('getChangeAddress', {
           countyID: this.addressValue[2],
           defaultStatus: this.isDefault,
@@ -428,6 +436,7 @@ export default {
         });
         this.isDefault = 0;
         this.id = 0;
+        this.fullscreenLoading = false;
         this.clearUserInfo();
         setTimeout(() => {
           this.$router.go(0);
@@ -450,8 +459,8 @@ export default {
     },
     //删除地址
     async deleteAddress(addInfo) {
-      this.fullscreenLoading = true;
       try {
+        this.fullscreenLoading = true;
         await this.$store.dispatch('getDeleteAddress', addInfo.id);
         Message({
           type: 'success',
@@ -467,7 +476,8 @@ export default {
       }
     },
     //预提交订单
-    submitOrder() {
+    async submitOrder() {
+      this.fullscreenLoading = true;
       let cartProductList = JSON.parse(localStorage.getItem('orderDate'));
       let orderInfo = {
         cartProductList,
@@ -476,14 +486,15 @@ export default {
         receiverName: this.userDetailAddress.UserName,
         receiverPhone: this.userDetailAddress.PhoneNumber,
       };
-      this.fullscreenLoading = true;
       try {
-        this.$store.dispatch('getSubmitOrder', orderInfo);
+        this.fullscreenLoading = true;
+        await this.$store.dispatch('getSubmitOrder', orderInfo);
         Message({
           type: 'success',
           message: '提交成功😘',
         });
         this.fullscreenLoading = false;
+        this.$router.push('/pay');
       } catch (error) {
         Message({
           type: 'success',
