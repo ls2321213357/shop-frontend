@@ -17,6 +17,11 @@ export default {
     Header,
     Footer,
   },
+  watch: {
+    $route() {
+      this.$store.dispatch('getUserShopCartNum');
+    },
+  },
 };
 </script>
 

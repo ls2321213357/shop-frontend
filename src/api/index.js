@@ -103,3 +103,6 @@ export const reqUserOrderList = () =>
 //获取详细订单列表
 export const reqOrderDetailInfo = (num) =>
   requests({ url: `/oms/order/one/${num}`, method: 'get' });
+//删除某个订单记录
+export const reqDeleteOrder = (num) =>
+  requests({ url: `/oms/order/del/${num}`, method: 'delete' });

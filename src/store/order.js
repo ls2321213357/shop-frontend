@@ -1,4 +1,4 @@
-import { reqUserOrderList, reqOrderDetailInfo } from '@/api';
+import { reqUserOrderList, reqOrderDetailInfo, reqDeleteOrder } from '@/api';
 const state = {
   orderList: [],
   orderDetai: [],
@@ -28,6 +28,17 @@ const actions = {
     let result = await reqOrderDetailInfo(num);
     if (result.code == 200) {
       commit('GETORDERDETAILINFO', result.data);
+    } else {
+      return Promise.reject(new Error('获取失败'));
+    }
+  },
+  //删除某个订单
+  // eslint-disable-next-line no-unused-vars
+  async getDeleteOrder({ commit }, num) {
+    console.log(num);
+    let result = await reqDeleteOrder(num);
+    if (result.code == 200) {
+      return 'ok';
     } else {
       return Promise.reject(new Error('获取失败'));
     }

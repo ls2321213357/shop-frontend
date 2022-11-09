@@ -74,7 +74,7 @@
                 </thead>
               </table>
             </div>
-            <el-collapse accordion>
+            <el-collapse accordion v-model="activeName">
               <el-collapse-item
                 v-for="(order, index) in orderList"
                 :key="order.id"
@@ -106,7 +106,10 @@
                         ][order.orderStatus - 1]
                       }}
                     </span>
-                    <span class="pull-right delete">
+                    <span
+                      class="pull-right"
+                      @click.stop="deleteOrder(order.id)"
+                    >
                       <img src="./images/delete.png" />
                     </span>
                   </span>
@@ -256,6 +259,16 @@ export default {
     goPay() {
       this.$router.push('/pay');
     },
+    //删除一条订单记录
+    async deleteOrder(num) {
+      try {
+        await this.$store.dispatch('getDeleteOrder', num);
+        Message({ type: 'success', message: '删除成功🤷‍♂️' });
+        this.getOrderList();
+      } catch (error) {
+        Message({ type: 'error', message: '删除失败😶' });
+      }
+    },
   },
   computed: {
     ...mapState({
@@ -321,7 +334,6 @@ export default {
       .order-content {
         margin: 0 20px;
         color: #666;
-
         //标题
         .title {
           margin-bottom: 22px;

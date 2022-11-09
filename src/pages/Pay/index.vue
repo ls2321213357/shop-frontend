@@ -90,6 +90,9 @@
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: 'Pay',
+  mounted() {
+    this.$store.dispatch('getUserShopCartNum');
+  },
 };
 </script>
 
