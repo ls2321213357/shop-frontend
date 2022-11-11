@@ -123,7 +123,7 @@
 import { mapState, mapGetters } from 'vuex';
 import ImageList from './ImageList/ImageList';
 import Zoom from './Zoom/Zoom';
-
+import { Message } from 'element-ui';
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: 'Detail',
@@ -212,9 +212,16 @@ export default {
         }
       }
     },
+    async getGoodsInfo() {
+      try {
+        await this.$store.dispatch('getGoodsDetail', this.$route.params.skuid);
+      } catch (error) {
+        Message({ type: 'error', message: '服务器繁忙请刷新页面' });
+      }
+    },
   },
   created() {
-    this.$store.dispatch('getGoodsDetail', this.$route.params.skuid);
+    this.getGoodsInfo();
     this.flag = 99;
   },
   computed: {

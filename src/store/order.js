@@ -35,7 +35,6 @@ const actions = {
   //删除某个订单
   // eslint-disable-next-line no-unused-vars
   async getDeleteOrder({ commit }, num) {
-    console.log(num);
     let result = await reqDeleteOrder(num);
     if (result.code == 200) {
       return 'ok';

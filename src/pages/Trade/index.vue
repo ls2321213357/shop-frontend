@@ -210,13 +210,6 @@
           <li>有货</li>
         </ul>
       </div>
-      <div class="bbs">
-        <h5>买家留言：</h5>
-        <textarea
-          placeholder="建议留言前先与商家沟通确认"
-          class="remarks-cont"
-        ></textarea>
-      </div>
       <div class="line"></div>
       <div class="bill">
         <h5>发票信息：</h5>
@@ -486,6 +479,7 @@ export default {
         receiverName: this.userDetailAddress.UserName,
         receiverPhone: this.userDetailAddress.PhoneNumber,
       };
+      localStorage.setItem('orderInfo', this.tradeListInfo.orderNumber);
       try {
         this.fullscreenLoading = true;
         await this.$store.dispatch('getSubmitOrder', orderInfo);
@@ -770,16 +764,6 @@ export default {
         line-height: 1.8;
         outline: none;
         resize: none;
-      }
-    }
-
-    .bill {
-      h5 {
-        line-height: 50px;
-      }
-
-      div {
-        padding-left: 15px;
       }
     }
   }

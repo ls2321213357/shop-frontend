@@ -1,6 +1,10 @@
 //采用了路由懒加载
 export default [
   {
+    path: '/paysuccess',
+    component: () => import('@/components/paySuccess'),
+  },
+  {
     path: '/misspage',
     component: () => import('@/components/MissPage'),
   },

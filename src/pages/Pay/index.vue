@@ -11,7 +11,7 @@
         <div class="paymark">
           <span class="fl">
             请您在提交订单
-            <em class="orange time">4小时</em>
+            <em class="orange time">30分钟</em>
             之内完成支付，超时订单会自动取消。订单号：
             <em>145687</em>
           </span>
@@ -70,7 +70,7 @@
         <div class="hr"></div>
 
         <div class="submit">
-          <router-link class="btn" to="/paysuccess">立即支付</router-link>
+          <a class="btn" @click="submitPay">立即支付</a>
         </div>
         <div class="otherpay">
           <div class="step-tit">
@@ -85,13 +85,34 @@
     </div>
   </div>
 </template>
-
 <script>
+import { mapState } from 'vuex';
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: 'Pay',
+  data() {
+    return {
+      orderInfo: null,
+    };
+  },
   mounted() {
     this.$store.dispatch('getUserShopCartNum');
+    this.orderInfo = localStorage.getItem('orderInfo');
+  },
+  methods: {
+    async submitPay() {
+      try {
+        await this.$store.dispatch('getPayInfo', { orderNum: this.orderInfo });
+        window.location.href = this.payUrl;
+      } catch (error) {
+        console.log(error.message);
+      }
+    },
+  },
+  computed: {
+    ...mapState({
+      payUrl: (state) => state.pay.payUrl,
+    }),
   },
 };
 </script>

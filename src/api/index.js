@@ -106,3 +106,10 @@ export const reqOrderDetailInfo = (num) =>
 //删除某个订单记录
 export const reqDeleteOrder = (num) =>
   requests({ url: `/oms/order/del/${num}`, method: 'delete' });
+//////////////////订单支付模块////////
+//支付接口
+export const reqPayDetailInfo = (data) =>
+  requests({ url: '/oms/order/pay', method: 'post', data });
+//支付回调接口
+export const reqPayCallBack = () =>
+  requests({ url: '/oms/order/pay/notify', method: 'get' });
