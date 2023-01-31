@@ -191,7 +191,7 @@
                         >
                           <ul class="unstyled">
                             <li>
-                              <a target="_blank" @click="goPay">
+                              <a @click="goPay">
                                 {{
                                   order.payStatus == 1 ? '订单完成' : '去支付'
                                 }}
@@ -257,6 +257,7 @@ export default {
     },
     //点击去支付
     goPay() {
+      localStorage.setItem('orderInfo', this.orderDetai[0].orderID);
       this.$router.push('/pay');
     },
     //删除一条订单记录

@@ -1,4 +1,4 @@
-import { reqPayDetailInfo, reqPayCallBack } from '@/api';
+import { reqPayDetailInfo, reqPayCallBack, reqPaySuccess } from '@/api';
 const state = {
   payUrl: '',
 };
@@ -9,20 +9,30 @@ const mutations = {
 };
 const actions = {
   //点击支付
-  async getPayInfo({ commit }, data) {
-    let result = await reqPayDetailInfo(data);
-    commit('GETPAYINFO', result.data);
-    localStorage.removeItem('orderInfo');
-    if (result.code == 200) {
-      return 'ok';
-    } else {
-      return Promise.reject(new Error('error'));
-    }
-  },
+  // async getPayInfo({ commit }, data) {
+  //   let result = await reqPayDetailInfo(data);
+  //   commit('GETPAYINFO', result.data);
+  //   localStorage.removeItem('orderInfo');
+  //   if (result.code == 200) {
+  //     return 'ok';
+  //   } else {
+  //     return Promise.reject(new Error('error'));
+  //   }
+  // },
   //支付回调接口
   // eslint-disable-next-line no-unused-vars
-  async getPaySuccess({ commit }) {
-    let result = await reqPayCallBack();
+  // async getSubmitPay({ commit }) {
+  //   let result = await reqPayCallBack();
+  //   if (result.code == 200) {
+  //     return 'ok';
+  //   } else {
+  //     return Promise.reject(new Error('error'));
+  //   }
+  // },
+  //支付成功接口
+  // eslint-disable-next-line no-unused-vars
+  async getPaySuccess({ commit }, data) {
+    let result = await reqPaySuccess(data);
     if (result.code == 200) {
       return 'ok';
     } else {

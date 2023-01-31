@@ -20,6 +20,7 @@ const actions = {
   //把商品加入到购物车
   // eslint-disable-next-line no-unused-vars
   async getAddGoodsShopCart({ commit }, goodsInfo) {
+    console.log(goodsInfo);
     let result = await reqAddGoodsShopCart(goodsInfo);
     if (result.code == 200) {
       return 'ok';

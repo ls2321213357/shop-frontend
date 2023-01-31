@@ -5,6 +5,8 @@ const state = {
   detailList: [],
   //获取商品信息列表
   detailInfoList: {},
+  //获取秒杀商品
+  seckillInfoList: {},
 };
 const mutations = {
   //获取商品分类信息列表
@@ -14,6 +16,10 @@ const mutations = {
   //获取商品信息列表
   GETDETAILINFO(state, detailInfoList) {
     state.detailInfoList = detailInfoList;
+  },
+  //获取秒杀商品信息列表
+  GETSECKILLINFO(state, seckillInfoList) {
+    state.seckillInfoList = seckillInfoList;
   },
 };
 const actions = {
@@ -40,11 +46,29 @@ const actions = {
       return Promise.reject(new Error('获取商品列表失败'));
     }
   },
+  //获取秒杀信息列表
+  async getSeckillInfo({ commit, dispatch }, data) {
+    let result = await reqSearchDetailInfo(data);
+    if (result.code == 200) {
+      commit('GETSECKILLINFO', result.data);
+    } else if (result.code == 1026) {
+      dispatch('getSeckillInfo');
+    } else if (result.code == 1029) {
+      alert(result.msg);
+      router.push('/');
+    } else {
+      return Promise.reject(new Error('获取商品列表失败'));
+    }
+  },
 };
 const getters = {
   //商品详细信息
   detailData(state) {
     return state.detailInfoList.data || [];
+  },
+  //秒杀商品信息
+  seckillData(state) {
+    return state.seckillInfoList.data || [];
   },
   //总页
   totalPage(state) {

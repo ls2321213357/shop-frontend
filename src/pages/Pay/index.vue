@@ -1,5 +1,5 @@
 <template>
-  <div class="pay-main">
+  <div class="pay-main" v-loading.fullscreen.lock="fullscreenLoading">
     <div class="pay-container">
       <div class="checkout-tit">
         <h4 class="tit-txt">
@@ -93,6 +93,8 @@ export default {
   data() {
     return {
       orderInfo: null,
+      //控制全屏加载
+      fullscreenLoading: false,
     };
   },
   mounted() {
@@ -100,10 +102,38 @@ export default {
     this.orderInfo = localStorage.getItem('orderInfo');
   },
   methods: {
+    open() {
+      const url = require('./images/pay.png');
+      this.$alert(
+        `<img style="width:150px;height:170px;" src="${url}"}/>`,
+        '恭喜您支付成功！',
+        {
+          center: true, //文字居中
+          dangerouslyUseHTMLString: true,
+          confirmButtonText: '去订单看看',
+          cancelButtonText: '继续去逛逛',
+          showCancelButton: true,
+          showConfirmButton: true,
+        },
+      )
+        .then(() => {
+          this.$router.push('/order');
+        })
+        .catch(() => {
+          this.$router.push('/');
+        });
+    },
     async submitPay() {
       try {
-        await this.$store.dispatch('getPayInfo', { orderNum: this.orderInfo });
-        window.location.href = this.payUrl;
+        this.fullscreenLoading = true;
+        await this.$store.dispatch('getPaySuccess', {
+          orderNum: this.orderInfo,
+        });
+        this.fullscreenLoading = false;
+        this.open();
+        localStorage.removeItem('orderInfo');
+        this.$store.dispatch('getUserShopCartNum');
+        // window.location.href = this.payUrl; //跳转到支付宝接口
       } catch (error) {
         console.log(error.message);
       }

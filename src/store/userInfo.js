@@ -3,7 +3,6 @@ import { reqUserRegister, reqUserCode, reqUserLogin } from '../api';
 import {
   setAssToken,
   setRefToken,
-  setUserId,
   getRefToken,
   getAssToken,
 } from '@/util/token';
@@ -58,7 +57,6 @@ const actions = {
       commit('GETCODEMSG', result.msg);
       setAssToken(result.data.accessToken);
       setRefToken(result.data.refreshToken);
-      setUserId(result.data.userId);
       return 'ok';
     } else {
       commit('GETREQCODE', result.code);

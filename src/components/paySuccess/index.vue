@@ -5,7 +5,7 @@
 </template>
 <script>
 import { Message } from 'element-ui';
-import { removeRToken, removeAToken, removeUserId } from '@/util/token';
+import { removeRToken, removeAToken } from '@/util/token';
 export default {
   name: 'paySuccess',
   data() {
@@ -16,7 +16,6 @@ export default {
   created() {
     removeRToken();
     removeAToken();
-    removeUserId();
   },
   mounted() {
     this.getPayInfo();

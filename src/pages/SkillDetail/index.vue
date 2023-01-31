@@ -11,29 +11,28 @@
       <!-- 主要内容区域 -->
       <section class="con">
         <!-- 导航路径区域 -->
-        <div class="conPoin">
-          <span>手机、数码、通讯</span>
-          <span>手机</span>
-          <span>Apple苹果</span>
-          <span>iphone 6S系类</span>
+        <div class="conPoin" @click="$router.push('/home')">
+          <span v-for="item in categories" :key="item.id">
+            {{ item.name }}
+          </span>
         </div>
         <!-- 主要内容区域 -->
         <div class="mainCon">
           <!-- 左侧放大镜区域 -->
           <div class="previewWrap">
             <!--放大镜效果-->
-            <!-- <Zoom :skuPicList="skuPicList" /> -->
+            <Zoom :skuPicList="skuPicList" />
             <!-- 小图列表 -->
-            <!-- <ImageList :skuPicList="skuPicList" /> -->
+            <ImageList :skuPicList="skuPicList" />
           </div>
           <!-- 右侧选择区域布局 -->
           <div class="InfoWrap">
             <div class="goodsDetail">
               <h3 class="InfoName">
-                Apple iPhone 6s（A1700）64G玫瑰金色 移动通信电信4G手机
+                {{ goodsDetail.skuList[0].title }}
               </h3>
               <p class="news">
-                推荐选择下方[移动优惠购],手机套餐齐搞定,不用换号,每月还有花费返
+                {{ goodsDetail.spu.subTitle }}
               </p>
               <div class="priceArea">
                 <div class="priceArea1">
@@ -42,12 +41,12 @@
                   </div>
                   <div class="price">
                     <i>¥</i>
-                    <em>5299</em>
+                    <em>{{ goodsDetail.skuList[0].price }}</em>
                     <span>降价通知</span>
                   </div>
                   <div class="remark">
-                    <i>累计评价</i>
-                    <em>65545</em>
+                    <i>累计购买</i>
+                    <em>{{ goodsDetail.spu.sale }}</em>
                   </div>
                 </div>
                 <div class="priceArea2">
@@ -78,27 +77,43 @@
               <div class="chooseArea">
                 <div class="choosed"></div>
                 <dl>
-                  <dt class="title">选择颜色</dt>
-                  <dd changepirce="0" class="active">金色</dd>
-                  <dd changepirce="40">银色</dd>
-                  <dd changepirce="90">黑色</dd>
-                </dl>
-                <dl>
-                  <dt class="title">内存容量</dt>
-                  <dd changepirce="0" class="active">16G</dd>
-                  <dd changepirce="300">64G</dd>
-                  <dd changepirce="900">128G</dd>
-                  <dd changepirce="1300">256G</dd>
+                  <dt class="title">选择规格</dt>
+                  <dd
+                    changepirce="0"
+                    v-for="(items, index) in productSkuSpecification"
+                    :key="index"
+                    :class="{ active: index == flag }"
+                    @click="selectItem(items, index)"
+                  >
+                    {{ items }}
+                  </dd>
                 </dl>
               </div>
               <div class="cartWrap">
                 <div class="controls">
-                  <input autocomplete="off" class="itxt" />
-                  <a href="javascript:" class="plus">+</a>
-                  <a href="javascript:" class="mins">-</a>
+                  <input
+                    autocomplete="off"
+                    class="itxt"
+                    v-model="num"
+                    @change="changenum"
+                  />
+                  <a href="javascript:" class="plus" @click="num++">+</a>
+                  <a
+                    href="javascript:"
+                    class="mins"
+                    @click="num <= 1 ? 1 : num--"
+                  >
+                    -
+                  </a>
                 </div>
                 <div class="add">
-                  <Spike :startTime="startTime" :endTime="endTime"></Spike>
+                  <Spike
+                    :flag="flag"
+                    :num="num"
+                    :rule="rule"
+                    :startTime="startTime"
+                    :endTime="endTime"
+                  ></Spike>
                 </div>
               </div>
             </div>
@@ -110,8 +125,8 @@
 </template>
 <script>
 import { mapState, mapGetters } from 'vuex';
-// import ImageList from './ImageList/ImageList';
-// import Zoom from './Zoom/Zoom';
+import ImageList from './ImageList/ImageList';
+import Zoom from './Zoom/Zoom';
 import Spike from './Spike';
 import moment from 'moment';
 export default {
@@ -119,8 +134,8 @@ export default {
   name: 'index',
   components: {
     Spike,
-    // ImageList,
-    // Zoom,
+    ImageList,
+    Zoom,
   },
   data() {
     return {
@@ -128,6 +143,7 @@ export default {
       startTime: moment(new Date(Date.now())),
       flag: 99, //把当前的index动态绑定给this.flag
       num: 1,
+      rule: null,
     };
   },
   methods: {
@@ -148,40 +164,6 @@ export default {
     selectItem(item, index) {
       this.flag = index;
       this.rule = item;
-    },
-    open() {
-      const url = require('./detailShop.png');
-      this.$alert(
-        `<img style="width:150px;height:170px;" src="${url}"}/>`,
-        '加入购物车成功',
-        {
-          center: true, //文字居中
-          dangerouslyUseHTMLString: true,
-          confirmButtonText: '去购物车结算',
-          cancelButtonText: '继续去逛逛',
-          showCancelButton: true,
-          showConfirmButton: true,
-        },
-      )
-        .then(() => {
-          this.$router.push('/shopcart');
-        })
-        .catch(() => {
-          this.$router.push('/');
-        });
-    },
-    //加入商品到购物车
-    addShopCart() {
-      this.$store.dispatch('getAddGoodsShopCart', {
-        count: this.num,
-        specification: this.rule,
-        skuID: this.$route.params.skuid,
-      });
-      try {
-        this.open();
-      } catch (error) {
-        console.log(error.message);
-      }
     },
   },
   created() {

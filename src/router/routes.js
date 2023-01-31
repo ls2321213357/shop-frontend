@@ -3,6 +3,13 @@ export default [
   {
     path: '/paysuccess',
     component: () => import('@/components/paySuccess'),
+    beforeEnter: (to, from, next) => {
+      if (from.path == '/pay') {
+        next();
+      } else {
+        next(false);
+      }
+    },
   },
   {
     path: '/misspage',
@@ -14,12 +21,26 @@ export default [
     meta: {
       isShowHeader: true,
     },
+    beforeEnter: (to, from, next) => {
+      if (from.path == '/shopcart') {
+        next();
+      } else {
+        next(false);
+      }
+    },
   },
   {
     path: '/pay',
     component: () => import('@/pages/Pay'),
     meta: {
       isShowHeader: true,
+    },
+    beforeEnter: (to, from, next) => {
+      if (from.path == '/trade' || from.path == '/order') {
+        next();
+      } else {
+        next(false);
+      }
     },
   },
   {
@@ -30,10 +51,12 @@ export default [
     },
   },
   {
-    path: '/skilldetail',
+    path: '/skilldetail/:skuid?',
+    name: 'skilldetail',
     component: () => import('@/pages/SkillDetail'),
     meta: {
       isShowHeader: true,
+      isShowFooter: true,
     },
   },
   {
@@ -57,6 +80,13 @@ export default [
   {
     path: '/center',
     component: () => import('@/pages/Center'),
+    beforeEnter: (to, from, next) => {
+      if (localStorage.getItem('assToken')) {
+        next();
+      } else {
+        next('/login');
+      }
+    },
   },
   {
     path: '/shopcart',

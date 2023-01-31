@@ -8,7 +8,7 @@
     <!-- 人气推荐 -->
     <PopularGoods></PopularGoods>
     <!-- 秒杀专区 -->
-    <SeckillGoods></SeckillGoods>
+    <SeckillGoods :seckillData="seckillData"></SeckillGoods>
     <!-- 分类商品 -->
     <CategoryGoods></CategoryGoods>
     <!-- 最新主题 -->
@@ -47,9 +47,15 @@ export default {
       pageNo: '1',
       pageSize: '4',
     });
+    this.$store.dispatch('getSeckillInfo', {
+      sort: '1',
+      pageNo: '1',
+      pageSize: '4',
+      productCategoryId: '14',
+    });
   },
   computed: {
-    ...mapGetters(['detailData']),
+    ...mapGetters(['detailData', 'seckillData']),
   },
 };
 </script>

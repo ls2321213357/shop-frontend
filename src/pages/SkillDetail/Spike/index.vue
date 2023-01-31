@@ -1,6 +1,6 @@
 <template>
   <div class="spike">
-    <el-button :type="btnType" @click="handleClick" :disabled="disabled">
+    <el-button :type="btnType" @click="addShopCart" :disabled="disabled">
       {{ btnText }}
     </el-button>
     <span>{{ tip }}</span>
@@ -8,7 +8,6 @@
 </template>
 <script>
 import moment from 'moment';
-import { Message } from 'element-ui';
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: 'Spike',
@@ -24,6 +23,15 @@ export default {
       validator: (val) => {
         return moment.isMoment(val);
       },
+    },
+    flag: {
+      required: true,
+    },
+    num: {
+      required: true,
+    },
+    rule: {
+      required: true,
     },
   },
   data() {
@@ -58,13 +66,64 @@ export default {
     }
   },
   methods: {
-    handleClick() {
-      Message({
-        type: 'success',
-        message: '恭喜您成功的抢到了该商品',
-      });
-      this.done = true;
-      this.btnText = '已参加过活动';
+    open() {
+      const url = require('../skill.mp4');
+      this.$alert(
+        `<video style="width:150px;height:170px;" autoplay="autoplay" controls="controls" src="${url}"}/>`,
+        '加入购物车成功',
+        {
+          center: true, //文字居中
+          dangerouslyUseHTMLString: true,
+          confirmButtonText: '去购物车结算',
+          cancelButtonText: '继续去逛逛',
+          showCancelButton: true,
+          showConfirmButton: true,
+        },
+      )
+        .then(() => {
+          this.$router.push('/shopcart');
+        })
+        .catch(() => {
+          this.$router.push('/');
+        });
+    },
+    //加入商品到购物车
+    async addShopCart() {
+      if (!localStorage.getItem('assToken')) {
+        this.open();
+        let goodRule = {
+          count: this.num,
+          specification: this.rule,
+          selected: 1,
+        };
+        if (localStorage.getItem('cartList')) {
+          let shopCart = localStorage.getItem('cartList');
+          localStorage.setItem(
+            'cartList',
+            shopCart +
+              '@' +
+              JSON.stringify(Object.assign(this.goodsDetail, goodRule)),
+          );
+        } else {
+          localStorage.setItem(
+            'cartList',
+            JSON.stringify(Object.assign(this.goodsDetail, goodRule)),
+          );
+        }
+      } else {
+        try {
+          await this.$store.dispatch('getAddGoodsShopCart', {
+            count: this.num,
+            specification: this.rule,
+            skuID: this.$route.params.skuid,
+          });
+          this.open();
+          this.done = true;
+          this.btnText = '已参加过活动';
+        } catch (error) {
+          console.log(error.message);
+        }
+      }
     },
     getServerTime() {
       //模拟服务器时间

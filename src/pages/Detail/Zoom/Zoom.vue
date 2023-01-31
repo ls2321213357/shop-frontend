@@ -18,7 +18,8 @@ export default {
       currenIndex: '0',
     };
   },
-  props: ['skuPicList'],
+  // eslint-disable-next-line vue/require-valid-default-prop
+  props: { skuPicList: { type: Array, default: [] } },
   computed: {
     imgObj() {
       return this.skuPicList[this.currenIndex] || {};
@@ -58,9 +59,9 @@ export default {
   height: 400px;
   border: 1px solid #ccc;
 
-  img {
-    width: 100%;
-    height: 100%;
+  img {  
+    width: 100%;  
+    height: 100%;  
   }
 
   .event {

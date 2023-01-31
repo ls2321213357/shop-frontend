@@ -40,7 +40,6 @@
               <div class="item-msg">
                 {{ shopInfo.title }}
               </div>
-              <span>{{ shopInfo.create }}</span>
             </li>
             <li class="cart-list-con4">
               <span class="price">{{ shopInfo.price }}</span>

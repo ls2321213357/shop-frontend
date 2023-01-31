@@ -103,7 +103,6 @@ const actions = {
       });
       promiseAll.push(promise);
     });
-    console.log(promiseAll);
     return Promise.all(promiseAll);
   },
   //获取用户购物车商品数量

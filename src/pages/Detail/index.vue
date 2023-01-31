@@ -66,10 +66,6 @@
                   以旧换新，闲置物品回收 各种套餐超值抢 礼品购
                 </div>
               </div>
-              <div class="supportArea">
-                <div class="title">配 送 至</div>
-                <div class="fixWidth">广东省 深圳市 宝安区</div>
-              </div>
             </div>
           </div>
 
@@ -77,7 +73,7 @@
             <div class="chooseArea">
               <div class="choosed"></div>
               <dl>
-                <dt class="title">规格</dt>
+                <dt class="title">选择规格</dt>
                 <dd
                   changepirce="0"
                   v-for="(items, index) in productSkuSpecification"

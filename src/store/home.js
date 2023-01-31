@@ -1,10 +1,17 @@
-import { reqUserInfo, reqBannerImg, reqUserLogout, reqDetailNav } from '@/api';
-import { removeRToken, removeAToken, removeUserId } from '@/util/token';
+import {
+  reqUserInfo,
+  reqBannerImg,
+  reqUserLogout,
+  reqDetailNav,
+  reqSkillGoods,
+} from '@/api';
+import { removeRToken, removeAToken } from '@/util/token';
 const state = {
   userInfo: {},
   bannerList: [],
   detailNavList: {},
   userCode: '', //记录用户登录的状态码
+  skillList: {}, //记录秒杀商品
 };
 const mutations = {
   //获取个人信息
@@ -21,7 +28,6 @@ const mutations = {
     state.userInfo = {};
     removeRToken();
     removeAToken();
-    removeUserId();
   },
   // 状态码
   GETREQCODE(state, userCode) {
@@ -31,6 +37,10 @@ const mutations = {
   //获取商品分类标签
   GETDETAILNAV(state, detailNavList) {
     state.detailNavList = detailNavList;
+  },
+  //获取秒杀商品
+  GETSKILLGOODS(state, skillList) {
+    state.skillList = skillList;
   },
 };
 const actions = {
@@ -71,6 +81,15 @@ const actions = {
       commit('GETDETAILNAV', result.data);
     } else {
       return Promise.reject(new Error('获取用户信息失败'));
+    }
+  },
+  //获取秒杀商品
+  async getSkillGoods({ commit }) {
+    let result = await reqSkillGoods();
+    if (result.code == 200) {
+      commit('GETSKILLGOODS', result.data);
+    } else {
+      return Promise.reject(new Error('error'));
     }
   },
 };

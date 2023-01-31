@@ -113,3 +113,9 @@ export const reqPayDetailInfo = (data) =>
 //支付回调接口
 export const reqPayCallBack = () =>
   requests({ url: '/oms/order/pay/notify', method: 'get' });
+//支付成功接口
+export const reqPaySuccess = (data) =>
+  requests({ url: '/oms/order/test/pay', method: 'post', data });
+////////////////秒杀模块////////////
+export const reqSkillGoods = () =>
+  requests({ url: '/seckill/sku/list', method: 'get' });

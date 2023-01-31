@@ -5,11 +5,6 @@ export const setRefToken = (refToken) => {
 export const setAssToken = (assToken) => {
   localStorage.setItem('assToken', assToken);
 };
-//存储用户id
-export const setUserId = (userId) => {
-  localStorage.setItem('userId', userId);
-};
-
 //获取本地token
 export const getRefToken = () => {
   return localStorage.getItem('refToken');
@@ -27,7 +22,4 @@ export const removeRToken = () => {
 };
 export const removeAToken = () => {
   localStorage.removeItem('assToken');
-};
-export const removeUserId = () => {
-  localStorage.removeItem('userId');
 };
