@@ -7,7 +7,7 @@ module.exports = defineConfig({
     port: 8888, //指定端口号以侦听
     proxy: {
       '/api': {
-        target: 'http://43.143.204.40:9090/',
+        target: 'http://47.93.10.154:9090/',
       },
     },
   },

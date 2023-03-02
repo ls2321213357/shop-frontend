@@ -28,7 +28,7 @@
           </a>
         </li>
         <li>
-          <a href="javascript:;">
+          <a href="javascript:;" @click="goChat">
             在线客服
             <i class="el-icon-phone"></i>
           </a>
@@ -91,6 +91,11 @@ export default {
     this.$store.dispatch('getUserShopCartNum');
   },
   methods: {
+    //前往客服节目
+    goChat(){
+      this.$router.push({name:'chat',query:{sendId:3}})
+    },
+    //前往商城主页
     goLogin() {
       this.$router.push('/login');
     },

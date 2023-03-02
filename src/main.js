@@ -82,6 +82,19 @@ Vue.prototype.$alert = MessageBox.alert;
 //引入时间处理
 import dayjs from 'dayjs';
 Vue.prototype.dayjs = dayjs;
+//引入聊天客服功能相应组件
+import Vant from "vant"
+import "vant/lib/index.css"
+import MetaInfo from 'vue-meta-info';
+import preview from 'vue-photo-preview'
+import 'vue-photo-preview/dist/skin.css'
+let options = {
+  fullscreenEl: false
+};
+Vue.use(preview, options)
+Vue.use(preview)
+Vue.use(Vant)
+Vue.use(MetaInfo);
 new Vue({
   render: (h) => h(App),
   beforeCreate() {

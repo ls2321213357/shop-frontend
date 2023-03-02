@@ -10,6 +10,7 @@ import trade from './trade';
 import order from './order';
 import pay from './pay';
 import skill from './skill';
+import chat from "./chat";
 Vue.use(Vuex);
 export default new Vuex.Store({
   modules: {
@@ -23,5 +24,7 @@ export default new Vuex.Store({
     order,
     pay,
     skill,
+    chat
   },
+
 });

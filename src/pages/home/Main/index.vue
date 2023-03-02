@@ -9,11 +9,12 @@
 
 <script>
 import Carousel from '@/components/Carousel/index.vue';
+import TypeNav from '@/components/TypeNav/index.vue';
 import { mapState } from 'vuex';
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: 'Main',
-  components: { Carousel },
+  components: { Carousel, TypeNav },
   mounted() {
     this.$store.dispatch('getBannerList');
   },

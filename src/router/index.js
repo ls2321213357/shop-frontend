@@ -28,6 +28,7 @@ VueRouter.prototype.replace = function (location, onComplete, onAbort) {
 let router = new VueRouter({
   mode: 'history',
   routes,
+  base: process.env.BASE_URL,
   scrollBehavior() {
     // 始终滚动到顶部
     return { y: 0 };

@@ -14,15 +14,15 @@
       <!-- 右部分 -->
       <div class="login-right">
         <el-tooltip
-          class="item"
-          effect="dark"
-          content="点击这里前往商城页面"
-          placement="bottom"
+            class="item"
+            effect="dark"
+            content="点击这里前往商城页面"
+            placement="bottom"
         >
           <img
-            src="https://notion-emojis.s3-us-west-2.amazonaws.com/prod/svg-twitter/1f6cd-fe0f.svg
+              src="https://notion-emojis.s3-us-west-2.amazonaws.com/prod/svg-twitter/1f6cd-fe0f.svg
         "
-            @click="goHome"
+              @click="goHome"
           />
         </el-tooltip>
 
@@ -38,16 +38,16 @@
                 <form>
                   <div class="input-text">
                     <el-input
-                      placeholder="请输入手机号"
-                      name="loginPhone"
-                      v-model="loginPhone"
-                      v-validate="{
+                        placeholder="请输入手机号"
+                        name="loginPhone"
+                        v-model="loginPhone"
+                        v-validate="{
                         required: true,
                         regex:
                           /^1(3\d|4[5-9]|5[0-35-9]|6[567]|7[0-8]|8\d|9[0-35-9])\d{8}$/,
                       }"
-                      data-vv-scope="login"
-                      :class="{ invalid: errors.has('login.loginPhone') }"
+                        data-vv-scope="login"
+                        :class="{ invalid: errors.has('login.loginPhone') }"
                     />
                     <!-- 校验错误提示 -->
                     <i class="error-msg hint">
@@ -56,17 +56,17 @@
                   </div>
                   <div class="input-text">
                     <el-input
-                      placeholder="请输入密码"
-                      name="loginPassword"
-                      v-model="loginPassword"
-                      show-password
-                      v-validate="{
+                        placeholder="请输入密码"
+                        name="loginPassword"
+                        v-model="loginPassword"
+                        show-password
+                        v-validate="{
                         required: true,
                         regex:
                           /^(?=.*\d)(?=.*[A-Za-z])(?=.*[!@$%^*?~])[\u4E00-\u9FA5A-Za-z0-9!@$%^*?~]{8,16}$/,
                       }"
-                      data-vv-scope="login"
-                      :class="{ invalid: errors.has('login.loginPassword') }"
+                        data-vv-scope="login"
+                        :class="{ invalid: errors.has('login.loginPassword') }"
                     />
                     <!-- 校验错误提示 -->
                     <i class="error-msg hint error-text">
@@ -97,16 +97,16 @@
                 <form>
                   <div class="input-text">
                     <input
-                      placeholder="请输入手机号"
-                      name="phone"
-                      v-model="phone"
-                      v-validate="{
+                        placeholder="请输入手机号"
+                        name="phone"
+                        v-model="phone"
+                        v-validate="{
                         required: true,
                         regex:
                           /^1(3\d|4[5-9]|5[0-35-9]|6[567]|7[0-8]|8\d|9[0-35-9])\d{8}$/,
                       }"
-                      data-vv-scope="register"
-                      :class="{ invalid: errors.has('register.phone') }"
+                        data-vv-scope="register"
+                        :class="{ invalid: errors.has('register.phone') }"
                     />
                     <!-- 校验错误提示 -->
                     <i class="error-msg hint">
@@ -120,16 +120,16 @@
                   </div>
                   <div class="input-text">
                     <input
-                      placeholder="请输入密码"
-                      name="password"
-                      v-model="password"
-                      v-validate="{
+                        placeholder="请输入密码"
+                        name="password"
+                        v-model="password"
+                        v-validate="{
                         required: true,
                         regex:
                           /^(?=.*\d)(?=.*[A-Za-z])(?=.*[!@$%^*?~])[\u4E00-\u9FA5A-Za-z0-9!@$%^*?~]{8,16}$/,
                       }"
-                      data-vv-scope="register"
-                      :class="{ invalid: errors.has('register.password') }"
+                        data-vv-scope="register"
+                        :class="{ invalid: errors.has('register.password') }"
                     />
                     <!-- 校验错误提示 -->
                     <i class="error-msg hint error-text">
@@ -138,15 +138,15 @@
                   </div>
                   <div class="input-text">
                     <input
-                      placeholder="请输入验证码"
-                      v-model="code"
-                      name="code"
-                      v-validate="{
+                        placeholder="请输入验证码"
+                        v-model="code"
+                        name="code"
+                        v-validate="{
                         required: true,
                         regex: /^[0-9]{4}$/,
                       }"
-                      data-vv-scope="register"
-                      :class="{ invalid: errors.has('register.code') }"
+                        data-vv-scope="register"
+                        :class="{ invalid: errors.has('register.code') }"
                     />
                     <!-- 校验错误提示 -->
                     <i class="error-msg hint">
@@ -174,14 +174,14 @@
     <!-- 滑动验证 -->
     <div v-if="isSlide" class="slide">
       <slide-verify
-        :l="42"
-        :r="10"
-        :w="310"
-        :h="155"
-        slider-text="向右滑动"
-        @success="onSuccess"
-        @fail="onFail"
-        @refresh="onRefresh"
+          :l="42"
+          :r="10"
+          :w="310"
+          :h="155"
+          slider-text="向右滑动"
+          @success="onSuccess"
+          @fail="onFail"
+          @refresh="onRefresh"
       ></slide-verify>
       <div class="text">{{ msg }}</div>
     </div>
@@ -189,8 +189,9 @@
 </template>
 
 <script>
-import { Message } from 'element-ui';
-import { mapState } from 'vuex';
+import {Message} from 'element-ui';
+import {mapState} from 'vuex';
+
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: 'Login',
@@ -210,7 +211,7 @@ export default {
     //滑动窗口部分
     //成功后的回调
     onSuccess(times) {
-      const { phone } = this;
+      const {phone} = this;
       this.msg = '验证成功,用时' + (times / 1000).toFixed(1) + '秒';
       //表单验证
       phone && this.$store.dispatch('getUserCode', phone);
@@ -219,21 +220,21 @@ export default {
         if (this.reqCode == 200) {
           Message({
             type: 'success',
-            message: this.errorMsg,
+            message: this.errorMsg || '操作成功',
           });
         } //警告提示框
         else if (this.reqCode == 500) {
           Message({
             type: 'warning',
-            message: this.errorMsg,
+            message: this.errorMsg || '请注意检查',
           });
         } else {
           Message({
             type: 'error',
-            message: this.errorMsg,
+            message: this.errorMsg || '操作失败',
           });
         }
-        this.msg = '';
+        this.msg = '请检查输入的格式';
         this.isSlide = false;
       }, 1500);
     },
@@ -260,7 +261,7 @@ export default {
     },
     //用户注册
     async getRegister() {
-      const { phone, password, code } = this;
+      const {phone, password, code} = this;
       //以上校验通过以后才能发送请求
       //采用了部分表单校验  以register开头的都会进行校验
       const success = await this.$validator.validateAll('register');
@@ -300,7 +301,7 @@ export default {
     },
     //获取用户登录
     async getLogin() {
-      const { loginPhone, loginPassword } = this;
+      const {loginPhone, loginPassword} = this;
       const success = await this.$validator.validateAll('login');
       if (success) {
         try {
@@ -365,6 +366,7 @@ export default {
   z-index: 999;
   background: rgba(0, 0, 0, 0.3);
 }
+
 .login-container {
   height: 850px;
   overflow: hidden hidden;
@@ -376,6 +378,7 @@ export default {
     top: 50%;
     background-color: #fff;
     transform: translate(-50%, -50%);
+
     .text {
       height: 30px;
       font-size: 16px;
@@ -383,9 +386,11 @@ export default {
       line-height: 30px;
     }
   }
+
   .login-wrap {
     height: 100%;
     display: flex;
+
     .login-left {
       background: rgb(49, 109, 249);
       width: 530px;
@@ -394,6 +399,7 @@ export default {
       background-size: auto 250px;
       padding: 0 20px;
       position: relative;
+
       .login-img {
         position: absolute;
         left: -235px;
@@ -421,9 +427,11 @@ export default {
         letter-spacing: 0.3em;
       }
     }
+
     .login-right {
       width: 70%;
       position: relative;
+
       img {
         position: absolute;
         right: 20px;
@@ -431,6 +439,7 @@ export default {
         width: 10%;
         height: 10%;
       }
+
       .loginform {
         width: 520px;
         height: 480px;
@@ -440,6 +449,7 @@ export default {
         left: 200px;
         padding: 20px;
         position: relative;
+
         .content {
           width: 380px;
           height: 316px;
@@ -447,15 +457,18 @@ export default {
           border-top: none;
           padding: 18px;
           position: relative;
+
           .text {
             font-size: 14px;
             position: relative;
+
             .text-title {
               letter-spacing: 0.5em;
               position: absolute;
               top: 40px;
               left: 70px;
             }
+
             .text-img {
               position: absolute;
               top: 0px;
@@ -467,9 +480,11 @@ export default {
               background-size: cover;
             }
           }
+
           .text1 {
             font-size: 14px;
             position: relative;
+
             .text-title1 {
               letter-spacing: 0.5em;
               position: absolute;
@@ -477,6 +492,7 @@ export default {
               left: 70px;
               position: relative;
             }
+
             .text-btn button {
               text-align: center;
               position: absolute;
@@ -493,6 +509,7 @@ export default {
               border-radius: 5px;
               font-size: 12px;
             }
+
             .text-img1 {
               position: absolute;
               top: 0px;
@@ -504,11 +521,13 @@ export default {
               background-size: cover;
             }
           }
+
           .box-card {
             width: 550px;
             height: 600px;
             border-radius: 5px;
           }
+
           form {
             position: absolute;
             left: 70px;
@@ -517,15 +536,18 @@ export default {
             font-size: 12px;
             line-height: 18px;
             text-align: center;
+
             .input-text {
               width: 350px;
               margin-bottom: 30px;
               position: relative;
+
               .error-text {
                 position: absolute;
                 top: 50px;
                 left: -7px;
               }
+
               i {
                 position: absolute;
                 left: 0px;
@@ -539,6 +561,7 @@ export default {
               .hint {
                 color: #e1251b;
               }
+
               input {
                 width: 332px;
                 height: 50px;
@@ -555,11 +578,13 @@ export default {
                 border-radius: 5px;
               }
             }
+
             .setting {
               label {
                 float: left;
               }
             }
+
             .btn {
               background-color: rgb(49, 109, 249);
               padding: 6px;
@@ -575,21 +600,26 @@ export default {
               border-radius: 5px;
             }
           }
+
           .call {
             margin-top: 30px;
             font-size: 15px;
             line-height: 38px;
+
             .register {
               float: left;
               color: #666;
             }
+
             .forget {
               float: right;
             }
+
             .register:hover {
               color: #4cb9fc;
               text-decoration: none;
             }
+
             .forget:hover {
               color: #4cb9fc;
               text-decoration: none;

@@ -1,6 +1,11 @@
 //采用了路由懒加载
 export default [
   {
+    path: '/chat',
+    name:'chat',
+    component:()=>import('@/pages/Chat')
+  },
+  {
     path: '/paysuccess',
     component: () => import('@/components/paySuccess'),
     beforeEnter: (to, from, next) => {
