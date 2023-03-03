@@ -1,6 +1,9 @@
 <template>
   <div v-cloak>
-
+    <el-button type="primary" @click="goHome">
+      <i class="el-icon-arrow-left"></i>
+      继续去逛逛啦
+    </el-button>
     <!--顾客窗口开始-->
     <div v-if="!sender.isService">
       <!--聊天内容窗口-->
@@ -14,25 +17,24 @@
           </div>
           <template v-for="(item, index) in conversition">
             <div
-                :key="index"
-                v-if="item.SendId == sender.id && item.Identity == 2"
+              :key="index"
+              v-if="item.SendId == sender.id && item.Identity == 2"
             >
               <div class="myselfDiv">
                 <div v-if="item.State == 0">
                   <van-loading
-                      v-if="item.Type == 1"
-                      type="spinner"
-                      class="myselfImageLoad"
-                      size="24px"
+                    v-if="item.Type == 1"
+                    type="spinner"
+                    class="myselfImageLoad"
+                    size="24px"
                   ></van-loading>
                   <van-loading
-                      v-else
-                      :key="index"
-                      type="spinner"
-                      class="myselfLoad"
-                      size="24px"
-                  >
-                  </van-loading>
+                    v-else
+                    :key="index"
+                    type="spinner"
+                    class="myselfLoad"
+                    size="24px"
+                  ></van-loading>
                 </div>
                 <div v-else-if="item.State == -1">
                   <span v-if="item.Type == 1" class="sendImageError">!</span>
@@ -45,17 +47,17 @@
                   <img v-bind:src="item.Content" />
                 </div>
                 <img
-                    v-else-if="item.Type == 1"
-                    class="mineSendImage"
-                    @load="loadOverImg"
-                    preview="1"
-                    v-bind:src="item.Content"
+                  v-else-if="item.Type == 1"
+                  class="mineSendImage"
+                  @load="loadOverImg"
+                  preview="1"
+                  v-bind:src="item.Content"
                 />
                 <div
-                    v-else-if="item.Type == 3"
-                    class="myOtherContent"
-                    style="padding: 0.1rem"
-                    v-on:click="toUrl(item.Content)"
+                  v-else-if="item.Type == 3"
+                  class="myOtherContent"
+                  style="padding: 0.1rem"
+                  v-on:click="toUrl(item.Content)"
                 >
                   <div class="goods-wrap">
                     <div class="goods-thum">
@@ -69,20 +71,21 @@
                         {{ item.Description }}
                       </p>
                       <p class="goods-label" :title="item.Label">
-                        <span class="rmb-icon"></span>{{ item.Label }}
+                        <span class="rmb-icon"></span>
+                        {{ item.Label }}
                       </p>
                     </div>
                     <div
-                        v-if="item.noSend"
-                        class="sendCard"
-                        v-on:click.stop="sendCard(item)"
+                      v-if="item.noSend"
+                      class="sendCard"
+                      v-on:click.stop="sendCard(item)"
                     >
                       发给客服
                     </div>
                     <div
-                        v-else-if="item.noSend == false"
-                        class="sendCard"
-                        style="background: #eee"
+                      v-else-if="item.noSend == false"
+                      class="sendCard"
+                      style="background: #eee"
                     >
                       已发送
                     </div>
@@ -100,24 +103,24 @@
                   <img v-bind:src="customerServiceImage" />
                 </div>
                 <div
-                    v-if="item.Type == 0"
-                    class="otherContent"
-                    v-html="item.Content"
+                  v-if="item.Type == 0"
+                  class="otherContent"
+                  v-html="item.Content"
                 ></div>
                 <div v-else-if="item.Type == 2" class="otherContent">
                   <img v-bind:src="item.Content" />
                 </div>
                 <img
-                    v-else-if="item.Type == 1"
-                    class="yourSendImage"
-                    v-bind:src="item.Content"
-                    @load="loadOverImg"
-                    preview="1"
+                  v-else-if="item.Type == 1"
+                  class="yourSendImage"
+                  v-bind:src="item.Content"
+                  @load="loadOverImg"
+                  preview="1"
                 />
                 <div
-                    v-else-if="item.Type == 3"
-                    class="otherContent"
-                    style="padding: 0.1rem"
+                  v-else-if="item.Type == 3"
+                  class="otherContent"
+                  style="padding: 0.1rem"
                 >
                   <a :href="item.Content" target="_blank">
                     <div class="goods-wrap">
@@ -132,34 +135,35 @@
                           {{ item.Description }}
                         </p>
                         <p class="goods-label" :title="item.Label">
-                          <span class="rmb-icon"></span>{{ item.Label }}
+                          <span class="rmb-icon"></span>
+                          {{ item.Label }}
                         </p>
                       </div>
                     </div>
                   </a>
                 </div>
                 <div
-                    v-else-if="
+                  v-else-if="
                     item.Type == '4' &&
-                      item.Content.IsParent &&
-                      item.Content.ReplyLink
+                    item.Content.IsParent &&
+                    item.Content.ReplyLink
                   "
-                    class="otherContent"
+                  class="otherContent"
                 >
                   <p>{{ item.Content.Reply }}</p>
                   <div
-                      v-for="(link, index2) in item.Content.ReplyLink"
-                      :key="index2"
-                      style="color: #da2339; padding: 5px 0"
-                      v-on:click="linkReply(link.Answer, link.Reply)"
+                    v-for="(link, index2) in item.Content.ReplyLink"
+                    :key="index2"
+                    style="color: #da2339; padding: 5px 0"
+                    v-on:click="linkReply(link.Answer, link.Reply)"
                   >
                     {{ index2 + 1 }}.{{ link.Answer }}
                   </div>
                 </div>
                 <div
-                    v-else-if="item.Type == '4'"
-                    v-html="item.Content.Reply"
-                    class="otherContent test"
+                  v-else-if="item.Type == '4'"
+                  v-html="item.Content.Reply"
+                  class="otherContent test"
                 ></div>
               </div>
               <div style="clear: both"></div>
@@ -176,20 +180,20 @@
       <div id="floatDiv" class="floatDiv">
         <div class="inputBox">
           <div
-              v-show="!sender.onlineState"
-              id="toPeopleService"
-              class="robotServices"
-              v-on:click="callPeople"
+            v-show="!sender.onlineState"
+            id="toPeopleService"
+            class="robotServices"
+            v-on:click="callPeople"
           >
             <img src="@/assets/images/service/客服.png" />
             <div class="robotFont">转人工</div>
           </div>
           <div :class="!sender.onlineState ? 'inputDiv' : 'inputDiv2'">
             <input
-                class="inputContent"
-                type="text"
-                v-model="sendInfo"
-                v-on:focus="openMore('input')"
+              class="inputContent"
+              type="text"
+              v-model="sendInfo"
+              v-on:focus="openMore('input')"
             />
           </div>
           <div v-show="!sender.onlineState">
@@ -223,18 +227,18 @@
             <template v-for="(item, index) in toolBox">
               <li :key="index">
                 <div
-                    class="item"
-                    v-on:click="index == 1 ? (showComment = true) : ''"
+                  class="item"
+                  v-on:click="index == 1 ? (showComment = true) : ''"
                 >
                   <div class="toolIcon">
                     <img class="toolImage" v-bind:src="item.image" />
                     <input
-                        v-if="index == 0"
-                        class="FileImage"
-                        name="customer"
-                        type="file"
-                        value=""
-                        v-on:change="sendImage"
+                      v-if="index == 0"
+                      class="FileImage"
+                      name="customer"
+                      type="file"
+                      value=""
+                      v-on:change="sendImage"
                     />
                   </div>
                 </div>
@@ -244,9 +248,9 @@
           </ul>
         </section>
         <section
-            v-else-if="moreTool && !sender.onlineState"
-            class="moreTool"
-            style="height: 1.3rem"
+          v-else-if="moreTool && !sender.onlineState"
+          class="moreTool"
+          style="height: 1.3rem"
         >
           <ul class="toolUl">
             <template v-for="(item, index) in robotToolBox">
@@ -267,10 +271,10 @@
               <template v-for="(item, index) in expressions">
                 <li :key="index">
                   <img
-                      class="customerSendExpression"
-                      v-bind:src="item.image"
-                      v-bind:title="item.title"
-                      v-on:click="toSend(item.image, 2, 2)"
+                    class="customerSendExpression"
+                    v-bind:src="item.image"
+                    v-bind:title="item.title"
+                    v-on:click="toSend(item.image, 2, 2)"
                   />
                 </li>
               </template>
@@ -278,9 +282,9 @@
           </div>
         </div>
         <van-popup
-            v-model="showComment"
-            bind:close="onCloseComment"
-            position="bottom"
+          v-model="showComment"
+          bind:close="onCloseComment"
+          position="bottom"
         >
           <div class="showComment" style="height: 5rem">
             <div class="commentTitle" style="display: block">
@@ -290,14 +294,14 @@
               <template v-for="(item, index) in start">
                 <div :key="index" class="startImage">
                   <img
-                      v-if="!item.state"
-                      v-bind:src="item.offstart"
-                      v-on:click="changeLevel(item, index)"
+                    v-if="!item.state"
+                    v-bind:src="item.offstart"
+                    v-on:click="changeLevel(item, index)"
                   />
                   <img
-                      v-else
-                      v-bind:src="item.onstart"
-                      v-on:click="changeLevel(item, index)"
+                    v-else
+                    v-bind:src="item.onstart"
+                    v-on:click="changeLevel(item, index)"
                   />
                 </div>
               </template>
@@ -306,10 +310,10 @@
               <div style="margin-top: 0.05rem">{{ thisQuestion }}</div>
               <template v-for="(item, index) in solveState">
                 <button
-                    :key="index"
-                    class="tablSelect"
-                    v-bind:class="{ activeSelect: item.state }"
-                    v-on:click="onClickSelect(index)"
+                  :key="index"
+                  class="tablSelect"
+                  v-bind:class="{ activeSelect: item.state }"
+                  v-on:click="onClickSelect(index)"
                 >
                   {{ item.name }}
                 </button>
@@ -317,9 +321,9 @@
             </div>
             <div class="submitDiv">
               <div
-                  class="submitBtn"
-                  v-bind:class="{ activeBtn: level > 0 && solveResult != -1 }"
-                  v-on:click="sumbitComment"
+                class="submitBtn"
+                v-bind:class="{ activeBtn: level > 0 && solveResult != -1 }"
+                v-on:click="sumbitComment"
               >
                 提交
               </div>
@@ -327,41 +331,43 @@
           </div>
         </van-popup>
         <van-popup
-            v-model="showMessage"
-            bind:close="showMessage=false"
-            position="bottom"
+          v-model="showMessage"
+          bind:close="showMessage=false"
+          position="bottom"
         >
           <div class="showComment">
             <div class="commentTitle">
               <span
-                  v-bind:class="{ messageActive: messageType }"
-                  class="messageTopBtn"
-                  v-on:click="changeMessageType(true)"
-              >请您留言</span
+                v-bind:class="{ messageActive: messageType }"
+                class="messageTopBtn"
+                v-on:click="changeMessageType(true)"
               >
+                请您留言
+              </span>
               <span
-                  v-bind:class="{ messageActive: !messageType }"
-                  class="messageTopBtn"
-                  v-on:click="changeMessageType(false)"
-              >留言记录</span
+                v-bind:class="{ messageActive: !messageType }"
+                class="messageTopBtn"
+                v-on:click="changeMessageType(false)"
               >
+                留言记录
+              </span>
             </div>
             <div v-show="messageType">
               <div class="messageTip">
                 {{ messageTip }}
               </div>
               <textarea
-                  v-model="customerMessage"
-                  :placeholder="messageTip2"
-                  maxlength="200"
-                  id="remark"
-                  class="textarea"
+                v-model="customerMessage"
+                :placeholder="messageTip2"
+                maxlength="200"
+                id="remark"
+                class="textarea"
               ></textarea>
               <div class="submitDiv" style="margin-top: 0.5rem">
                 <div
-                    class="submitBtn"
-                    v-bind:class="{ activeBtn: customerMessage.length > 0 }"
-                    v-on:click="sumbitMessage"
+                  class="submitBtn"
+                  v-bind:class="{ activeBtn: customerMessage.length > 0 }"
+                  v-on:click="sumbitMessage"
                 >
                   提交
                 </div>
@@ -369,26 +375,26 @@
             </div>
             <div v-show="!messageType" class="messageRecord">
               <div
-                  v-for="(item, index) in messageList"
-                  :key="index"
-                  class="messageDiv"
+                v-for="(item, index) in messageList"
+                :key="index"
+                class="messageDiv"
               >
                 <div class="messageTime">{{ item.CreateTime }}</div>
                 <div class="messageContent">
                   <div class="messageDetail">{{ item.Message }}</div>
                   <div class="messageState" v-if="item.State == 0">待回复</div>
                   <div
-                      class="messageState"
-                      v-else-if="item.State == 4"
-                      v-on:click="item.State = 3"
+                    class="messageState"
+                    v-else-if="item.State == 4"
+                    v-on:click="item.State = 3"
                   >
                     ∧收起
                   </div>
                   <div
-                      class="messageState"
-                      style="background: #da2339"
-                      v-else
-                      v-on:click="seeMessageDetail(item)"
+                    class="messageState"
+                    style="background: #da2339"
+                    v-else
+                    v-on:click="seeMessageDetail(item)"
                   >
                     查看详情
                   </div>
@@ -409,16 +415,16 @@
     <div v-else class="qqBox">
       <!--接收信息提示音-->
       <audio
-          src="@/assets/Mp3/msgTip.mp3"
-          preload="auto"
-          id="tipMusic"
-          hidden="hidden"
+        src="@/assets/Mp3/msgTip.mp3"
+        preload="auto"
+        id="tipMusic"
+        hidden="hidden"
       ></audio>
       <!--查看商品详情-->
       <div
-          v-if="showProductDetail"
-          class="productBox"
-          v-on:click="onCloseProduct"
+        v-if="showProductDetail"
+        class="productBox"
+        v-on:click="onCloseProduct"
       >
         <div class="productDetail" v-on:click.stop="">
           <img class="productImg" :src="productDetail.DefaultPictureUrl" />
@@ -429,21 +435,21 @@
             </div>
             <div class="colum">
               <span class="font_gray">规格：{{ productDetail.Unit }}</span>
-              <span class="font_gray"
-              >销量：{{
+              <span class="font_gray">
+                销量：{{
                   productDetail.ProductSaleQuantity
-                      ? productDetail.ProductSaleQuantity
-                      : "暂无数据"
-                }}</span
-              >
+                    ? productDetail.ProductSaleQuantity
+                    : '暂无数据'
+                }}
+              </span>
             </div>
           </div>
           <div class="more_info">
             <div>参数</div>
             <div class="info_detail">
               <div
-                  v-for="(item, index) in productDetail.ProductAttributes"
-                  :key="index"
+                v-for="(item, index) in productDetail.ProductAttributes"
+                :key="index"
               >
                 <div>{{ item.Text }}:{{ item.Value }}</div>
               </div>
@@ -462,9 +468,9 @@
         </div>
         <input v-else v-model="temporaryUserName" style="margin-top: 14px" />
         <div
-            v-if="!changeUserName"
-            class="internetName changeNameBtn"
-            v-on:click="changeUserName = true"
+          v-if="!changeUserName"
+          class="internetName changeNameBtn"
+          v-on:click="changeUserName = true"
         >
           修改
         </div>
@@ -472,55 +478,55 @@
           保存
         </div>
         <div
-            v-if="!changeReceptNumber"
-            class="internetName"
-            style="margin-left: 10px"
+          v-if="!changeReceptNumber"
+          class="internetName"
+          style="margin-left: 10px"
         >
           接待人数:{{ sender.receptNum }}
         </div>
         <input
-            v-else
-            type="number"
-            v-model="temporaryReceptNumber"
-            style="margin-top: 14px; width: 50px; margin-left: 10px"
+          v-else
+          type="number"
+          v-model="temporaryReceptNumber"
+          style="margin-top: 14px; width: 50px; margin-left: 10px"
         />
         <div
-            v-if="!changeReceptNumber"
-            class="internetName changeNameBtn"
-            v-on:click="changeReceptNumber = true"
+          v-if="!changeReceptNumber"
+          class="internetName changeNameBtn"
+          v-on:click="changeReceptNumber = true"
         >
           修改
         </div>
         <div
-            v-else
-            class="internetName changeNameBtn"
-            v-on:click="changNumber()"
+          v-else
+          class="internetName changeNameBtn"
+          v-on:click="changNumber()"
         >
           保存
         </div>
         <div
-            v-show="showLoginBtn"
-            class="internetName"
-            style="margin-left: 20px"
+          v-show="showLoginBtn"
+          class="internetName"
+          style="margin-left: 20px"
         >
           在线状态
         </div>
         <div v-show="showLoginBtn" style="margin-top: 13px; margin-left: 5px">
           <van-switch
-              :value="sender.onlineState"
-              active-color="#25AEF3"
-              inactive-color="#F1F3F4"
-              size="24px"
-              id="onLine"
-              v-on:click="changeOnLine"
+            :value="sender.onlineState"
+            active-color="#25AEF3"
+            inactive-color="#F1F3F4"
+            size="24px"
+            id="onLine"
+            v-on:click="changeOnLine"
           />
         </div>
         <div
-            v-show="showLoginBtn"
-            class="internetName"
-            style="margin-left: 5px"
+          v-show="showLoginBtn"
+          class="internetName"
+          style="margin-left: 5px"
         >
-          {{ sender.onlineState ? "在线" : "离线" }}
+          {{ sender.onlineState ? '在线' : '离线' }}
         </div>
       </div>
       <!--内容-->
@@ -534,14 +540,14 @@
               在线会话
             </div>
             <li
-                :key="index"
-                v-show="onlineShow && item.ReviceId == sender.id"
-                style="cursor: pointer"
-                v-for="(item, index) in currentSessionPeople"
-                v-on:click="selectSession(item, 1)"
-                :class="{ isSelect: item.IsSelect }"
-                v-on:mouseenter="item.CloseSession = true"
-                v-on:mouseleave="item.CloseSession = false"
+              :key="index"
+              v-show="onlineShow && item.ReviceId == sender.id"
+              style="cursor: pointer"
+              v-for="(item, index) in currentSessionPeople"
+              v-on:click="selectSession(item, 1)"
+              :class="{ isSelect: item.IsSelect }"
+              v-on:mouseenter="item.CloseSession = true"
+              v-on:mouseleave="item.CloseSession = false"
             >
               <div class="liLeft">
                 <img src="@/assets/images/service/customerImg.png" />
@@ -550,14 +556,15 @@
                 <span class="intername">{{ item.SendName }}</span>
                 <span class="infor">{{ item.SessionContent }}</span>
                 <div v-show="item.UnRead > 0" class="un_read">
-                  {{ item.UnRead > 99 ? "99+" : item.UnRead }}
+                  {{ item.UnRead > 99 ? '99+' : item.UnRead }}
                 </div>
                 <span
-                    class="closeSession"
-                    v-show="item.CloseSession"
-                    v-on:click.stop="closeSeesion(item)"
-                >×关闭</span
+                  class="closeSession"
+                  v-show="item.CloseSession"
+                  v-on:click.stop="closeSeesion(item)"
                 >
+                  ×关闭
+                </span>
               </div>
             </li>
           </ul>
@@ -568,14 +575,14 @@
               离线会话
             </div>
             <li
-                :key="index"
-                v-show="offlineShow && item.ReviceId == sender.id"
-                style="cursor: pointer"
-                v-for="(item, index) in offLineSessionPeople"
-                v-on:click="selectSession(item, 0)"
-                :class="{ isSelect: item.IsSelect }"
-                v-on:mouseenter="item.CloseSession = true"
-                v-on:mouseleave="item.CloseSession = false"
+              :key="index"
+              v-show="offlineShow && item.ReviceId == sender.id"
+              style="cursor: pointer"
+              v-for="(item, index) in offLineSessionPeople"
+              v-on:click="selectSession(item, 0)"
+              :class="{ isSelect: item.IsSelect }"
+              v-on:mouseenter="item.CloseSession = true"
+              v-on:mouseleave="item.CloseSession = false"
             >
               <div class="liLeft">
                 <img src="@/assets/images/service/offLineImg.png" />
@@ -584,14 +591,15 @@
                 <span class="intername">{{ item.SendName }}</span>
                 <span class="infor">{{ item.SessionContent }}</span>
                 <div v-show="item.UnRead > 0" class="un_read">
-                  {{ item.UnRead > 99 ? "99+" : item.UnRead }}
+                  {{ item.UnRead > 99 ? '99+' : item.UnRead }}
                 </div>
                 <span
-                    class="closeSession"
-                    v-show="item.CloseSession"
-                    v-on:click="removeOffLine(item, $event)"
-                >×关闭</span
+                  class="closeSession"
+                  v-show="item.CloseSession"
+                  v-on:click="removeOffLine(item, $event)"
                 >
+                  ×关闭
+                </span>
               </div>
             </li>
           </ul>
@@ -605,13 +613,13 @@
           <div class="layout-empty">
             <div class="layout-empty-conatiner">
               <img
-                  style="width: 100px; height: auto"
-                  src="@/assets/images/service/noSession.png"
+                style="width: 100px; height: auto"
+                src="@/assets/images/service/noSession.png"
               />
               <span>没有会话内容</span>
-              <span style="color: #bdc3d1"
-              >当客户接入后，从左侧客户列表中选择客户开始会话</span
-              >
+              <span style="color: #bdc3d1">
+                当客户接入后，从左侧客户列表中选择客户开始会话
+              </span>
             </div>
           </div>
         </div>
@@ -632,7 +640,7 @@
               <div class="moreSession pcMoreSession">已加载全部</div>
             </div>
             <template
-                v-for="(item, index) in conversition.filter(
+              v-for="(item, index) in conversition.filter(
                 (x) =>
                   (x.SendId == sender.id && x.ReviceId == revicer.id) ||
                   (x.ReviceId == sender.id && x.SendId == revicer.id),
@@ -642,16 +650,16 @@
                 <div class="myselfDiv">
                   <div v-if="item.State == 0">
                     <van-loading
-                        v-if="item.Type == 1"
-                        type="spinner"
-                        class="myselfImageLoad"
-                        size="24px"
+                      v-if="item.Type == 1"
+                      type="spinner"
+                      class="myselfImageLoad"
+                      size="24px"
                     ></van-loading>
                     <van-loading
-                        v-else
-                        type="spinner"
-                        class="myselfLoad"
-                        size="24px"
+                      v-else
+                      type="spinner"
+                      class="myselfLoad"
+                      size="24px"
                     ></van-loading>
                   </div>
                   <div v-else-if="item.State == -1">
@@ -659,32 +667,23 @@
                     <span v-else class="sendError">!</span>
                   </div>
                   <div v-if="item.Type == 0" class="news">
-                    <img
-                        class="jiao"
-                        src="@/assets/images/service/radio.jpg"
-                    />
+                    <img class="jiao" src="@/assets/images/service/radio.jpg" />
                     {{ item.Content }}
                   </div>
                   <div v-else-if="item.Type == 2" class="news">
-                    <img
-                        class="jiao"
-                        src="@/assets/images/service/radio.jpg"
-                    />
+                    <img class="jiao" src="@/assets/images/service/radio.jpg" />
                     <img v-bind:src="item.Content" />
                   </div>
                   <img
-                      v-else-if="item.Type == 1"
-                      style="margin-right: -15px"
-                      class="yourSendImage"
-                      v-bind:src="item.Content"
-                      @load="loadOverImg"
-                      preview="1"
+                    v-else-if="item.Type == 1"
+                    style="margin-right: -15px"
+                    class="yourSendImage"
+                    v-bind:src="item.Content"
+                    @load="loadOverImg"
+                    preview="1"
                   />
                   <div v-else-if="item.Type == 3" class="news">
-                    <img
-                        class="jiao"
-                        src="@/assets/images/service/radio.jpg"
-                    />
+                    <img class="jiao" src="@/assets/images/service/radio.jpg" />
                     <div class="goods-wrap" v-on:click="openCard(item.Content)">
                       <div class="goods-thum">
                         <img :src="item.Thumbnail" />
@@ -697,7 +696,8 @@
                           {{ item.Description }}
                         </p>
                         <p class="goods-label" :title="item.Label">
-                          <span class="rmb-icon"></span>{{ item.Label }}
+                          <span class="rmb-icon"></span>
+                          {{ item.Label }}
                         </p>
                       </div>
                     </div>
@@ -709,8 +709,8 @@
                 <div style="clear: both"></div>
               </div>
               <div
-                  :key="index"
-                  v-else-if="item.SendId == revicer.id && item.Identity == 2"
+                :key="index"
+                v-else-if="item.SendId == revicer.id && item.Identity == 2"
               >
                 <div v-if="item.State == 1" class="customerServiceDiv">
                   <div class="answerHead">
@@ -718,30 +718,30 @@
                   </div>
                   <div v-if="item.Type == 0" class="answers">
                     <img
-                        class="jiao"
-                        src="@/assets/images/service/other_radio.jpg"
+                      class="jiao"
+                      src="@/assets/images/service/other_radio.jpg"
                     />
                     {{ item.Content }}
                   </div>
                   <div v-else-if="item.Type == 2" class="answers">
                     <img
-                        class="jiao"
-                        src="@/assets/images/service/other_radio.jpg"
+                      class="jiao"
+                      src="@/assets/images/service/other_radio.jpg"
                     />
                     <img v-bind:src="item.Content" />
                   </div>
                   <img
-                      v-else-if="item.Type == 1"
-                      class="yourSendImage"
-                      style="margin-left: 0"
-                      v-bind:src="item.Content"
-                      @load="loadOverImg"
-                      preview="1"
+                    v-else-if="item.Type == 1"
+                    class="yourSendImage"
+                    style="margin-left: 0"
+                    v-bind:src="item.Content"
+                    @load="loadOverImg"
+                    preview="1"
                   />
                   <div v-else-if="item.Type == 3" class="cardAnswers">
                     <img
-                        class="jiao"
-                        src="@/assets/images/service/other_radio.jpg"
+                      class="jiao"
+                      src="@/assets/images/service/other_radio.jpg"
                     />
                     <div class="goods-wrap" v-on:click="openCard(item.Content)">
                       <div class="goods-thum">
@@ -755,7 +755,8 @@
                           {{ item.Description }}
                         </p>
                         <p class="goods-label" :title="item.Label">
-                          <span class="rmb-icon"></span>{{ item.Label }}
+                          <span class="rmb-icon"></span>
+                          {{ item.Label }}
                         </p>
                       </div>
                     </div>
@@ -772,14 +773,15 @@
                 <div class="consultGuide">
                   <div class="consultGuideDiv">{{ item.content.title }}</div>
                   <template
-                      v-for="(questionItem, index) in item.Content.questions"
+                    v-for="(questionItem, index) in item.Content.questions"
                   >
                     <a
-                        :key="index"
-                        class="aQuestion"
-                        v-bind:href="questionItem.href"
-                    >{{ questionItem.question }}</a
+                      :key="index"
+                      class="aQuestion"
+                      v-bind:href="questionItem.href"
                     >
+                      {{ questionItem.question }}
+                    </a>
                   </template>
                 </div>
               </div>
@@ -795,10 +797,10 @@
                   <template v-for="(item, index) in expressions">
                     <li :key="index">
                       <img
-                          class="serviceSendExpression"
-                          v-bind:src="item.image"
-                          v-bind:title="item.title"
-                          v-on:click="toSend(item.image, 1, 2)"
+                        class="serviceSendExpression"
+                        v-bind:src="item.image"
+                        v-bind:title="item.title"
+                        v-on:click="toSend(item.image, 1, 2)"
                       />
                     </li>
                   </template>
@@ -811,17 +813,17 @@
                     <img src="@/assets/images/service/pc_expression.jpg" />
                   </li>
                   <li
-                      v-on:click="expressionShow = false"
-                      class="ExP"
-                      style="position: relative"
+                    v-on:click="expressionShow = false"
+                    class="ExP"
+                    style="position: relative"
                   >
                     <img src="@/assets/images/service/pc_upload.jpg" />
                     <input
-                        class="FileImage serviceFileImage"
-                        name="customerService"
-                        type="file"
-                        value=""
-                        v-on:change="sendImage"
+                      class="FileImage serviceFileImage"
+                      name="customerService"
+                      type="file"
+                      value=""
+                      v-on:change="sendImage"
                     />
                   </li>
                 </ul>
@@ -829,19 +831,19 @@
               <!--发送内容-->
               <div style="height: calc(100% - 70px)">
                 <textarea
-                    v-on:focus="expressionShow = false"
-                    id="dope"
-                    v-model="sendInfo"
-                    class="textBox"
-                    :placeholder="
+                  v-on:focus="expressionShow = false"
+                  id="dope"
+                  v-model="sendInfo"
+                  class="textBox"
+                  :placeholder="
                     allowSession ? '请输入会话内容' : '当前会员已下线'
                   "
-                    v-on:keyup.enter="enterSend"
+                  v-on:keyup.enter="enterSend"
                 ></textarea>
                 <button
-                    class="sendBtn"
-                    id="serviceSendBtn"
-                    v-on:click="toSend(sendInfo, 1, 0)"
+                  class="sendBtn"
+                  id="serviceSendBtn"
+                  v-on:click="toSend(sendInfo, 1, 0)"
                 >
                   发送(s)
                 </button>
@@ -854,13 +856,13 @@
           <!--工具栏-->
           <div class="serviceTool">
             <div
-                v-for="(item, index) in serviceTool"
-                :key="index"
-                :class="[
+              v-for="(item, index) in serviceTool"
+              :key="index"
+              :class="[
                 'service_tool',
                 item.id == current_state ? 'active_tool' : '',
               ]"
-                v-on:click="changeState(item)"
+              v-on:click="changeState(item)"
             >
               {{ item.text }}
             </div>
@@ -890,9 +892,9 @@
           </div>
           <!--快捷回复-->
           <div
-              v-show="current_state == 2"
-              class="infoContent"
-              style="display: block"
+            v-show="current_state == 2"
+            class="infoContent"
+            style="display: block"
           >
             <template v-for="(item, index) in fastReplay">
               <ul :key="index" class="domtree">
@@ -901,22 +903,22 @@
                     {{ item.Title }}
                   </p>
                   <ul
-                      v-show="currentEasy == item.Id"
-                      style="position: relative"
+                    v-show="currentEasy == item.Id"
+                    style="position: relative"
                   >
                     <li v-for="(son, index2) in item.SonItem" :key="index2">
                       <p
-                          class="sonTitle"
-                          :title="son.Title"
-                          v-bind:data-id="son.Id"
-                          v-on:click="selectReplay(son.Title)"
+                        class="sonTitle"
+                        :title="son.Title"
+                        v-bind:data-id="son.Id"
+                        v-on:click="selectReplay(son.Title)"
                       >
                         {{ son.Title }}
                       </p>
                       <div
-                          class="see_all"
-                          name="see_all"
-                          v-bind:data-id="son.Id"
+                        class="see_all"
+                        name="see_all"
+                        v-bind:data-id="son.Id"
                       >
                         {{ son.Title }}
                       </div>
@@ -929,9 +931,9 @@
           <!--对接页面-->
           <div v-show="current_state == 3" class="infoContent">
             <iframe
-                v-if="abutmentUrl"
-                style="width: 100%; height: 100%; border: 0px"
-                :src="abutmentUrl"
+              v-if="abutmentUrl"
+              style="width: 100%; height: 100%; border: 0px"
+              :src="abutmentUrl"
             ></iframe>
           </div>
         </div>
@@ -942,34 +944,34 @@
 </template>
 
 <script>
-(function(doc, win) {
+(function (doc, win) {
   var docEl = doc.documentElement,
-      resizeEvt = "orientationchange" in window ? "orientationchange" : "resize",
-      recalc = function() {
-        var clientWidth = docEl.clientWidth;
-        if (!clientWidth) return;
-        if (clientWidth >= 640) {
-          docEl.style.fontSize = "100px";
-        } else {
-          docEl.style.fontSize = 100 * (clientWidth / 640) + "px";
-        }
-      };
+    resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+    recalc = function () {
+      var clientWidth = docEl.clientWidth;
+      if (!clientWidth) return;
+      if (clientWidth >= 640) {
+        docEl.style.fontSize = '100px';
+      } else {
+        docEl.style.fontSize = 100 * (clientWidth / 640) + 'px';
+      }
+    };
   if (!doc.addEventListener) return;
   win.addEventListener(resizeEvt, recalc, false);
-  doc.addEventListener("DOMContentLoaded", recalc, false);
+  doc.addEventListener('DOMContentLoaded', recalc, false);
 })(document, window);
-import io from "socket.io-client"; //引入socket.io-client
-import { Toast } from "vant";
+import io from 'socket.io-client'; //引入socket.io-client
+import { Toast } from 'vant';
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: 'Chat',
   metaInfo: {
-    title: "聊天会话",
+    title: '聊天会话',
     meta: [
       {
-        name: "viewport",
+        name: 'viewport',
         content:
-            "width=device-width, user-scalable=yes, initial-scale=1.0, maximum-scale=3.0, minimum-scale=1.0",
+          'width=device-width, user-scalable=yes, initial-scale=1.0, maximum-scale=3.0, minimum-scale=1.0',
       },
     ],
   },
@@ -979,24 +981,24 @@ export default {
       sender: {
         id: 0,
         isService: 0,
-        name: "",
+        name: '',
         onlineState: false,
-        outTradeNo: "",
-        source: "",
-        mobile: "",
-        nickName: "",
-        cardNo: "",
+        outTradeNo: '',
+        source: '',
+        mobile: '',
+        nickName: '',
+        cardNo: '',
         receptNum: 0,
       },
       revicer: {
         id: 0,
         isService: 0,
-        name: "",
-        outTradeNo: "",
-        source: "",
-        mobile: "",
-        nickName: "",
-        cardNo: "",
+        name: '',
+        outTradeNo: '',
+        source: '',
+        mobile: '',
+        nickName: '',
+        cardNo: '',
         receptNum: 0,
       },
       infoTemplate: {},
@@ -1006,18 +1008,18 @@ export default {
       pageIndex: 1,
       current_state: 1,
       pageSize: 10,
-      sendInfo: "",
-      abutmentUrl: "",
-      customerMessage: "",
+      sendInfo: '',
+      abutmentUrl: '',
+      customerMessage: '',
       temporaryReceptNumber: 0,
-      temporaryUserName: "",
-      thisQuestion: "本次问题：",
-      myselfImage: require("@/assets/images/service/customerImg.png"),
-      customerServiceImage: require("@/assets/images/service/serviceImg.png"),
+      temporaryUserName: '',
+      thisQuestion: '本次问题：',
+      myselfImage: require('@/assets/images/service/customerImg.png'),
+      customerServiceImage: require('@/assets/images/service/serviceImg.png'),
       messageTip:
-          "您好，很抱歉我们暂时无法为您提供服务，如需帮助，请留言，我们将尽快联系并解决您的问题",
+        '您好，很抱歉我们暂时无法为您提供服务，如需帮助，请留言，我们将尽快联系并解决您的问题',
       messageTip2:
-          "您好，为了更好地解决您的问题，请尽可能地描述清楚问题(最多200字)",
+        '您好，为了更好地解决您的问题，请尽可能地描述清楚问题(最多200字)',
       noCode: +new Date(),
       msgTimer: null,
       moreTool: false,
@@ -1046,230 +1048,230 @@ export default {
       productDetail: {},
       toolBox: [
         {
-          name: "照片",
-          image: require("@/assets/images/service/selectPhone.png"),
+          name: '照片',
+          image: require('@/assets/images/service/selectPhone.png'),
         },
         {
-          name: "服务评价",
-          image: require("@/assets/images/service/apraise.png"),
+          name: '服务评价',
+          image: require('@/assets/images/service/apraise.png'),
         },
       ],
       robotToolBox: [
         {
-          name: "留言",
-          image: require("@/assets/images/service/apraise.png"),
+          name: '留言',
+          image: require('@/assets/images/service/apraise.png'),
         },
       ],
       expressions: [
         {
-          title: "[呵呵]",
-          image: require("@/assets/images/Expression/smilea_thumb.gif"),
+          title: '[呵呵]',
+          image: require('@/assets/images/Expression/smilea_thumb.gif'),
         },
         {
-          title: "[嘻嘻]",
-          image: require("@/assets/images/Expression/tootha_thumb.gif"),
+          title: '[嘻嘻]',
+          image: require('@/assets/images/Expression/tootha_thumb.gif'),
         },
         {
-          title: "[哈哈]",
-          image: require("@/assets/images/Expression/laugh.gif"),
+          title: '[哈哈]',
+          image: require('@/assets/images/Expression/laugh.gif'),
         },
         {
-          title: "[可爱]",
-          image: require("@/assets/images/Expression/tza_thumb.gif"),
+          title: '[可爱]',
+          image: require('@/assets/images/Expression/tza_thumb.gif'),
         },
         {
-          title: "[可怜]",
-          image: require("@/assets/images/Expression/kl_thumb.gif"),
+          title: '[可怜]',
+          image: require('@/assets/images/Expression/kl_thumb.gif'),
         },
         {
-          title: "[挖鼻屎]",
-          image: require("@/assets/images/Expression/kbsa_thumb.gif"),
+          title: '[挖鼻屎]',
+          image: require('@/assets/images/Expression/kbsa_thumb.gif'),
         },
         {
-          title: "[吃惊]",
-          image: require("@/assets/images/Expression/cj_thumb.gif"),
+          title: '[吃惊]',
+          image: require('@/assets/images/Expression/cj_thumb.gif'),
         },
         {
-          title: "[害羞]",
-          image: require("@/assets/images/Expression/shamea_thumb.gif"),
+          title: '[害羞]',
+          image: require('@/assets/images/Expression/shamea_thumb.gif'),
         },
         {
-          title: "[挤眼]",
-          image: require("@/assets/images/Expression/zy_thumb.gif"),
+          title: '[挤眼]',
+          image: require('@/assets/images/Expression/zy_thumb.gif'),
         },
         {
-          title: "[闭嘴]",
-          image: require("@/assets/images/Expression/bz_thumb.gif"),
+          title: '[闭嘴]',
+          image: require('@/assets/images/Expression/bz_thumb.gif'),
         },
         {
-          title: "[鄙视]",
-          image: require("@/assets/images/Expression/bs2_thumb.gif"),
+          title: '[鄙视]',
+          image: require('@/assets/images/Expression/bs2_thumb.gif'),
         },
         {
-          title: "[爱你]",
-          image: require("@/assets/images/Expression/lovea_thumb.gif"),
+          title: '[爱你]',
+          image: require('@/assets/images/Expression/lovea_thumb.gif'),
         },
         {
-          title: "[泪]",
-          image: require("@/assets/images/Expression/sada_thumb.gif"),
+          title: '[泪]',
+          image: require('@/assets/images/Expression/sada_thumb.gif'),
         },
         {
-          title: "[偷笑]",
-          image: require("@/assets/images/Expression/heia_thumb.gif"),
+          title: '[偷笑]',
+          image: require('@/assets/images/Expression/heia_thumb.gif'),
         },
         {
-          title: "[亲亲]",
-          image: require("@/assets/images/Expression/qq_thumb.gif"),
+          title: '[亲亲]',
+          image: require('@/assets/images/Expression/qq_thumb.gif'),
         },
         {
-          title: "[生病]",
-          image: require("@/assets/images/Expression/sb_thumb.gif"),
+          title: '[生病]',
+          image: require('@/assets/images/Expression/sb_thumb.gif'),
         },
         {
-          title: "[太开心]",
-          image: require("@/assets/images/Expression/mb_thumb.gif"),
+          title: '[太开心]',
+          image: require('@/assets/images/Expression/mb_thumb.gif'),
         },
         {
-          title: "[懒得理你]",
-          image: require("@/assets/images/Expression/ldln_thumb.gif"),
+          title: '[懒得理你]',
+          image: require('@/assets/images/Expression/ldln_thumb.gif'),
         },
         {
-          title: "[右哼哼]",
-          image: require("@/assets/images/Expression/yhh_thumb.gif"),
+          title: '[右哼哼]',
+          image: require('@/assets/images/Expression/yhh_thumb.gif'),
         },
         {
-          title: "[左哼哼]",
-          image: require("@/assets/images/Expression/zhh_thumb.gif"),
+          title: '[左哼哼]',
+          image: require('@/assets/images/Expression/zhh_thumb.gif'),
         },
         {
-          title: "[嘘]",
-          image: require("@/assets/images/Expression/x_thumb.gif"),
+          title: '[嘘]',
+          image: require('@/assets/images/Expression/x_thumb.gif'),
         },
         {
-          title: "[衰]",
-          image: require("@/assets/images/Expression/cry.gif"),
+          title: '[衰]',
+          image: require('@/assets/images/Expression/cry.gif'),
         },
         {
-          title: "[委屈]",
-          image: require("@/assets/images/Expression/wq_thumb.gif"),
+          title: '[委屈]',
+          image: require('@/assets/images/Expression/wq_thumb.gif'),
         },
         {
-          title: "[吐]",
-          image: require("@/assets/images/Expression/t_thumb.gif"),
+          title: '[吐]',
+          image: require('@/assets/images/Expression/t_thumb.gif'),
         },
         {
-          title: "[打哈气]",
-          image: require("@/assets/images/Expression/k_thumb.gif"),
+          title: '[打哈气]',
+          image: require('@/assets/images/Expression/k_thumb.gif'),
         },
         {
-          title: "[抱抱]",
-          image: require("@/assets/images/Expression/bba_thumb.gif"),
+          title: '[抱抱]',
+          image: require('@/assets/images/Expression/bba_thumb.gif'),
         },
         {
-          title: "[怒]",
-          image: require("@/assets/images/Expression/angrya_thumb.gif"),
+          title: '[怒]',
+          image: require('@/assets/images/Expression/angrya_thumb.gif'),
         },
         {
-          title: "[疑问]",
-          image: require("@/assets/images/Expression/yw_thumb.gif"),
+          title: '[疑问]',
+          image: require('@/assets/images/Expression/yw_thumb.gif'),
         },
         {
-          title: "[馋嘴]",
-          image: require("@/assets/images/Expression/cza_thumb.gif"),
+          title: '[馋嘴]',
+          image: require('@/assets/images/Expression/cza_thumb.gif'),
         },
         {
-          title: "[拜拜]",
-          image: require("@/assets/images/Expression/88_thumb.gif"),
+          title: '[拜拜]',
+          image: require('@/assets/images/Expression/88_thumb.gif'),
         },
         {
-          title: "[思考]",
-          image: require("@/assets/images/Expression/sk_thumb.gif"),
+          title: '[思考]',
+          image: require('@/assets/images/Expression/sk_thumb.gif'),
         },
         {
-          title: "[汗]",
-          image: require("@/assets/images/Expression/sweata_thumb.gif"),
+          title: '[汗]',
+          image: require('@/assets/images/Expression/sweata_thumb.gif'),
         },
         {
-          title: "[困]",
-          image: require("@/assets/images/Expression/sleepya_thumb.gif"),
+          title: '[困]',
+          image: require('@/assets/images/Expression/sleepya_thumb.gif'),
         },
         {
-          title: "[睡觉]",
-          image: require("@/assets/images/Expression/sleepa_thumb.gif"),
+          title: '[睡觉]',
+          image: require('@/assets/images/Expression/sleepa_thumb.gif'),
         },
         {
-          title: "[钱]",
-          image: require("@/assets/images/Expression/money_thumb.gif"),
+          title: '[钱]',
+          image: require('@/assets/images/Expression/money_thumb.gif'),
         },
         {
-          title: "[失望]",
-          image: require("@/assets/images/Expression/sw_thumb.gif"),
+          title: '[失望]',
+          image: require('@/assets/images/Expression/sw_thumb.gif'),
         },
         {
-          title: "[酷]",
-          image: require("@/assets/images/Expression/cool_thumb.gif"),
+          title: '[酷]',
+          image: require('@/assets/images/Expression/cool_thumb.gif'),
         },
         {
-          title: "[花心]",
-          image: require("@/assets/images/Expression/hsa_thumb.gif"),
+          title: '[花心]',
+          image: require('@/assets/images/Expression/hsa_thumb.gif'),
         },
         {
-          title: "[哼]",
-          image: require("@/assets/images/Expression/hatea_thumb.gif"),
+          title: '[哼]',
+          image: require('@/assets/images/Expression/hatea_thumb.gif'),
         },
         {
-          title: "[鼓掌]",
-          image: require("@/assets/images/Expression/gza_thumb.gif"),
+          title: '[鼓掌]',
+          image: require('@/assets/images/Expression/gza_thumb.gif'),
         },
         {
-          title: "[晕]",
-          image: require("@/assets/images/Expression/dizzya_thumb.gif"),
+          title: '[晕]',
+          image: require('@/assets/images/Expression/dizzya_thumb.gif'),
         },
         {
-          title: "[悲伤]",
-          image: require("@/assets/images/Expression/bs_thumb.gif"),
+          title: '[悲伤]',
+          image: require('@/assets/images/Expression/bs_thumb.gif'),
         },
       ],
       start: [
         {
-          offstart: require("@/assets/images/service/offstart.png"),
-          onstart: require("@/assets/images/service/onstart.png"),
+          offstart: require('@/assets/images/service/offstart.png'),
+          onstart: require('@/assets/images/service/onstart.png'),
           state: false,
           level: 1,
         },
         {
-          offstart: require("@/assets/images/service/offstart.png"),
-          onstart: require("@/assets/images/service/onstart.png"),
+          offstart: require('@/assets/images/service/offstart.png'),
+          onstart: require('@/assets/images/service/onstart.png'),
           state: false,
           level: 2,
         },
         {
-          offstart: require("@/assets/images/service/offstart.png"),
-          onstart: require("@/assets/images/service/onstart.png"),
+          offstart: require('@/assets/images/service/offstart.png'),
+          onstart: require('@/assets/images/service/onstart.png'),
           state: false,
           level: 3,
         },
         {
-          offstart: require("@/assets/images/service/offstart.png"),
-          onstart: require("@/assets/images/service/onstart.png"),
+          offstart: require('@/assets/images/service/offstart.png'),
+          onstart: require('@/assets/images/service/onstart.png'),
           state: false,
           level: 4,
         },
         {
-          offstart: require("@/assets/images/service/offstart.png"),
-          onstart: require("@/assets/images/service/onstart.png"),
+          offstart: require('@/assets/images/service/offstart.png'),
+          onstart: require('@/assets/images/service/onstart.png'),
           state: false,
           level: 5,
         },
       ],
       solveState: [
         {
-          name: "已解决",
+          name: '已解决',
           state: false,
           value: 1,
         },
         {
-          name: "未解决",
+          name: '未解决',
           state: false,
           value: 0,
         },
@@ -1277,46 +1279,46 @@ export default {
       serviceTool: [
         {
           id: 1,
-          text: "客户信息",
+          text: '客户信息',
           state: true,
         },
         {
           id: 2,
-          text: "快捷回复",
+          text: '快捷回复',
           state: false,
         },
         {
           id: 3,
-          text: "对接页面",
+          text: '对接页面',
           state: false,
         },
       ],
       browseCard: {
         Id: 0,
-        Name: "",
-        ShortDescription: "",
-        DefaultPictureUrl: "",
+        Name: '',
+        ShortDescription: '',
+        DefaultPictureUrl: '',
         Amount: 0,
         Type: 0,
       },
     };
   },
   watch: {
-    currentSessionPeople: function(newVal) {
+    currentSessionPeople: function (newVal) {
       this.currentHasPeople = false;
       if (newVal.length > 0 && this.sender.isService) {
         this.currentHasPeople =
-            newVal.filter((x) => x.ReviceId === this.sender.id).length > 0
-                ? true
-                : false;
+          newVal.filter((x) => x.ReviceId === this.sender.id).length > 0
+            ? true
+            : false;
       }
     },
   },
   mounted() {
     this.init();
-    this.socket = io(process.env.VUE_APP_URL || "/");
+    this.socket = io(process.env.VUE_APP_URL || '/');
     // 接收机器人回复的信息
-    this.socket.on("reviceFromRobot", (data) => {
+    this.socket.on('reviceFromRobot', (data) => {
       if (data.flag) {
         this.signalrService(data.content, 1, 4, false);
       } else {
@@ -1324,12 +1326,12 @@ export default {
       }
     });
     // 加入会话成功
-    this.socket.on("joinSuccess", (data) => {
+    this.socket.on('joinSuccess', (data) => {
       this.closeLoad();
       if (
-          data.user.SendId === this.sender.id &&
-          data.user.NoCode == this.noCode &&
-          this.sender.isService
+        data.user.SendId === this.sender.id &&
+        data.user.NoCode == this.noCode &&
+        this.sender.isService
       ) {
         this.sender.onlineState = true;
         let oldSessionPeople = this.currentSessionPeople;
@@ -1338,7 +1340,7 @@ export default {
             for (let j in oldSessionPeople) {
               if (oldSessionPeople[j].SendId == data.users[i].SendId) {
                 data.users[i].SessionContent =
-                    oldSessionPeople[j].SessionContent;
+                  oldSessionPeople[j].SessionContent;
                 data.users[i].UnRead = oldSessionPeople[j].UnRead;
               }
             }
@@ -1348,7 +1350,7 @@ export default {
             for (let j in data.users) {
               if (oldSessionPeople[i].SendId == data.users[j].SendId) {
                 data.users[j].SessionContent =
-                    oldSessionPeople[i].SessionContent;
+                  oldSessionPeople[i].SessionContent;
                 data.users[j].UnRead = oldSessionPeople[i].UnRead;
               }
             }
@@ -1358,13 +1360,13 @@ export default {
       //更新客服离线的列表
       if (this.sender.isService && data.user.ReviceId === this.sender.id) {
         this.offLineSessionPeople = this.offLineSessionPeople.filter(
-            (x) => x.SendId !== data.user.SendId,
+          (x) => x.SendId !== data.user.SendId,
         );
       }
       this.currentSessionPeople = data.users;
     });
     //当前用户接收加入提示信息
-    this.socket.on("joinTip", (data) => {
+    this.socket.on('joinTip', (data) => {
       this.sender.onlineState = true;
       this.revicer.id = data.ReviceId;
       this.revicer.name = data.ReviceName;
@@ -1372,7 +1374,7 @@ export default {
       this.infoTemplate = {
         SendId: 0,
         ReviceId: 0,
-        Content: "客服" + data.ReviceName + "为您服务",
+        Content: '客服' + data.ReviceName + '为您服务',
         Identity: 3,
         Type: 0,
         State: 1,
@@ -1389,7 +1391,7 @@ export default {
         this.infoTemplate = {
           SendId: this.sender.id,
           ReviceId: this.revicer.id,
-          Content: "" + this.browseCard.Id,
+          Content: '' + this.browseCard.Id,
           Identity: 2,
           Type: 3,
           State: 1,
@@ -1407,7 +1409,7 @@ export default {
       this.toBottom(100);
     });
     //当前用户接收加入失败提示
-    this.socket.on("joinError", (data) => {
+    this.socket.on('joinError', (data) => {
       this.infoTemplate = {
         SendId: 0,
         ReviceId: 0,
@@ -1429,7 +1431,7 @@ export default {
       this.closeLoad();
     });
     //当前用户接收对方离线提示
-    this.socket.on("offLineTip", (data) => {
+    this.socket.on('offLineTip', (data) => {
       this.showMsg(data.msg);
       this.conversition.forEach((x) => {
         if (x.SendId == this.sender.id) {
@@ -1439,7 +1441,7 @@ export default {
       });
     });
     //修改信息状态
-    this.socket.on("changOrShowMsg", (data) => {
+    this.socket.on('changOrShowMsg', (data) => {
       this.sendState = true;
       clearTimeout(this.msgTimer);
       this.conversition.forEach((x) => {
@@ -1449,7 +1451,7 @@ export default {
       });
     });
     //接收信息
-    this.socket.on("reviceMsg", (data) => {
+    this.socket.on('reviceMsg', (data) => {
       if (this.sender.isService && data.ReviceId == this.sender.id) {
         this.playMusic();
         this.currentSessionPeople.forEach((x) => {
@@ -1460,13 +1462,13 @@ export default {
                 x.SessionContent = data.Content;
                 break;
               case 1:
-                x.SessionContent = "图片";
+                x.SessionContent = '图片';
                 break;
               case 2:
-                x.SessionContent = "表情";
+                x.SessionContent = '表情';
                 break;
               case 3:
-                x.SessionContent = "卡片";
+                x.SessionContent = '卡片';
                 break;
             }
           }
@@ -1475,18 +1477,18 @@ export default {
       this.toSendInfo(data);
     });
     //客服离线成功
-    this.socket.on("offSuccess", (data) => {
+    this.socket.on('offSuccess', (data) => {
       this.closeLoad();
       this.currentSessionPeople = data.Users;
       if (
-          !this.sender.isService &&
-          this.sender.onlineState &&
-          this.revicer.id == data.SendId
+        !this.sender.isService &&
+        this.sender.onlineState &&
+        this.revicer.id == data.SendId
       ) {
         this.infoTemplate = {
           SendId: 0,
           ReviceId: 0,
-          Content: "当前客服已离线",
+          Content: '当前客服已离线',
           Identity: 3,
           Type: 0,
           State: 1,
@@ -1508,12 +1510,12 @@ export default {
       }
     });
     //客服主动关闭会话
-    this.socket.on("closeSessionSuccess", (data) => {
+    this.socket.on('closeSessionSuccess', (data) => {
       if (!this.sender.isService) {
         this.infoTemplate = {
           SendId: 0,
           ReviceId: 0,
-          Content: "客服结束了本次会话",
+          Content: '客服结束了本次会话',
           Identity: 3,
           Type: 0,
           State: 1,
@@ -1533,40 +1535,40 @@ export default {
           this.isSelectSession = false;
         }
         let offLineSessionPeople = this.currentSessionPeople.filter(
-            (x) => x.SendId === data.SendId,
+          (x) => x.SendId === data.SendId,
         );
         if (offLineSessionPeople.length > 0) {
-          offLineSessionPeople[0].SessionContent = "客服主动结束会话";
+          offLineSessionPeople[0].SessionContent = '客服主动结束会话';
           this.offLineSessionPeople.push(offLineSessionPeople[0]);
         }
       }
       this.currentSessionPeople = data.Users;
     });
     //会员刷新或关闭离线
-    this.socket.on("customerDisconnect", (data) => {
+    this.socket.on('customerDisconnect', (data) => {
       //将中间会话窗口关闭
       if (data.SendId == this.revicer.id) {
         this.isSelectSession = false;
       }
       let offLineSessionPeople = this.currentSessionPeople.filter(
-          (x) => x.SendId === data.SendId,
+        (x) => x.SendId === data.SendId,
       );
       if (offLineSessionPeople.length > 0) {
-        offLineSessionPeople[0].SessionContent = "已下线";
+        offLineSessionPeople[0].SessionContent = '已下线';
         offLineSessionPeople[0].IsSelect = false;
         this.offLineSessionPeople.push(offLineSessionPeople[0]);
       }
       this.currentSessionPeople = data.Users
-          ? data.Users
-          : this.currentSessionPeople;
+        ? data.Users
+        : this.currentSessionPeople;
     });
     //客服刷新或关闭离线
-    this.socket.on("serviceDisconnect", (data) => {
+    this.socket.on('serviceDisconnect', (data) => {
       if (this.sender.onlineState) {
         this.infoTemplate = {
           SendId: 0,
           ReviceId: 0,
-          Content: "当前客服已下线",
+          Content: '当前客服已下线',
           Identity: 3,
           Type: 0,
           State: 1,
@@ -1582,26 +1584,26 @@ export default {
         this.toSendInfo(this.infoTemplate);
         this.sender.onlineState = false;
         this.currentSessionPeople = data.Users
-            ? data.Users
-            : this.currentSessionPeople;
+          ? data.Users
+          : this.currentSessionPeople;
       }
     });
     //多设备在线时，强制旧设备下线
-    this.socket.on("squeezeOut", (data) => {
+    this.socket.on('squeezeOut', (data) => {
       if (this.noCode === data.noCode) {
         if (!this.sender.isService) {
-          this.signalrService("账户已在其他设备登陆，会话中断", 3, 0, false);
+          this.signalrService('账户已在其他设备登陆，会话中断', 3, 0, false);
           this.sender.onlineState = false;
         } else {
           this.currentSessionPeople = [];
           this.loginAgain = true;
           //离线
           this.isSelectSession = false;
-          this.socket.emit("offLine", {
+          this.socket.emit('offLine', {
             SendId: this.sender.id,
             NoCode: this.noCode,
           });
-          alert("账户已在其他设备登陆，会话中断");
+          alert('账户已在其他设备登陆，会话中断');
         }
       }
     });
@@ -1611,22 +1613,22 @@ export default {
     init() {
       this.sender.id = parseInt(this.$route.query.sendId);
       if (!(this.sender.id > 0)) {
-        alert("请添加sendId参数");
+        alert('请添加sendId参数');
         return false;
       }
       let product = this.$store.state.chat.productList.filter(
-          (x) => x.Id == this.$route.query.productId,
+        (x) => x.Id == this.$route.query.productId,
       );
       if (product.length > 0) {
         this.browseCard.Id = product[0].Id;
         this.browseCard.Name = product[0].Name;
         this.browseCard.ShortDescription = product[0].ShortDescription;
         this.browseCard.DefaultPictureUrl = product[0].DefaultPictureUrl;
-        this.browseCard.Amount = "编码:" + product[0].ProductCode;
+        this.browseCard.Amount = '编码:' + product[0].ProductCode;
         this.browseCard.Type = 1;
       }
       let userInfo = this.$store.state.chat.chatUserList.filter(
-          (x) => x.id == this.sender.id,
+        (x) => x.id == this.sender.id,
       )[0];
       this.fastReplay = this.$store.state.chat.fastReply;
       if (userInfo) {
@@ -1636,12 +1638,12 @@ export default {
         this.sender.receptNum = userInfo.receptNum;
         this.temporaryReceptNumber = userInfo.receptNum; //修改接待用户数量时的临时记录接待用户数量
       } else {
-        alert("请保证sendId参数在userList.json文件中存在");
+        alert('请保证sendId参数在userList.json文件中存在');
         return false;
       }
       //发送欢迎语
       let welCome = this.$store.state.chat.robotReply.filter(
-          (x) => x.Answer.indexOf("欢迎语") !== -1,
+        (x) => x.Answer.indexOf('欢迎语') !== -1,
       );
       if (welCome.length > 0) {
         this.signalrService(welCome[0], 1, 4, false);
@@ -1658,10 +1660,10 @@ export default {
       let identity = this.sender.isService ? 1 : 2;
       if (fileObj != null) {
         if (!/image\/\w+/.test(fileObj.type)) {
-          return alert("请选择图片文件!", { icon: 5, time: 1000 });
+          return alert('请选择图片文件!', { icon: 5, time: 1000 });
         }
         var fd = new FormData();
-        fd.append("file", fileObj);
+        fd.append('file', fileObj);
         if (fileObj.size > 1024 * 1024 * 2 && fileObj.size < 1024 * 1024 * 10) {
           let reader = new FileReader();
           reader.readAsDataURL(fileObj);
@@ -1669,23 +1671,23 @@ export default {
             let image = new Image(); //新建一个img标签（还没嵌入DOM节点)
             image.src = e.target.result;
             image.onload = () => {
-              let canvas = document.createElement("canvas"),
-                  context = canvas.getContext("2d"),
-                  imageWidth = image.width / 2, //压缩后图片的大小
-                  imageHeight = image.height / 2,
-                  data = "";
+              let canvas = document.createElement('canvas'),
+                context = canvas.getContext('2d'),
+                imageWidth = image.width / 2, //压缩后图片的大小
+                imageHeight = image.height / 2,
+                data = '';
               canvas.width = imageWidth;
               canvas.height = imageHeight;
               context.drawImage(image, 0, 0, imageWidth, imageHeight);
-              data = canvas.toDataURL("image/jpeg");
+              data = canvas.toDataURL('image/jpeg');
               let newFile = this.dataURLtoFile(data); //压缩完成
               fd = new FormData();
-              fd.append("file", newFile);
+              fd.append('file', newFile);
               this.signalrService(data, identity, 1);
             };
           };
         } else if (fileObj.size > 1024 * 1024 * 10) {
-          return alert("上传图片不能超过10M!", { icon: 5, time: 1000 });
+          return alert('上传图片不能超过10M!', { icon: 5, time: 1000 });
         } else {
           let reader = new FileReader();
           reader.readAsDataURL(fileObj);
@@ -1696,10 +1698,10 @@ export default {
       }
     },
     //压缩图片
-    dataURLtoFile(dataurl, filename = "file") {
-      let arr = dataurl.split(",");
+    dataURLtoFile(dataurl, filename = 'file') {
+      let arr = dataurl.split(',');
       let mime = arr[0].match(/:(.*?);/)[1];
-      let suffix = mime.split("/")[1];
+      let suffix = mime.split('/')[1];
       let bstr = atob(arr[1]);
       let n = bstr.length;
       let u8arr = new Uint8Array(n);
@@ -1714,13 +1716,13 @@ export default {
     enterSend() {
       if (this.sendInfo) this.signalrService(this.sendInfo, 1, 0);
       else {
-        this.showMsg("内容不得为空");
+        this.showMsg('内容不得为空');
       }
     },
     //发送消息给会员或客服
     toSend(content, identity, type) {
       if (type === 0 && content.length <= 0) {
-        this.showMsg("请输入发送内容");
+        this.showMsg('请输入发送内容');
         return;
       }
       if (type === 2 && this.sender.isService) {
@@ -1730,11 +1732,11 @@ export default {
     },
     //1.信息组装
     signalrService(
-        content,
-        identity,
-        type,
-        isSendOther = true,
-        isRobot = false,
+      content,
+      identity,
+      type,
+      isSendOther = true,
+      isRobot = false,
     ) {
       if (this.sendState) {
         let createDate = this.nowTime();
@@ -1758,15 +1760,15 @@ export default {
         this.toSendInfo(this.infoTemplate);
         if (isSendOther) this.sendMsg(this.infoTemplate);
         this.sendState = isRobot || !this.sender.onlineState ? true : false;
-        this.sendInfo = type == 2 ? this.sendInfo : "";
+        this.sendInfo = type == 2 ? this.sendInfo : '';
         this.toBottom(100);
       } else {
-        this.showMsg("发送太快啦，请稍后再试");
+        this.showMsg('发送太快啦，请稍后再试');
       }
     },
     //2.发送信息
     sendMsg(data) {
-      this.socket.emit("sendMsg", data);
+      this.socket.emit('sendMsg', data);
       this.sendFailed(data);
     },
     //开启信息状态定时器
@@ -1784,7 +1786,7 @@ export default {
     changeOnLine() {
       if (!this.sender.onlineState) {
         this.loading();
-        this.socket.emit("joinChat", {
+        this.socket.emit('joinChat', {
           SendId: this.sender.id,
           SendName: this.sender.name,
           ReviceId: -1,
@@ -1796,7 +1798,7 @@ export default {
         //离线
         this.loading();
         this.isSelectSession = false;
-        this.socket.emit("offLine", {
+        this.socket.emit('offLine', {
           SendId: this.sender.id,
           NoCode: this.noCode,
         });
@@ -1809,7 +1811,7 @@ export default {
     },
     //加入会话
     joinChat() {
-      this.socket.emit("joinChat", {
+      this.socket.emit('joinChat', {
         SendId: this.sender.id,
         ReviceId: this.revicer.id,
         SendName: this.sender.name,
@@ -1822,7 +1824,7 @@ export default {
     loading() {
       Toast.loading({
         duration: 0,
-        message: "",
+        message: '',
         forbidClick: true,
       });
     },
@@ -1848,7 +1850,9 @@ export default {
     openProductDetail(id) {
       this.loading();
       // #### 模拟数据库取商品数据 ####
-      let product = this.$store.state.chat.productList.filter((x) => x.Id === id);
+      let product = this.$store.state.chat.productList.filter(
+        (x) => x.Id === id,
+      );
       if (product.length > 0) {
         this.productDetail = product[0];
         this.showProductDetail = true;
@@ -1857,7 +1861,7 @@ export default {
     },
     //客服收到信息提醒
     playMusic() {
-      let audio = document.getElementById("tipMusic");
+      let audio = document.getElementById('tipMusic');
       if (audio != null) {
         audio.currentTime = 0;
         audio.play();
@@ -1897,12 +1901,12 @@ export default {
       //是否为PC端
       var userAgentInfo = navigator.userAgent;
       var Agents = [
-        "Android",
-        "iPhone",
-        "SymbianOS",
-        "Windows Phone",
-        "iPad",
-        "iPod",
+        'Android',
+        'iPhone',
+        'SymbianOS',
+        'Windows Phone',
+        'iPad',
+        'iPod',
       ];
       var flag = true;
       for (var v = 0; v < Agents.length; v++) {
@@ -1912,6 +1916,9 @@ export default {
         }
       }
       this.isPc = flag;
+    },
+    goHome() {
+      this.$router.push('/home');
     },
     //打开表情包
     changeExpression() {
@@ -1931,7 +1938,7 @@ export default {
       var s = myDate.getSeconds();
       var t = myDate.getMilliseconds();
       var now =
-          year + "-" + month + "-" + date + " " + h + ":" + m + ":" + s + ":" + t;
+        year + '-' + month + '-' + date + ' ' + h + ':' + m + ':' + s + ':' + t;
       return now;
     },
     //客服选择会话
@@ -1941,12 +1948,12 @@ export default {
         item.IsSelect = false;
       });
       this.current_state = 1;
-      this.abutmentUrl = "";
+      this.abutmentUrl = '';
       this.lastSession = true;
       obj.IsSelect = true;
       obj.UnRead = 0;
       let revicer = this.$store.state.chat.chatUserList.filter(
-          (x) => x.id === obj.SendId,
+        (x) => x.id === obj.SendId,
       );
       if (revicer.length > 0) {
         this.revicer.id = revicer[0].id;
@@ -1958,7 +1965,7 @@ export default {
         this.revicer.name = revicer[0].name;
         this.isSelectSession = true;
         this.pageIndex = 1;
-        this.socket.emit("changeMsgRead", obj.OutTradeNo);
+        this.socket.emit('changeMsgRead', obj.OutTradeNo);
       }
     },
     //发送消息模板
@@ -1988,19 +1995,19 @@ export default {
     //打开更多功能
     openMore(type) {
       switch (type) {
-        case "input":
+        case 'input':
           this.moreTool = false;
           this.expressionShow = false;
           this.changeHeight();
           this.toBottom(100);
           break;
-        case "tool":
+        case 'tool':
           this.expressionShow = false;
           this.moreTool = !this.moreTool;
           this.changeHeight();
           this.toBottom(100);
           break;
-        case "expression":
+        case 'expression':
           this.moreTool = false;
           this.expressionShow = !this.expressionShow;
           this.changeHeight();
@@ -2012,9 +2019,9 @@ export default {
     changeHeight() {
       var height = document.body.clientHeight;
       setTimeout(() => {
-        var floatHeight = document.getElementById("floatDiv").offsetHeight;
-        document.getElementById("ChatContent").style.height =
-            height - floatHeight + "px";
+        var floatHeight = document.getElementById('floatDiv').offsetHeight;
+        document.getElementById('ChatContent').style.height =
+          height - floatHeight + 'px';
         this.toBottom(100);
       }, 100);
     },
@@ -2022,13 +2029,13 @@ export default {
     toBottom(time) {
       setTimeout(() => {
         if (this.sender.isService) {
-          let RightCont = document.getElementById("RightCont");
+          let RightCont = document.getElementById('RightCont');
           if (RightCont != null) {
             let scrollHeight2 = RightCont.scrollHeight;
             RightCont.scrollTop = scrollHeight2;
           }
         } else {
-          let chatContent = document.getElementById("ChatContent");
+          let chatContent = document.getElementById('ChatContent');
           let scrollHeight = chatContent.scrollHeight;
           chatContent.scrollTop = scrollHeight;
         }
@@ -2037,11 +2044,11 @@ export default {
     },
     //机器人聊天
     sendToRobot() {
-      if (this.sendInfo != "") {
+      if (this.sendInfo != '') {
         let createDate = this.nowTime();
         let noCode = +new Date();
         let content = this.sendInfo;
-        this.sendInfo = "";
+        this.sendInfo = '';
         this.infoTemplate = {
           SendId: this.sender.id,
           ReviceId: 0,
@@ -2060,7 +2067,7 @@ export default {
         };
         this.toSendInfo(this.infoTemplate);
         this.toBottom(100);
-        this.socket.emit("sendToRobot", this.infoTemplate);
+        this.socket.emit('sendToRobot', this.infoTemplate);
         this.sendFailed(this.infoTemplate);
       } else {
         return null;
@@ -2079,7 +2086,7 @@ export default {
       /*
        * ##发起请求获取更多聊天记录
        */
-      this.showMsg("发起请求获取更多聊天记录");
+      this.showMsg('发起请求获取更多聊天记录');
     },
     //改变评分
     changeLevel(item, index) {
@@ -2107,15 +2114,15 @@ export default {
        * ##发起请求提交评价
        */
       this.showComment = false;
-      this.showMsg("发起请求提交评价");
+      this.showMsg('发起请求提交评价');
     },
     //提交留言
     sumbitMessage() {
       /*
        * ##发起请求获取留言信息
        */
-      this.showMsg("发起请求提交留言");
-      this.customerMessage = "";
+      this.showMsg('发起请求提交留言');
+      this.customerMessage = '';
       this.showMessage = false;
     },
     //留言与留言记录的切换
@@ -2125,7 +2132,7 @@ export default {
         /*
          * ##发起请求获取留言信息
          */
-        this.showMsg("发起请求获取留言信息");
+        this.showMsg('发起请求获取留言信息');
         this.messageList = this.$store.state.chat.messageList;
       }
     },
@@ -2135,21 +2142,21 @@ export default {
         /*
          * ##发起请求修改数据库留言状态
          */
-        this.showMsg("发起请求修改数据库留言状态");
+        this.showMsg('发起请求修改数据库留言状态');
       }
       message.State = 4;
     },
     //修改客服昵称
     changName() {
       this.changeUserName = false;
-      if (this.temporaryUserName == "") {
+      if (this.temporaryUserName == '') {
         this.temporaryUserName = this.sender.name;
-        this.showMsg("客服昵称不得为空");
+        this.showMsg('客服昵称不得为空');
       } else {
         /*
          * ##发起请求修改数据库客服昵称
          */
-        this.showMsg("发起请求修改数据库客服昵称");
+        this.showMsg('发起请求修改数据库客服昵称');
         //this.sender.name = this.temporaryUserName;
       }
     },
@@ -2158,18 +2165,18 @@ export default {
       this.changeReceptNumber = false;
       if (this.temporaryReceptNumber <= 0) {
         this.temporaryReceptNumber = this.receptNumber;
-        this.showMsg("接待人数必须大于0");
+        this.showMsg('接待人数必须大于0');
       } else {
         /*
          * ##发起请求修改数据库接待人数
          */
-        this.showMsg("发起请求修改数据库接待人数");
+        this.showMsg('发起请求修改数据库接待人数');
         //this.sender.receptNum = this.temporaryReceptNumber;
       }
     },
     //关闭会员会话
     closeSeesion(session) {
-      this.socket.emit("closeSeesion", {
+      this.socket.emit('closeSeesion', {
         SendId: session.SendId,
         OutTradeNo: session.OutTradeNo,
       });
@@ -2178,8 +2185,8 @@ export default {
     removeOffLine(session, event) {
       if (event) {
         event.stopPropagation
-            ? event.stopPropagation()
-            : (event.cancelBubble = true);
+          ? event.stopPropagation()
+          : (event.cancelBubble = true);
       }
       for (let index in this.offLineSessionPeople) {
         if (this.offLineSessionPeople[index].SendId == session.SendId) {
@@ -2195,9 +2202,9 @@ export default {
     sendCard(item) {
       if (item.noSend) {
         item.noSend = !item.noSend;
-        this.socket.emit("sendMsg", item);
+        this.socket.emit('sendMsg', item);
       } else {
-        this.showMsg("已发送");
+        this.showMsg('已发送');
       }
     },
   },
@@ -2205,6 +2212,1213 @@ export default {
 </script>
 
 <style scoped>
-@import url("@/assets/css/chat.css");
-@import url("@/assets/css/service.css");
+@import url('@/assets/css/service.css');
+[v-cloak] {
+  display: none;
+}
+
+body {
+  line-height: 24px;
+  font: 14px Helvetica Neue, Helvetica, PingFang SC, \5FAE\8F6F\96C5\9ED1,
+    Tahoma, Arial, sans-serif;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+body,
+button,
+dd,
+div,
+dl,
+dt,
+form,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+input,
+li,
+ol,
+p,
+pre,
+td,
+textarea,
+th,
+ul {
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+img {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.mainBox {
+  background: #ededed;
+}
+
+.serviceFileImage {
+  left: 0px !important;
+  height: 21px !important;
+  width: 21px !important;
+}
+
+.chatBox {
+  width: 100%;
+  overflow: auto;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+.chatContent {
+  height: 10.2rem;
+  overflow: auto;
+}
+
+.wantAsk {
+  width: 100%;
+  background: #fff;
+  height: 0.85rem;
+  display: flex;
+  text-align: center;
+  line-height: 0.85rem;
+  box-sizing: border-box;
+}
+
+.wantAsk > div {
+  margin-left: 0.2rem;
+}
+
+.questionSelect {
+  background: #ff9900;
+  height: 0.43rem;
+  line-height: 0.43rem;
+  border-radius: 15px;
+  padding-left: 0.1rem;
+  padding-right: 8px;
+  margin-top: 0.2rem;
+  color: #fff;
+}
+
+.inputBox {
+  border-top: 1px solid #a0a0a0;
+  height: 1.18rem;
+  display: flex;
+  background: #fff;
+}
+
+.robotServices {
+  height: 0.8rem;
+  width: 0.8rem;
+  text-align: center;
+  margin-top: 0.25rem;
+  z-index: 999;
+}
+
+.robotServices > img {
+  height: 50%;
+  width: 50%;
+  z-index: 999;
+}
+
+.robotFont {
+  font-size: 12px;
+  color: #515a7c;
+}
+
+.inputDiv {
+  height: 0.6rem;
+  margin-top: 0.25rem;
+  border: 1px solid #ccc;
+  width: 72%;
+  border-radius: 25px;
+  overflow: hidden;
+  margin-left: 0.1rem;
+}
+
+.inputDiv2 {
+  height: 0.6rem;
+  margin-top: 0.25rem;
+  border: 1px solid #ccc;
+  width: 72%;
+  border-radius: 25px;
+  overflow: hidden;
+  margin-left: 0.1rem;
+}
+
+.inputContent {
+  border: none;
+  margin-left: 0.16rem;
+  width: 93%;
+  height: 100%;
+}
+
+.floatDiv {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+}
+
+.sendExpression {
+  height: 0.6rem;
+  width: 0.6rem;
+  text-align: center;
+  margin-top: 0.25rem;
+  margin-left: 0.05rem;
+}
+
+.sendExpression > img {
+  height: 100%;
+  width: 100%;
+}
+
+.openMore {
+  height: 0.7rem;
+  width: 0.7rem;
+  text-align: center;
+  margin-top: 0.24rem;
+  margin-left: 0.1rem;
+}
+
+.openMore > img {
+  height: 100%;
+  width: 100%;
+}
+
+.sendToPeople,
+.sendToRobot,
+.sendToRobot2 {
+  height: 0.6rem;
+  width: 0.84rem;
+  border-radius: 15px;
+  background: #ff9900;
+  color: #fff;
+  line-height: 0.6rem;
+  text-align: center;
+  margin-top: 0.25rem;
+  margin-left: 0.08rem;
+}
+
+.sendToPeople,
+.sendToRobot {
+  background: #da2339;
+}
+
+.sendToRobot2 {
+  background: #ccc;
+}
+
+.moreTool,
+.expressionShow {
+  width: 100%;
+  height: 2.3rem;
+  background: #fff;
+}
+
+.toolUl {
+  width: 100%;
+  display: -webkit-flex;
+  display: flex;
+}
+
+.toolUl > li {
+  display: inline-block;
+  text-align: center;
+  font-size: 12px;
+  position: relative;
+  width: 33%;
+}
+
+.item {
+  width: 50px;
+  height: 50px;
+  background-color: #f2f5f7;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.toolIcon {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.toolImage {
+  height: 0.5rem;
+  width: auto;
+}
+
+.totalName {
+  margin-top: 5px;
+  display: block;
+  color: #515a7c;
+}
+
+.message {
+  height: 0.6rem;
+  margin-top: 0.25rem;
+  border: 1px solid #ccc;
+  width: 72%;
+  border-radius: 25px;
+  overflow: hidden;
+  margin-left: 0.1rem;
+  outline: none;
+  box-sizing: border-box;
+  font-size: 14px;
+  -webkit-background-clip: text;
+  background-image: linear-gradient(to right, #778899 0%, #333 100%);
+}
+
+.face {
+  width: 101%;
+}
+
+.face ul {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.face ul li {
+  width: 30px;
+  height: 30px;
+  list-style-type: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.consultGuide {
+  width: 90%;
+  height: 4.78rem;
+  background: #fff;
+  margin: 0 auto;
+  margin-top: 0.28rem;
+  border-radius: 13px;
+  border-bottom-left-radius: 0px;
+  padding: 0.26rem;
+  box-sizing: border-box;
+  margin-bottom: 0.3rem;
+}
+
+.aQuestion {
+  display: block;
+  color: #ff9900;
+  margin-bottom: 0.35rem;
+  font-size: 13px;
+  letter-spacing: 1px;
+}
+
+.consultGuideDiv {
+  margin-bottom: 0.35rem;
+  font-size: 13px;
+}
+
+.myselfDiv {
+  float: right;
+  margin: 0.35rem 0;
+  display: flex;
+  position: relative;
+}
+
+.myselfContent {
+  background: #fde7e9;
+  padding: 5px 20px;
+  border-radius: 6px;
+  max-width: 3.5rem;
+  margin-right: 1.2rem;
+  word-wrap: break-word;
+  word-break: break-all;
+  position: relative;
+}
+
+.mineSendImage,
+.yourSendImage {
+  padding: 0.08rem;
+  border-radius: 11px;
+  max-width: 2rem;
+  margin-right: 1rem;
+  overflow: hidden;
+  max-height: 2rem;
+  width: 2rem;
+  height: auto;
+}
+
+/*.mineSendImage > img, .yourSendImage > img {
+            width: 100%;
+            height: 100%;
+        }*/
+.yourSendImage {
+  margin-left: 1rem;
+}
+
+.otherContent {
+  background: #eeeeee;
+  padding: 0.1rem 0.35rem;
+  border-radius: 6px;
+  max-width: 4.5rem;
+  margin-left: 1rem;
+  word-wrap: break-word;
+  word-break: break-all;
+  position: relative;
+}
+
+.myOtherContent {
+  background: #fde7e9;
+  padding: 0.1rem 0.35rem;
+  border-radius: 6px;
+  max-width: 4.5rem;
+  margin-right: 1.2rem;
+  word-wrap: break-word;
+  word-break: break-all;
+  position: relative;
+}
+
+.sendCard {
+  height: 0.5rem;
+  width: 1.2rem;
+  border-radius: 15px;
+  background: #d92238;
+  color: #fff;
+  line-height: 0.5rem;
+  text-align: center;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+
+.myOtherContent:before {
+  width: 0;
+  position: absolute;
+  top: 4px;
+  right: -7px;
+  border-style: solid;
+  border-color: transparent #fde7e9;
+  border-width: 4px 0px 8px 8px;
+  content: '';
+}
+
+.customerServiceDiv {
+  float: left;
+  margin: 0.25rem 0rem;
+  display: flex;
+  position: relative;
+}
+
+.otherDiv {
+  display: flex;
+  position: relative;
+  padding: 0.1rem;
+  background: #dedede;
+  border-radius: 15px;
+  max-width: 4rem;
+  margin: 0 auto;
+  margin-top: 0.1rem;
+  margin-bottom: 0.1rem;
+  color: #778899;
+}
+
+.otherDiv > span {
+  display: inline-block;
+  margin: 0 auto;
+}
+
+.myselfImage {
+  width: 1rem;
+  position: absolute;
+  right: 0px;
+  top: -0.2rem;
+}
+
+.customerServiceImage {
+  width: 1rem;
+  position: absolute;
+  left: 0px;
+  top: -0.3rem;
+}
+
+.myselfImage > img,
+.customerServiceImage > img {
+  width: 83%;
+  height: auto;
+}
+
+.moreSession {
+  width: 1.5rem;
+  height: 0.6rem;
+  background: #d1d1d1;
+  border-radius: 20px;
+  color: #fff;
+  line-height: 0.6rem;
+  text-align: center;
+  margin: 0 auto;
+  margin-top: 0.1rem;
+}
+
+.FileImage {
+  margin-top: 5px;
+  z-index: 1;
+  position: absolute;
+  opacity: 0;
+  bottom: 0px;
+  left: -0.1rem;
+  height: 0.6rem;
+  width: 1rem;
+}
+
+.showImage {
+  width: 100%;
+  height: auto;
+}
+
+.showComment {
+  width: 100%;
+  background: #fff;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  box-sizing: border-box;
+  overflow: hidden;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.van-popup--bottom {
+  background: transparent;
+  box-sizing: border-box;
+}
+
+.commentTitle {
+  height: 0.8rem;
+  width: 100%;
+  text-align: center;
+  border-bottom: 1px solid #ccc;
+  line-height: 0.8rem;
+  letter-spacing: 1px;
+  display: flex;
+}
+
+.commentStart {
+  height: 2.2rem;
+  line-height: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.startImage {
+  height: 0.5rem;
+  width: 0.5rem;
+  margin: 0 0.1rem;
+}
+
+.startImage > img {
+  width: 100%;
+  height: 100%;
+}
+
+.isSolve {
+  height: 1rem;
+  width: 100%;
+  display: flex;
+  padding-left: 0.5rem;
+}
+
+.tablSelect {
+  height: 0.5rem;
+  width: 1.2rem;
+  float: left;
+  border: 2px solid #ccc;
+  border-radius: 18px;
+  line-height: 0.5rem;
+  text-align: center;
+  margin-left: 10px;
+  margin-bottom: 10px;
+  background: #fff;
+  font-size: 12px;
+  color: #ccc;
+}
+
+.activeSelect {
+  border: 2px solid #ff9900;
+  color: #ff9900;
+}
+
+.submitDiv {
+  width: 100%;
+  height: 0.8rem;
+}
+
+.submitBtn {
+  width: 86%;
+  height: 0.8rem;
+  background: #ff3030;
+  color: #fff;
+  opacity: 0.6;
+  pointer-events: none;
+  margin: 0 auto;
+  text-align: center;
+  line-height: 0.8rem;
+  border-radius: 5px;
+}
+
+.activeBtn {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+.myselfLoad {
+  position: absolute;
+  left: -0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.myselfImageLoad {
+  position: absolute;
+  left: -0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.sendImageError {
+  position: absolute;
+  top: 1.5rem;
+  left: -0.5rem;
+  background: red;
+  color: #fff;
+  display: inline-block;
+  width: 0.3rem;
+  text-align: center;
+  height: 0.3rem;
+  border-radius: 50%;
+}
+
+.sendError {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: -0.5rem;
+  background: red;
+  color: #fff;
+  display: inline-block;
+  width: 0.3rem;
+  text-align: center;
+  height: 0.3rem;
+  border-radius: 50%;
+  font-size: 0.2rem;
+}
+
+.openImageDiv {
+  width: 100% !important;
+  overflow: auto;
+}
+
+.imageBox {
+  height: 80vh;
+  width: 100vw;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 88;
+  background: rgba(0, 0, 0, 0.3);
+  overflow: auto;
+  line-height: 80vh;
+  text-align: center;
+}
+
+.productBox {
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 88;
+  background: rgba(0, 0, 0, 0.3);
+  overflow: auto;
+  text-align: center;
+}
+
+.imageBox img {
+  width: 35%;
+  height: auto;
+  z-index: 99;
+}
+
+.loginAgain {
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 88;
+  background: rgba(0, 0, 0, 0.8);
+  overflow: auto;
+  line-height: 80vh;
+  text-align: center;
+}
+
+.isSelect {
+  background: #ffebec;
+}
+
+.pcMoreSession {
+  width: 1rem;
+  height: 0.4rem;
+  line-height: 0.4rem;
+  cursor: pointer;
+}
+
+.noPeople {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.noPeople img {
+  width: 100%;
+  height: auto;
+}
+
+.layout-empty {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 85vh;
+}
+
+.layout-empty-conatiner {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.infoBox {
+  position: relative;
+  width: 380px;
+  background-color: #fafafa;
+  padding: 15px;
+  box-sizing: border-box;
+}
+
+.infoContent {
+  position: relative;
+  height: 86vh;
+  background: #fff;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.infoContent > div {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.infoContent label {
+  color: #8598b7;
+}
+
+.serviceTool {
+  height: 40px;
+  width: 100%;
+  background-color: #fff;
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 10px;
+}
+
+.service_tool {
+  text-align: center;
+  line-height: 40px;
+  width: 33%;
+  cursor: pointer;
+}
+
+.active_tool {
+  border-bottom: 3px solid #ff3636;
+}
+
+a {
+  color: #428bca;
+  text-decoration: none;
+}
+
+.goods-wrap {
+  width: 96%;
+  height: 89%;
+  background: #fff;
+  padding: 5px;
+  min-width: 180px;
+  overflow: hidden;
+}
+
+.goods-thum {
+  width: 22%;
+  max-height: 80px;
+  height: 80px !important;
+  float: left;
+}
+
+.goods-detail {
+  float: left;
+  width: 70%;
+  margin-left: 10px;
+}
+
+.goods-wrap img {
+  max-width: 100%;
+  vertical-align: bottom;
+  height: auto !important;
+}
+
+.goods-title {
+  float: left;
+  width: 100%;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: normal;
+  white-space: nowrap;
+  color: #3d4966;
+}
+
+.goods-abstract {
+  float: left;
+  width: 100%;
+  /* height: 20px; */
+  margin-top: 5px;
+  color: #3d4966;
+  margin-bottom: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: normal;
+  white-space: nowrap;
+}
+
+.van-switch__node {
+  background: #ff2c2b;
+}
+
+.goods-label {
+  float: left;
+  width: 100%;
+  height: 20px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: normal;
+  white-space: nowrap;
+  color: #3d4966;
+}
+
+.sendContent {
+  position: relative;
+  height: 100%;
+  box-shadow: 0 0 6px 3px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(142, 160, 188, 0.3);
+}
+
+.textBox {
+  width: 99%;
+  height: 100%;
+  border: none;
+  outline: none;
+  padding: 0 10px;
+  box-sizing: border-box;
+  resize: none;
+}
+
+ul.domtree,
+ul.domtree ul {
+  margin: 0;
+  padding: 0 0 0 2em;
+}
+
+ul.domtree li {
+  list-style: none;
+  position: relative;
+  width: 100%;
+  cursor: pointer;
+  font-weight: 400;
+}
+
+ul.domtree li p {
+  width: 100%;
+  word-break: break-all;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #15192a;
+}
+
+ul.domtree li p:hover {
+  color: #da2339;
+}
+
+ul.domtree > li:first-child:before {
+  border-style: none none none none;
+}
+
+ul.domtree li:before {
+  position: absolute;
+  content: '';
+  top: -0.01em;
+  left: -0.7em;
+  width: 0.5em;
+  height: 0.615em;
+  border-style: none none solid solid;
+  border-width: 0.05em;
+  border-color: #e4e4e4;
+}
+
+ul.domtree li:not(:last-child):after {
+  position: absolute;
+  content: '';
+  top: 0.7em;
+  left: -0.7em;
+  bottom: 0;
+  border-style: none none none solid;
+  border-width: 0.05em;
+  border-color: #e4e4e4;
+}
+
+.tree-title {
+  line-height: 36px;
+  color: #15192a;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.see_all {
+  left: -356px;
+  top: -9px;
+  background: #fff;
+  position: absolute;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  padding: 8px 14px !important;
+  width: 305px;
+  display: none;
+  z-index: 1;
+}
+
+.see_all:before {
+  width: 0;
+  position: absolute;
+  top: 12px;
+  right: -12px;
+  border-style: solid;
+  border-color: transparent #fff;
+  border-width: 0 0 12px 12px;
+  content: '';
+}
+
+.myselfContent:before {
+  width: 0;
+  position: absolute;
+  top: 5px;
+  right: -7px;
+  border-style: solid;
+  border-color: transparent #fde7e9;
+  border-width: 4px 0 8px 8px;
+  content: '';
+}
+
+.otherContent:before {
+  width: 0;
+  position: absolute;
+  top: 4px;
+  left: -7px;
+  border-style: solid;
+  border-color: transparent #eeeeee;
+  border-width: 4px 8px 8px 0px;
+  content: '';
+}
+
+.intername {
+  height: 40px;
+  line-height: 40px;
+}
+
+.liRight {
+  width: 70%;
+  position: relative;
+}
+
+.un_read {
+  display: inline-block;
+  position: absolute;
+  top: 4px;
+  right: 10px;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  line-height: 20px;
+  padding: 2px;
+  text-align: center;
+  background: #da2339;
+  color: #fff;
+  font-size: 12px;
+}
+
+.closeSession {
+  position: absolute;
+  bottom: 5px;
+  right: 10px;
+  padding: 2px;
+  text-align: center;
+}
+
+.infor {
+  font-size: 12px !important;
+  color: #707070;
+  width: 98%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.messageTip {
+  width: 100%;
+  padding: 0.5rem 0;
+  background-color: #f1f3f4;
+  color: #8a9699;
+}
+
+.textarea {
+  padding: 8px;
+  font-size: 15px;
+  line-height: 18px;
+  word-wrap: break-word;
+  overflow-y: auto;
+  border-radius: 8px;
+  width: 93%;
+  height: 1.5rem;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  margin: 0.4rem auto;
+  margin-bottom: 3px;
+  outline: none;
+}
+
+.cardAnswers .jiao {
+  position: absolute;
+  left: -8px;
+  top: 10px;
+}
+
+.cardAnswers {
+  width: auto;
+  height: auto;
+  background: #eeeeee;
+  padding: 10px 20px;
+  margin: 4px;
+  line-height: 20px;
+  font-size: 14px;
+  border-radius: 10px;
+  margin-left: 10px;
+  position: relative;
+  float: left;
+  max-width: 350px;
+}
+
+.messageTopBtn {
+  display: inline-block;
+  width: 50%;
+  color: #ccc;
+}
+
+.messageActive {
+  color: #000;
+  border-bottom: 3px solid #da2339;
+}
+
+.messageRecord {
+  height: 90%;
+  overflow: scroll;
+  background: #f8f9fa;
+}
+
+.messageDiv {
+  background: #fff;
+  margin-bottom: 8px;
+  padding: 16px 20px 18px 20px;
+  border-top: 1px solid #faf9fa;
+  border-bottom: 1px solid #faf9fa;
+}
+
+.messageState {
+  padding: 5px 15px;
+  line-height: 20px;
+  color: #fff;
+  border-radius: 15px;
+  background: #e4eaf2;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  height: 20px;
+}
+
+.messageContent {
+  display: flex;
+  width: 100%;
+  position: relative;
+}
+
+.messageDetail {
+  font-size: 14px;
+  color: #acb5c4;
+  margin-right: 10px;
+  display: -webkit-box;
+  text-align: left;
+  width: 75%;
+}
+
+.messageTime {
+  font-size: 16px;
+  font-weight: bold;
+  color: #515a7c;
+  text-align: left;
+}
+
+.changeNameBtn {
+  color: #ff9900;
+  cursor: pointer;
+  text-decoration: underline;
+  margin-left: 5px;
+}
+
+.sessionType {
+  width: 100%;
+  height: 30px;
+  text-indent: 10px;
+  line-height: 30px;
+  position: relative;
+  font-weight: 700;
+  color: #000;
+  cursor: pointer;
+  font-size: 14px;
+  padding-top: 3px;
+}
+
+.notAllowSeesion {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(210, 210, 210, 0.5);
+  z-index: 9;
+}
+
+.productDetail {
+  width: 375px;
+  height: 500px;
+  background: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  overflow: auto;
+  border: 5px solid #da2339;
+  border-radius: 20px;
+}
+
+.productDetail::-webkit-scrollbar {
+  width: 15px;
+}
+
+.productImg {
+  width: 100%;
+  height: auto;
+}
+
+.product_inf {
+  padding: 0px 4%;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.product_price {
+  font-size: 14px;
+  color: #ff0000;
+}
+
+.featureImg {
+  width: 30px !important;
+  height: auto;
+  margin-right: 3px;
+}
+
+.row_align_center {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.colum {
+  display: flex;
+  flex-direction: column;
+}
+
+.product_name {
+  font-size: 18px;
+  padding: 5px 0;
+  font-weight: 600;
+}
+
+.font_gray {
+  font-size: 14px;
+  color: #909399;
+}
+
+.more_info {
+  width: 100%;
+  border-top: 5px solid #f8f8f8;
+  padding: 15px 10px;
+  color: #999;
+  box-sizing: border-box;
+  padding-bottom: 0;
+  text-align: left;
+}
+
+.info_detail {
+  display: flex;
+  width: 100%;
+  font-size: 12px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.info_detail div {
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 2px 0;
+}
 </style>
