@@ -1,7 +1,7 @@
 <template>
   <div class="xtx_topnav">
     <div class="wrapper">
-      <!-- 顶部导航 -->
+      <!-- 顶部导航部分 -->
       <ul class="xtx_navs">
         <li>
           <router-link to="/login" v-show="!userInfo.username">
