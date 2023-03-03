@@ -5,7 +5,7 @@
         <img :src="img.imgUrl" />
       </div>
     </div>
-    <!-- 如果需要分页器，就是用这个 -->
+    <!-- 如果需要分页器就是用这个 -->
     <div class="swiper-pagination"></div>
     <!-- 如果需要导航按钮 -->
     <div class="swiper-button-prev"></div>
