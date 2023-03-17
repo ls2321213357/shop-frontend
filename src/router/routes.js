@@ -3,7 +3,10 @@ export default [
   {
     path: '/chat',
     name:'chat',
-    component:()=>import('@/pages/Chat')
+    component:()=>import('@/pages/Chat'),
+    meta: {
+      title: '首页'
+    }
   },
   {
     path: '/paysuccess',
@@ -108,10 +111,10 @@ export default [
   {
     path: '/home',
     component: () => import('@/pages/home'),
-    name: 'home',
     meta: {
       isShowFooter: true, //用来控制是否显示footer组件
       isShowHeader: true, //用来控制是否显示Header组件
+      title:'首页'
     },
   },
   {

@@ -42,6 +42,7 @@ export default {
     HomeHeader,
   },
   mounted() {
+    document.title = this.$route.meta.title
     this.$store.dispatch('getDetailInfo', {
       sort: '1',
       pageNo: '1',

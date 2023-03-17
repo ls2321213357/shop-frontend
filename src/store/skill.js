@@ -1,6 +1,6 @@
 import { reqSkillGoods } from '@/api';
 const state = {
-  deadline: {},
+  deadline: {},//最后的时间
   skillist: {},
 };
 const mutations = {
@@ -27,11 +27,10 @@ const mutations = {
 };
 const actions = {
   getSkillTime({ commit }) {
-    const date = new Date();
-    const hours = date.getHours();
-    const minute = date.getMinutes();
-    const seconds = date.getSeconds();
-    console.log([hours, minute, seconds]);
+    // const date = new Date();
+    // const hours = date.getHours();
+    // const minute = date.getMinutes();
+    // const seconds = date.getSeconds();
     // 距离开始秒杀时间
     const deadline = {
       hours: 0,

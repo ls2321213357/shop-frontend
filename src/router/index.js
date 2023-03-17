@@ -25,10 +25,10 @@ VueRouter.prototype.replace = function (location, onComplete, onAbort) {
     originReplace.call(this, location, onComplete, onAbort);
   }
 };
+import {Message} from 'element-ui';
 let router = new VueRouter({
-  mode: 'history',
+  mode: 'hash',
   routes,
-  base: process.env.BASE_URL,
   scrollBehavior() {
     // 始终滚动到顶部
     return { y: 0 };
@@ -39,6 +39,10 @@ router.beforeEach(async (to, from, next) => {
   if (token) {
     if (to.path == '/login') {
       next('/home');
+      Message({
+        type:'warning',
+        message:'请先退出登录再进行登录喔😘'
+      })
     } else {
       next();
     }

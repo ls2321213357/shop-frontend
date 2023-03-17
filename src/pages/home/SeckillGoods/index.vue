@@ -13,8 +13,7 @@
         <p class="next">下一场 20:00开始</p>
         <p class="title">超级秒杀</p>
         <p class="tips">
-          18:00
-          <small>点场 倒计时</small>
+          <small>本场倒计时</small>
         </p>
         <p class="clock">
           <span>{{ seckillsHours }}</span>
@@ -53,7 +52,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import {mapGetters} from 'vuex';
 export default {
   name: 'SeckillGoods',
   data() {
@@ -67,7 +66,6 @@ export default {
     this.timer = setInterval(() => {
       this.$store.commit('REDUCESECKILLSTIME');
     }, 1000);
-    // this.$store.dispatch('getSeckillList');
   },
   methods: {
     goGoodsDetail(skuid) {

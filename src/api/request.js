@@ -11,7 +11,7 @@ import 'nprogress/nprogress.css';
 // 创建一个 axios 接口
 const requests = axios.create({
   //基础路径
-  baseURL: '/api',
+  baseURL:'http://47.93.10.154:9090/api',
   //超时事件
   timeout: 15000,
 });
