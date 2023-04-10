@@ -13,7 +13,7 @@
               <h3>{{ personInfo.username }}</h3>
               <el-popover placement="right" width="120px" trigger="click">
                 <el-upload
-                  action="http://43.143.204.40:9090/api/user/infos/update/avatar"
+                  action="http://47.93.10.154:9090/api/user/infos/update/avatar"
                   :show-file-list="false"
                   :on-success="handleAvatarSuccess"
                   :before-upload="beforeAvatarUpload"
@@ -223,12 +223,21 @@ export default {
   },
   methods: {
     //图片上传成功之后的回调
-    handleAvatarSuccess() {
-      Message({
-        showClose: true,
-        type: 'success',
-        message: '修改成功',
-      });
+    handleAvatarSuccess(res) {
+      console.log(res)
+      if(res.code!=200){
+        Message({
+          showClose: true,
+          type: 'error',
+          message: res.msg,
+        });
+      }else{
+        Message({
+          showClose: true,
+          type: 'success',
+          message:'头像更换成功',
+        });
+      }
       setTimeout(() => {
         location.reload();
       }, 500);
@@ -236,20 +245,20 @@ export default {
     //图片上传前的会回调
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg';
-      const isLt2M = file.size / 1024 / 1024 < 2;
+      const isLt5M = file.size / 1024 / 1024 < 5;
       if (!isJPG) {
         Message({
           type: 'error',
           message: '上传头像图片只能是 JPG 格式!',
         });
       }
-      if (!isLt2M) {
+      if (!isLt5M) {
         Message({
           type: 'error',
-          message: '上传头像图片大小不能超过 2MB!',
+          message: '上传头像图片大小不能超过 5MB!',
         });
       }
-      return isJPG && isLt2M;
+      return isJPG && isLt5M;
     },
     //获取个人信息
     getPersonInfo() {

@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <Header v-if="$route.meta.isShowHeader"></Header>
-    <keep-alive include="detail">
+<!--    <keep-alive include="detail">-->
       <router-view></router-view>
-    </keep-alive>
+<!--    </keep-alive>-->
     <Footer v-if="$route.meta.isShowFooter"></Footer>
   </div>
 </template>
@@ -11,6 +11,7 @@
 <script>
 import Header from './components/Header/index.vue';
 import Footer from './components/Footer/index.vue';
+import {getAssToken} from '@/util/token'
 export default {
   name: 'App',
   components: {
@@ -19,7 +20,9 @@ export default {
   },
   watch: {
     $route() {
-      this.$store.dispatch('getUserShopCartNum');
+      if(getAssToken()){
+        this.$store.dispatch('getUserShopCartNum');
+      }
     },
   },
 };

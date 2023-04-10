@@ -43,10 +43,10 @@ const actions = {
     let result = await reqUserCode(phone);
     if (result.code == 200) {
       commit('GETREQCODE', result.code);
-      commit('GETCODEMSG', result.data);
+      commit('GETCODEMSG', result.msg);
     } else {
       commit('GETREQCODE', result.code);
-      commit('GETCODEMSG', result.data);
+      commit('GETCODEMSG', result.msg);
     }
   },
   //用户登录

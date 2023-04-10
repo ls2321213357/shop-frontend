@@ -169,13 +169,15 @@ export default {
     },
     //获取商品种类的标签
     async getData() {
-      try {
-        await this.$store.dispatch(
-          'getDetailList',
-          this.searchParams.productCategoryId,
-        );
-      } catch (error) {
-        console.log(error.message);
+      if(!this.searchParams.brandId===''){
+        try {
+          await this.$store.dispatch(
+              'getDetailList',
+              this.searchParams.productCategoryId,
+          );
+        } catch (error) {
+          console.log(error.message);
+        }
       }
     },
     //获取商品详情列表

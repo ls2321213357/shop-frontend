@@ -43,11 +43,10 @@
           <a href="">{{ userInfo.username }}</a>
         </li>
       </ul>
-      <div class="userheader">
+      <div class="userheader" @click="changeUserShow">
         <img
           v-if="userInfo.avatar"
           :src="userInfo.avatar"
-          @click="changeUserShow"
         />
         <img v-else src="@/assets/images/header.png" @click="goLogin" />
         <ul v-show="isUserShow">
@@ -69,6 +68,7 @@
 <script>
 import { Message } from 'element-ui';
 import { mapState } from 'vuex';
+import {getRefToken} from '../../util/token'
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: 'Header',
@@ -85,19 +85,33 @@ export default {
     }),
   },
   mounted() {
-    //获取用户头像等信息
-    this.$store.dispatch('getUserInfo');
-    //获取用户购物车信息
-    this.$store.dispatch('getUserShopCartNum');
+    if(getRefToken()){
+      //获取用户头像等信息
+      this.$store.dispatch('getUserInfo');
+      //获取用户购物车信息
+      // this.$store.dispatch('getUserShopCartNum');
+    }else{
+      this.$message({
+        type:'success',
+        showClose: true,
+        message:'登陆后即可享受更多权益😊'
+      })
+    }
+
   },
   methods: {
-    //前往客服节目
+    //前往客服
     goChat(){
       this.$router.push({name:'chat',query:{sendId:3}})
     },
     //前往商城主页
     goLogin() {
-      this.$router.push('/login');
+      if(getRefToken()){
+        console.log('用户已登录')
+      }else{
+        this.$router.push('/login');
+      }
+
     },
     changeUserShow() {
       this.isUserShow = !this.isUserShow;
@@ -107,7 +121,7 @@ export default {
       try {
         await this.$store.dispatch('userLogout');
         if (this.userCode == 200) {
-          Message({
+          this.$message({
             type: 'success',
             message: '退出登录成功~',
           });

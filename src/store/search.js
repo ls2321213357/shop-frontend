@@ -26,7 +26,7 @@ const actions = {
   //获取商品分类信息列表
   async getDetailList({ commit }, id) {
     let result = await reqDetailList(id);
-    if (result.code) {
+    if (result.code==200) {
       commit('GETDETAILLIST', result.data);
     } else {
       return Promise.reject(new Error('获取商品列表失败'));

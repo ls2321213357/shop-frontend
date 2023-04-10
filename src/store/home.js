@@ -6,6 +6,7 @@ import {
   reqSkillGoods,
 } from '@/api';
 import { removeRToken, removeAToken } from '@/util/token';
+import { Message } from 'element-ui';
 const state = {
   userInfo: {},
   bannerList: [],
@@ -52,6 +53,10 @@ const actions = {
     } else if (result.code == 1026) {
       dispatch('getUserInfo');
     } else {
+      Message({
+        type: 'error',
+        message: result.msg,
+      });
       return Promise.reject(new Error('获取用户信息失败'));
     }
   },

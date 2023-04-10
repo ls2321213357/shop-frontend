@@ -220,17 +220,20 @@ export default {
         if (this.reqCode == 200) {
           Message({
             type: 'success',
+            showClose: true,
             message: this.errorMsg || '操作成功',
           });
         } //警告提示框
         else if (this.reqCode == 500) {
           Message({
             type: 'warning',
+            showClose: true,
             message: this.errorMsg || '请注意检查',
           });
         } else {
           Message({
             type: 'error',
+            showClose: true,
             message: this.errorMsg || '操作失败',
           });
         }
@@ -242,6 +245,7 @@ export default {
     onFail() {
       Message({
         type: 'warning',
+        showClose: true,
         message: '验证失败,请重试',
       });
       this.msg = '';
@@ -275,6 +279,7 @@ export default {
           if (this.reqCode == 200) {
             Message({
               type: 'success',
+              showClose: true,
               message: this.errorMsg,
             });
             this.goLogin();
@@ -282,11 +287,13 @@ export default {
           else if (this.reqCode == 500) {
             Message({
               type: 'warning',
+              showClose: true,
               message: this.errorMsg,
             });
           } else {
             Message({
               type: 'error',
+              showClose: true,
               message: this.errorMsg,
             });
           }
@@ -297,7 +304,15 @@ export default {
     },
     //获取验证码
     async getCode() {
-      this.isSlide = true;
+      const phoneSuccess = await this.$validator.validate('register.phone')
+      if (phoneSuccess) {
+        this.isSlide = true;
+      } else {
+        this.$message({
+          type: 'warning',
+          message: '请输入正确的手机号😒'
+        })
+      }
     },
     //获取用户登录
     async getLogin() {
@@ -312,6 +327,7 @@ export default {
           if (this.reqCode == 200) {
             Message({
               type: 'success',
+              showClose: true,
               message: this.errorMsg,
             });
             this.$router.push('/home');
@@ -319,11 +335,13 @@ export default {
           else if (this.reqCode == 500) {
             Message({
               type: 'warning',
+              showClose: true,
               message: this.errorMsg,
             });
           } else {
             Message({
               type: 'error',
+              showClose: true,
               message: this.errorMsg,
             });
           }
