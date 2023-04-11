@@ -8,6 +8,7 @@ import router from '@/router';
 import nProgress from 'nprogress';
 //引入nProgress样式
 import 'nprogress/nprogress.css';
+import {Message} from "element-ui";
 // 创建一个 axios 接口
 const requests = axios.create({
     //基础路径
@@ -39,14 +40,14 @@ requests.interceptors.response.use(
         } else if (res.data.code == 400) {
             router.push('/misspage');
         } else if (res.data.code == 1015) {
-            this.$message({
+            Message({
                 type: 'warning',
                 showClose: true,
                 message: res.data.msg
             })
             removeRToken()
             removeAToken()
-            this.$router.push('/login')
+            router.push('/login')
         }
         nProgress.done();
         return res.data;

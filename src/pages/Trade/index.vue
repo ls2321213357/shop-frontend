@@ -17,42 +17,42 @@
         </el-button>
         <!-- 新增收货地址 -->
         <el-dialog
-          title="请输入新的地址"
-          :visible.sync="centerDialogVisible"
-          width="40%"
-          center
-          :modal="true"
-          custom-class="dialog"
-          :show-close="false"
+            title="请输入新的地址"
+            :visible.sync="centerDialogVisible"
+            width="40%"
+            center
+            :modal="true"
+            custom-class="dialog"
+            :show-close="false"
         >
-          <br />
+          <br/>
           <el-cascader
-            placeholder="请选择省、市、区"
-            :options="addressList"
-            clearable
-            :props="treeProps"
-            size="medium"
-            v-model="addressValue"
+              placeholder="请选择省、市、区"
+              :options="addressList"
+              clearable
+              :props="treeProps"
+              size="medium"
+              v-model="addressValue"
           ></el-cascader>
           <div class="user">
             <el-input
-              v-model="userName"
-              placeholder="收货人姓名"
-              clearable
+                v-model="userName"
+                placeholder="收货人姓名"
+                clearable
             ></el-input>
           </div>
           <div class="phone">
             <el-input
-              v-model="phone"
-              placeholder="请输入收货人手机号"
-              clearable
+                v-model="phone"
+                placeholder="请输入收货人手机号"
+                clearable
             ></el-input>
           </div>
           <div class="detailInfo">
             <el-input
-              v-model="detailAddress"
-              placeholder="请输入详细地址"
-              clearable
+                v-model="detailAddress"
+                placeholder="请输入详细地址"
+                clearable
             ></el-input>
           </div>
 
@@ -65,42 +65,42 @@
         </el-dialog>
         <!-- 修改收货地址 -->
         <el-dialog
-          title="请输入新的地址"
-          :visible.sync="centerDialogVisibleChange"
-          width="40%"
-          center
-          :modal="true"
-          custom-class="dialog"
-          :show-close="false"
+            title="请输入新的地址"
+            :visible.sync="centerDialogVisibleChange"
+            width="40%"
+            center
+            :modal="true"
+            custom-class="dialog"
+            :show-close="false"
         >
-          <br />
+          <br/>
           <el-cascader
-            placeholder="请选择省、市、区"
-            :options="addressList"
-            clearable
-            :props="treeProps"
-            size="medium"
-            v-model="addressValue"
+              placeholder="请选择省、市、区"
+              :options="addressList"
+              clearable
+              :props="treeProps"
+              size="medium"
+              v-model="addressValue"
           ></el-cascader>
           <div class="user">
             <el-input
-              v-model="userName"
-              placeholder="收货人姓名"
-              clearable
+                v-model="userName"
+                placeholder="收货人姓名"
+                clearable
             ></el-input>
           </div>
           <div class="phone">
             <el-input
-              v-model="phone"
-              placeholder="请输入收货人手机号"
-              clearable
+                v-model="phone"
+                placeholder="请输入收货人手机号"
+                clearable
             ></el-input>
           </div>
           <div class="detailInfo">
             <el-input
-              v-model="detailAddress"
-              placeholder="请输入详细地址"
-              clearable
+                v-model="detailAddress"
+                placeholder="请输入详细地址"
+                clearable
             ></el-input>
           </div>
 
@@ -115,14 +115,14 @@
       <el-collapse>
         <el-collapse-item :title="myAddress">
           <div
-            class="address clearFix"
-            v-for="(addInfo, index) in userList"
-            :key="index"
-            @click="changeAdress(addInfo, index)"
+              class="address clearFix"
+              v-for="(addInfo, index) in userList"
+              :key="index"
+              @click="changeAdress(addInfo, index)"
           >
             <span
-              class="username"
-              :class="{ selected: currentIndex == index ? true : false }"
+                class="username"
+                :class="{ selected: currentIndex == index ? true : false }"
             >
               {{ addInfo.UserName }}
             </span>
@@ -134,24 +134,24 @@
               </span>
               <span class="s2">{{ addInfo.PhoneNumber }}</span>
               <span
-                class="s3"
-                @click="changeUserAddress(addInfo)"
-                v-if="currentIndex == index ? true : false"
+                  class="s3"
+                  @click="changeUserAddress(addInfo)"
+                  v-if="currentIndex == index ? true : false"
               >
                 修改地址
               </span>
               <span
-                class="s4"
-                :class="{ isDefault: addInfo.DefaultStatus == 1 }"
-                v-if="currentIndex == index ? true : false"
-                @click="setDefaultAddress(addInfo)"
+                  class="s4"
+                  :class="{ isDefault: addInfo.DefaultStatus == 1 }"
+                  v-if="currentIndex == index ? true : false"
+                  @click="setDefaultAddress(addInfo)"
               >
                 默认地址
               </span>
               <span
-                class="s5"
-                v-if="currentIndex == index ? true : false"
-                @click="deleteAddress(addInfo)"
+                  class="s5"
+                  v-if="currentIndex == index ? true : false"
+                  @click="deleteAddress(addInfo)"
               >
                 删除地址
               </span>
@@ -163,17 +163,17 @@
       <h5 class="pay">支付方式</h5>
       <div class="address clearFix">
         <span
-          class="username"
-          :class="{ selected: payWay }"
-          @click="payWay = true"
+            class="username"
+            :class="{ selected: payWay }"
+            @click="payWay = true"
         >
           在线支付
         </span>
         <span
-          class="username"
-          style="margin-left: 5px"
-          :class="{ selected: !payWay }"
-          @click="payWay = false"
+            class="username"
+            style="margin-left: 5px"
+            :class="{ selected: !payWay }"
+            @click="payWay = false"
         >
           货到付款
         </span>
@@ -190,12 +190,12 @@
       <div class="detail">
         <h5>商品清单</h5>
         <ul
-          class="list clearFix"
-          v-for="list in cartProductVOList"
-          :key="list.skuID"
+            class="list clearFix"
+            v-for="list in cartProductVOList"
+            :key="list.skuID"
         >
           <li>
-            <img :src="list.defaultPicUrl" alt="" />
+            <img :src="list.defaultPicUrl" alt=""/>
           </li>
           <li>
             <p>
@@ -261,8 +261,9 @@
 </template>
 
 <script>
-import { Message } from 'element-ui';
-import { mapState } from 'vuex';
+import {Message} from 'element-ui';
+import {mapState} from 'vuex';
+
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: 'Trade',
@@ -303,7 +304,7 @@ export default {
   mounted() {
     let cartProductList = JSON.parse(localStorage.getItem('orderDate'));
     //获取订单请求
-    this.$store.dispatch('getTradeListInfo', { cartProductList });
+    this.$store.dispatch('getTradeListInfo', {cartProductList});
     //获取地址信息
     this.$store.dispatch('getGoodsAddress');
     //获取用户所有地址
@@ -318,7 +319,7 @@ export default {
         this.fullscreenLoading = false;
       } catch (error) {
         this.fullscreenLoading = false;
-        Message({ type: 'warning', message: '服务器繁忙请刷新页面🙈' });
+        Message({type: 'warning', message: '服务器繁忙请刷新页面🙈'});
       }
     },
     //清空输入的数据
@@ -355,6 +356,7 @@ export default {
         });
         Message({
           type: 'success',
+          showClose: true,
           message: '添加成功🥰',
         });
         this.clearUserInfo();
@@ -365,6 +367,7 @@ export default {
         this.clearUserInfo();
         Message({
           type: 'error',
+          showClose: true,
           message: '服务器繁忙添加失败😭',
         });
       }
@@ -384,6 +387,7 @@ export default {
         });
         Message({
           type: 'success',
+          showClose: true,
           message: '设置成功💕',
         });
         this.getUserAllAddress();
@@ -393,6 +397,7 @@ export default {
       } catch (error) {
         Message({
           type: 'error',
+          showClose: true,
           message: '设置失败😶',
         });
       }
@@ -425,6 +430,7 @@ export default {
         });
         Message({
           type: 'success',
+          showClose: true,
           message: '修改成功😘',
         });
         this.isDefault = 0;
@@ -440,6 +446,7 @@ export default {
         this.clearUserInfo();
         Message({
           type: 'error',
+          showClose: true,
           message: '服务器繁忙修改失败😶',
         });
       }
@@ -457,6 +464,7 @@ export default {
         await this.$store.dispatch('getDeleteAddress', addInfo.id);
         Message({
           type: 'success',
+          showClose: true,
           message: '删除成功😉',
         });
         this.fullscreenLoading = false;
@@ -464,6 +472,7 @@ export default {
       } catch (error) {
         Message({
           type: 'error',
+          showClose: true,
           message: '删除失败😐',
         });
       }
@@ -485,6 +494,7 @@ export default {
         await this.$store.dispatch('getSubmitOrder', orderInfo);
         Message({
           type: 'success',
+          showClose: true,
           message: '提交成功😘',
         });
         this.fullscreenLoading = false;
@@ -492,6 +502,7 @@ export default {
       } catch (error) {
         Message({
           type: 'success',
+          showClose: true,
           message: '服务器繁忙请稍后👻',
         });
         this.fullscreenLoading = false;
@@ -521,14 +532,14 @@ export default {
       this.userList.forEach((item) => {
         if (item.DefaultStatus == 1) {
           address =
-            item.UserName +
-            '   ' +
-            item.PhoneNumber +
-            '    ' +
-            item.province +
-            item.city +
-            item.region +
-            item.DetailAddress;
+              item.UserName +
+              '   ' +
+              item.PhoneNumber +
+              '    ' +
+              item.province +
+              item.city +
+              item.region +
+              item.DetailAddress;
         }
       });
       return address;
@@ -539,7 +550,7 @@ export default {
       this.userList.forEach((item) => {
         if (item.DefaultStatus == 1) {
           address =
-            item.province + item.city + item.region + item.DetailAddress;
+              item.province + item.city + item.region + item.DetailAddress;
         }
       });
       return address;
@@ -564,16 +575,19 @@ export default {
     padding: 25px;
     box-sizing: border-box;
     position: relative;
+
     .addAddress {
       float: right;
       position: absolute;
       right: 25px;
       top: 20px;
+
       .user {
         position: absolute;
         top: 60px;
         left: 30px;
       }
+
       .phone {
         position: absolute;
         top: 115px;
@@ -649,6 +663,7 @@ export default {
           margin-top: 3px;
           text-align: center;
         }
+
         .s4 {
           float: left;
           width: 56px;
@@ -660,6 +675,7 @@ export default {
           margin-top: 3px;
           text-align: center;
         }
+
         .s5 {
           float: left;
           width: 56px;
@@ -671,6 +687,7 @@ export default {
           margin-top: 3px;
           text-align: center;
         }
+
         .isDefault {
           background-color: red;
         }
@@ -729,12 +746,15 @@ export default {
         display: flex;
         justify-content: space-between;
         margin-top: 20px;
+
         li {
           line-height: 30px;
+
           img {
             width: 100px;
             height: 100px;
           }
+
           p {
             width: 300px;
             margin-bottom: 20px;
@@ -744,6 +764,7 @@ export default {
             color: #c81623;
             font-weight: 400;
           }
+
           h3 {
             color: #e12228;
           }

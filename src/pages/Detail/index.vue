@@ -212,7 +212,7 @@ export default {
       try {
         await this.$store.dispatch('getGoodsDetail', this.$route.params.skuid);
       } catch (error) {
-        Message({ type: 'error', message: '服务器繁忙请刷新页面' });
+        Message({ type: 'error', showClose: true,message: '服务器繁忙请刷新页面' });
       }
     },
   },

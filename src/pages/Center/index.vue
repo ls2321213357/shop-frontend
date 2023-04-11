@@ -13,7 +13,7 @@
               <h3>{{ personInfo.username }}</h3>
               <el-popover placement="right" width="120px" trigger="click">
                 <el-upload
-                  action="http://47.93.10.154:9090/api/user/infos/update/avatar"
+                  action="http://43.143.204.40:9090/api/user/infos/update/avatar"
                   :show-file-list="false"
                   :on-success="handleAvatarSuccess"
                   :before-upload="beforeAvatarUpload"
@@ -249,12 +249,14 @@ export default {
       if (!isJPG) {
         Message({
           type: 'error',
+          showClose: true,
           message: '上传头像图片只能是 JPG 格式!',
         });
       }
       if (!isLt5M) {
         Message({
           type: 'error',
+          showClose: true,
           message: '上传头像图片大小不能超过 5MB!',
         });
       }
@@ -282,6 +284,7 @@ export default {
       } catch (error) {
         Message({
           type: 'error',
+          showClose: true,
           message: '服务器繁忙更新失败',
         });
       }
@@ -289,12 +292,14 @@ export default {
         if (this.reqCode == 200) {
           Message({
             type: 'success',
+            showClose: true,
             message: '更新成功',
           });
         } //警告提示框
         else if (this.reqCode == 500) {
           Message({
             type: 'warning',
+            showClose: true,
             message: '服务器繁忙请重试',
           });
         }

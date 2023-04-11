@@ -247,6 +247,7 @@ export default {
         this.loading = false;
         Message({
           type: 'error',
+          showClose: true,
           messages: '获取订单信息失败',
         });
       }
