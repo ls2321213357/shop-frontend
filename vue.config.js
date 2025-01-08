@@ -9,7 +9,7 @@ module.exports = defineConfig({
       '/api': {
         target: 'http://43.143.204.40:9090',
         ws:true,//配置可以使用websocket
-        changeOrigin:true//让请求说谎嘎嘎
+        changeOrigin:true//让请求说谎嘎嘎 5555
       },
     },
   },
