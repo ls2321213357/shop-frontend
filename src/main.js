@@ -12,7 +12,7 @@ import '@/plugins/vee-validate';
 import VueLazyload from 'vue-lazyload';
 //引入懒加载图片
 const loadimg = require('@/assets/images/th.gif');
-//使用图片懒加载 都是回忆
+//使用图片懒加载
 Vue.use(VueLazyload, {
   loading: loadimg,
 });
